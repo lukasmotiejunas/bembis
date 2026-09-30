@@ -11,6 +11,7 @@ import CustomizeStep from "@/components/visualizer/CustomizeStep";
 import GeneratingStep from "@/components/visualizer/GeneratingStep";
 import ResultStep from "@/components/visualizer/ResultStep";
 import { Sparkles, ChevronRight } from "lucide-react";
+// test commit
 
 const stepLabels = ["Įkelti", "Stilius", "Peržiūra"];
 
