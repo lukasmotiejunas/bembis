@@ -1,136 +1,136 @@
 "use client";
-import { useCartStore } from "@/lib/store/cartStore";
-import { X, ShoppingBag, Plus, Minus, Trash2 } from "lucide-react";
+import { useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
+import { formatPrice } from "@/lib/format";
+import { modeLabel } from "./ModeBadge";
 
 export default function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice } = useCartStore();
-  const total = totalPrice();
+  const { items, isOpen, closeCart, updateQuantity, removeItem } = useCartStore();
+  const lines = resolveLines(items);
+  const { total } = cartTotals(lines);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && closeCart();
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [isOpen, closeCart]);
+
+  if (!isOpen) return null;
 
   return (
-    <>
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm"
-          onClick={closeCart}
-        />
-      )}
+    <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+      <div className="animate-fade-in absolute inset-0 bg-pine-950/40 backdrop-blur-[2px]" onClick={closeCart} />
 
-      <div
-        className={`fixed top-0 right-0 h-full z-[70] w-full max-w-md flex flex-col transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-        style={{ background: "#0d1230", borderLeft: "1px solid #1e2d52" }}
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-[#1e2d52]">
-          <div className="flex items-center gap-3">
-            <ShoppingBag className="w-5 h-5 text-[#C9A227]" />
-            <h2 className="font-display font-semibold text-lg text-[#FFF5E6]">
-              Jūsų krepšelis
-            </h2>
-            {items.length > 0 && (
-              <span className="text-xs text-[#C9A227] bg-[rgba(201,162,39,0.15)] px-2 py-0.5 rounded-full">
-                {items.length} prек{items.length === 1 ? "ė" : "ės"}
-              </span>
-            )}
-          </div>
+      <aside className="animate-drawer-in absolute top-0 right-0 flex h-full w-full max-w-md flex-col bg-snow shadow-2xl">
+        <div className="flex items-center justify-between border-b border-sand px-6 py-5">
+          <h2 id="cart-title" className="text-2xl font-semibold text-pine-900">
+            Krepšelis
+          </h2>
           <button
+            type="button"
             onClick={closeCart}
-            className="p-2 text-[#C4A882] hover:text-[#FFF5E6] transition-colors rounded-lg hover:bg-white/5"
+            autoFocus
+            className="inline-flex size-10 items-center justify-center rounded-full text-stone hover:bg-cream hover:text-pine-900"
+            aria-label="Uždaryti krepšelį"
           >
-            <X className="w-5 h-5" />
+            <X className="size-5" />
           </button>
         </div>
 
-        {/* Items */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {items.length === 0 ? (
-            <div className="text-center py-16">
-              <ShoppingBag className="w-12 h-12 text-[#1e2d52] mx-auto mb-4" />
-              <p className="text-[#C4A882] font-medium">Krepšelis tuščias</p>
-              <p className="text-sm text-[#C4A882]/60 mt-1">
-                Pridėkite lempučių ir pradėkite
-              </p>
-              <Link
-                href="/shop"
-                onClick={closeCart}
-                className="btn-gold mt-6 text-sm px-5 py-2.5 inline-flex"
-              >
-                Pirkti Kalėdines lemputes
+        {lines.length === 0 ? (
+          <div className="flex flex-1 flex-col items-center justify-center gap-4 px-8 text-center">
+            <div className="flex size-16 items-center justify-center rounded-full bg-cream">
+              <ShoppingBag className="size-7 text-pine-700" aria-hidden="true" />
+            </div>
+            <p className="text-lg font-semibold text-pine-900">Krepšelis tuščias</p>
+            <p className="text-stone">Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui.</p>
+            <div className="mt-2 flex gap-3">
+              <Link href="/shop" onClick={closeCart} className="btn btn-dark">
+                Pirkti
+              </Link>
+              <Link href="/rent" onClick={closeCart} className="btn btn-outline">
+                Nuomotis
               </Link>
             </div>
-          ) : (
-            items.map((item) => (
-              <div
-                key={item.product.id}
-                className="flex gap-4 p-4 rounded-xl border border-[#1e2d52] bg-[#131c35]"
-              >
-                <div className="w-16 h-16 rounded-lg overflow-hidden shrink-0 bg-[#0d1230]">
-                  <img
-                    src={item.product.image}
-                    alt={item.product.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-[#FFF5E6] leading-tight line-clamp-2">
-                    {item.product.name}
-                  </p>
-                  <p className="text-[#C9A227] font-semibold mt-1">
-                    €{item.product.price}
-                  </p>
-                  <div className="flex items-center gap-2 mt-2">
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
-                      className="w-6 h-6 rounded-full border border-[#1e2d52] flex items-center justify-center text-[#C4A882] hover:border-[#C9A227] hover:text-[#C9A227] transition-colors"
-                    >
-                      <Minus className="w-3 h-3" />
-                    </button>
-                    <span className="text-sm text-[#FFF5E6] w-6 text-center">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                      className="w-6 h-6 rounded-full border border-[#1e2d52] flex items-center justify-center text-[#C4A882] hover:border-[#C9A227] hover:text-[#C9A227] transition-colors"
-                    >
-                      <Plus className="w-3 h-3" />
-                    </button>
-                    <button
-                      onClick={() => removeItem(item.product.id)}
-                      className="ml-auto text-[#C4A882]/50 hover:text-red-400 transition-colors"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-
-        {/* Footer */}
-        {items.length > 0 && (
-          <div className="p-6 border-t border-[#1e2d52] space-y-4">
-            <div className="flex items-center justify-between text-sm text-[#C4A882]">
-              <span>Tarpinė suma</span>
-              <span className="text-[#FFF5E6] font-semibold text-base">€{total.toFixed(0)}</span>
-            </div>
-            <p className="text-xs text-[#C4A882]/60">
-              Pristatymo kaina skaičiuojama atsiskaitant
-            </p>
-            <button className="btn-gold w-full justify-center py-3">
-              Pereiti į atsiskaitymą
-            </button>
-            <button
-              onClick={closeCart}
-              className="w-full text-center text-sm text-[#C4A882] hover:text-[#FFF5E6] transition-colors py-2"
-            >
-              Tęsti apsipirkimą
-            </button>
           </div>
+        ) : (
+          <>
+            <ul className="flex-1 divide-y divide-sand overflow-y-auto px-6">
+              {lines.map((line) => (
+                <li key={`${line.productId}-${line.mode}`} className="flex gap-4 py-5">
+                  <div className="relative size-20 shrink-0 overflow-hidden rounded-2xl border border-sand bg-white">
+                    <Image src={line.product.image} alt="" fill sizes="80px" className="object-contain p-1.5" />
+                  </div>
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="leading-snug font-bold text-pine-900">{line.product.name}</p>
+                        <p className="mt-0.5 text-sm text-stone">
+                          {modeLabel[line.mode]} · {formatPrice(line.unitPrice)}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => removeItem(line.productId, line.mode)}
+                        className="-m-1 p-1 text-stone hover:text-berry"
+                        aria-label={`Pašalinti ${line.product.name}`}
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </div>
+                    <div className="mt-auto flex items-center justify-between pt-3">
+                      <div className="flex items-center rounded-full border-[1.5px] border-sand bg-white">
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(line.productId, line.mode, line.quantity - 1)}
+                          className="flex size-9 items-center justify-center text-pine-900"
+                          aria-label="Mažiau"
+                        >
+                          <Minus className="size-3.5" />
+                        </button>
+                        <span className="w-7 text-center text-sm font-bold">{line.quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(line.productId, line.mode, line.quantity + 1)}
+                          className="flex size-9 items-center justify-center text-pine-900"
+                          aria-label="Daugiau"
+                        >
+                          <Plus className="size-3.5" />
+                        </button>
+                      </div>
+                      <p className="font-bold text-pine-900">{formatPrice(line.unitPrice * line.quantity)}</p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            <div className="border-t border-sand bg-white px-6 py-5">
+              <div className="flex items-baseline justify-between">
+                <span className="font-semibold text-stone">Iš viso</span>
+                <span className="font-display text-3xl font-semibold text-pine-900">{formatPrice(total)}</span>
+              </div>
+              <p className="mt-2 text-sm text-stone">
+                Pateikę užsakymą, susisieksime su jumis ir suderinsime pristatymą bei montavimą.
+              </p>
+              <Link href="/contact#forma" onClick={closeCart} className="btn btn-primary mt-5 w-full">
+                Pateikti užsakymą
+              </Link>
+              <button type="button" onClick={closeCart} className="mt-3 w-full py-2 text-sm font-semibold text-stone hover:text-pine-900">
+                Tęsti apsipirkimą
+              </button>
+            </div>
+          </>
         )}
-      </div>
-    </>
+      </aside>
+    </div>
   );
 }

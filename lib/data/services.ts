@@ -1,0 +1,57 @@
+export const seasonSteps = [
+  {
+    when: "Spalis–lapkritis",
+    title: "Susisiekiate",
+    text: "Paskambinkite arba parašykite. Atvažiuojame, apžiūrime namą ir pasiūlome kainą — nemokamai.",
+  },
+  {
+    when: "Tą pačią savaitę",
+    title: "Išsirenkate lemputes",
+    text: "Pirkite arba išsinuomokite sezonui. Padėsime išsirinkti ir apskaičiuosime, kiek jų reikia.",
+  },
+  {
+    when: "Lapkritis–gruodis",
+    title: "Mes sumontuojame",
+    text: "Atvažiuojame su visa įranga ir viską sumontuojame. Jums nereikia lipti ant kopėčių.",
+  },
+  {
+    when: "Sausis",
+    title: "Po švenčių nuimame",
+    text: "Po Trijų Karalių viską nuimame. Nuomotas lemputes išsivežame, pirktas supakuojame jums.",
+  },
+];
+
+export const faqs = [
+  {
+    q: "Kuo skiriasi pirkimas nuo nuomos?",
+    a: "Pirktos lemputės lieka jums ir tarnaus daugelį sezonų. Išnuomotos lemputės šviečia visą sezoną, o po švenčių jas išsivežame — nereikia nei pirkti, nei sandėliuoti.",
+  },
+  {
+    q: "Kiek kainuoja montavimas?",
+    a: "Kaina priklauso nuo namo dydžio ir lempučių kiekio. Tikslią kainą pasakysime po nemokamos apžiūros.",
+  },
+  {
+    q: "Kada montuojate ir kada nuimate?",
+    a: "Montuojame nuo lapkričio pradžios iki gruodžio vidurio, nuimame sausį, po Trijų Karalių. Tikslią dieną suderiname su jumis iš anksto.",
+  },
+  {
+    q: "Ar tvirtinimas nepažeis mano namo?",
+    a: "Ne. Naudojame specialius laikiklius, kurie nepalieka skylių ar žymių ant stogo, latakų ir sienų.",
+  },
+  {
+    q: "Ar reikia būti namuose montavimo metu?",
+    a: "Nebūtina. Užtenka, kad būtų prieiga prie lauko elektros lizdo. Visas detales suderiname telefonu.",
+  },
+  {
+    q: "Kur dirbate?",
+    a: "Vilniuje ir Vilniaus apskrityje. Gyvenate kitur? Paskambinkite — pažiūrėsime, ką galime padaryti.",
+  },
+];
+
+export const showcase = [
+  { src: "/work/porch-house.jpg", alt: "Namas su verandos ir stogo kraštų šiltomis lemputėmis", label: "Šilta balta · stogas ir veranda" },
+  { src: "/work/modern-villa.jpg", alt: "Modernus namas, apjuostas šiltomis lemputėmis", label: "Šilta balta · modernus namas" },
+  { src: "/work/multicolor-house.jpg", alt: "Dviaukštis namas su spalvotomis lemputėmis", label: "Spalvotos · visas fasadas" },
+  { src: "/work/warm-cabin.jpg", alt: "Medinis namas su lemputėmis ant stogo ir medžių", label: "Šilta balta · stogas ir medžiai" },
+  { src: "/work/blue-white-house.jpg", alt: "Namas su mėlynomis ir baltomis lemputėmis", label: "Mėlyna ir balta · stogas ir kolonos" },
+];
