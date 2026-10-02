@@ -59,7 +59,7 @@ export const useCartStore = create<CartStore>()(
       closeCart: () => set({ isOpen: false }),
     }),
     {
-      name: "bembis-cart-v2",
+      name: "kaledu-dekoras-cart",
       partialize: (state) => ({ items: state.items }),
       // Rehydrated on mount by <CartHydration /> so server and client render the same markup.
       skipHydration: true,

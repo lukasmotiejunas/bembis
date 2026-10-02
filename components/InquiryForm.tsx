@@ -6,7 +6,8 @@ import { formatPrice } from "@/lib/format";
 import { emailHref, phoneHref, site } from "@/lib/site";
 import { modeLabel } from "./ModeBadge";
 
-export const serviceOptions = ["Montavimas", "Nuėmimas po švenčių", "Lempučių nuoma", "Lempučių pirkimas"];
+export const INSTALLATION_SERVICE = "Montavimas ir nuėmimas po švenčių";
+export const serviceOptions = [INSTALLATION_SERVICE, "Lempučių nuoma", "Lempučių pirkimas"];
 
 export default function InquiryForm({ defaultServices = [] }: { defaultServices?: string[] }) {
   const [sent, setSent] = useState(false);

@@ -1,3 +1,8 @@
+import { formatPrice } from "../format";
+import { buildEstimate } from "./priceExample";
+
+const example = buildEstimate("rent");
+
 export const seasonSteps = [
   {
     when: "Spalis–lapkritis",
@@ -28,7 +33,7 @@ export const faqs = [
   },
   {
     q: "Kiek kainuoja montavimas?",
-    a: "Kaina priklauso nuo namo dydžio ir lempučių kiekio. Tikslią kainą pasakysime po nemokamos apžiūros.",
+    a: `Kaina priklauso nuo namo dydžio ir lempučių kiekio. Pavyzdžiui, dviaukščiam namui su ${example.meters} m lempučių nuoma, montavimas ir demontavimas kainuoja ${formatPrice(example.total)} už sezoną. Tikslią kainą pasakysime po nemokamos apžiūros.`,
   },
   {
     q: "Kada montuojate ir kada nuimate?",

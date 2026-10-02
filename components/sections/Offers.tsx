@@ -1,25 +1,24 @@
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check, House, Repeat, ShoppingBag } from "lucide-react";
-import { formatPrice } from "@/lib/format";
-import { lowestPrice, lowestRentPrice } from "@/lib/data/products";
+import { ArrowRight, Check } from "lucide-react";
 import SectionHeading from "../ui/SectionHeading";
+
+const installation = ["Individualus dekoro planas", "Montavimas prieš šventes", "Demontavimas po švenčių"];
 
 const small = [
   {
-    href: "/shop",
-    icon: ShoppingBag,
-    title: "Pirkite lemputes",
-    text: "Kokybiškos lauko LED lemputės, kurios tarnaus daugelį metų.",
-    price: `nuo ${formatPrice(lowestPrice)}`,
-    cta: "Žiūrėti lemputes",
+    href: "/rent",
+    image: "/product-2.jpg",
+    title: "Dekoracijų nuoma",
+    text: "Visam sezonui. Be pirkimo ir sandėliavimo.",
+    cta: "Žiūrėti nuomą",
   },
   {
-    href: "/rent",
-    icon: Repeat,
-    title: "Išsinuomokite sezonui",
-    text: "Nereikia nei pirkti, nei sandėliuoti. Po švenčių lemputes pasiimame.",
-    price: `nuo ${formatPrice(lowestRentPrice)} / sezonui`,
-    cta: "Žiūrėti nuomą",
+    href: "/shop",
+    image: "/product-1.jpg",
+    title: "Dekoracijų pirkimas",
+    text: "Kokybiškos dekoracijos, kurios tarnaus ilgus metus.",
+    cta: "Žiūrėti dekoracijas",
   },
 ];
 
@@ -29,57 +28,72 @@ export default function Offers() {
       <SectionHeading
         eyebrow="Ką siūlome"
         title="Pasirinkite, kas jums patogiausia"
-        text="Lemputes galite pirkti arba išsinuomoti. O jei nenorite vargti — atvažiuosime ir viską padarysime už jus."
+        text="Papuošime jūsų namus, išnuomosime arba parduosime dekoracijas."
       />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
         <Link
           href="/installation"
-          className="group relative flex flex-col overflow-hidden rounded-[2rem] bg-pine-900 p-8 text-snow sm:p-10 lg:row-span-2"
+          className="group relative flex flex-col overflow-hidden rounded-[2rem] bg-pine-900 text-snow lg:row-span-2"
         >
-          <div className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full bg-glow/25 blur-3xl" />
-          <span className="w-fit rounded-full bg-glow px-3 py-1 text-xs font-extrabold text-pine-950">Pagrindinė paslauga</span>
-          <House className="mt-8 size-10 text-glow" aria-hidden="true" />
-          <h3 className="mt-5 text-3xl font-semibold sm:text-4xl">Sumontuosime ir nuimsime</h3>
-          <p className="mt-4 max-w-md text-lg leading-relaxed text-snow/75">
-            Atvažiuosime ir papuošime jūsų namus pirktomis ar išnuomotomis lemputėmis. Po švenčių grįšime ir viską nuimsime.
-          </p>
-          <ul className="mt-7 space-y-3">
-            {["Nemokama apžiūra ir kainos pasiūlymas", "Saugus tvirtinimas be skylių", "Laikmačio nustatymas", "Nuėmimas sausį"].map(
-              (f) => (
-                <li key={f} className="flex items-center gap-3">
-                  <Check className="size-5 shrink-0 text-glow" aria-hidden="true" />
+          <div className="relative z-10 p-8 sm:p-10">
+            <span className="rounded-full bg-glow px-3 py-1 text-xs font-extrabold text-pine-950">Pagrindinė paslauga</span>
+            <h3 className="mt-6 text-3xl font-semibold sm:text-4xl">Montavimas ir demontavimas</h3>
+            <p className="mt-3 max-w-md text-lg leading-relaxed text-snow/75">
+              Pilnas namų dekoras, individualiai pritaikytas jūsų pageidavimams.
+            </p>
+            <ul className="mt-6 flex flex-wrap gap-2">
+              {installation.map((f) => (
+                <li
+                  key={f}
+                  className="flex items-center gap-1.5 rounded-full border border-snow/15 bg-snow/5 px-3 py-1.5 text-sm font-semibold"
+                >
+                  <Check className="size-4 text-glow" aria-hidden="true" />
                   {f}
                 </li>
-              )
-            )}
-          </ul>
-          <div className="mt-auto pt-10">
-            <span className="btn btn-primary">
+              ))}
+            </ul>
+          </div>
+
+          <div className="relative min-h-60 flex-1">
+            <Image
+              src="/work/modern-pool.jpg"
+              alt="Namas, visiškai papuoštas kalėdinėmis lemputėmis"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover object-[center_35%] transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-pine-900 via-pine-900/20 to-transparent" />
+            <span className="btn btn-primary absolute bottom-8 left-8 sm:bottom-10 sm:left-10">
               Apie montavimą
               <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </span>
           </div>
         </Link>
 
-        {small.map(({ href, icon: Icon, title, text, price, cta }) => (
+        {small.map((item) => (
           <Link
-            key={href}
-            href={href}
-            className="group flex flex-col rounded-[2rem] border border-sand bg-white p-8 transition hover:border-pine-900/25 hover:shadow-[0_24px_48px_-28px_rgb(18_42_31/0.35)] sm:p-10"
+            key={item.href}
+            href={item.href}
+            className="group flex items-center gap-4 rounded-[2rem] border border-sand bg-white p-6 transition hover:border-pine-900/25 hover:shadow-[0_24px_48px_-28px_rgb(18_42_31/0.35)] sm:gap-6 sm:p-10"
           >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex size-12 items-center justify-center rounded-2xl bg-glow-soft">
-                <Icon className="size-6 text-glow-deep" aria-hidden="true" />
-              </div>
-              <span className="text-right text-sm font-bold text-pine-900">{price}</span>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-2xl font-semibold text-pine-900 sm:text-3xl">{item.title}</h3>
+              <p className="mt-2 leading-relaxed text-stone">{item.text}</p>
+              <span className="mt-5 inline-flex items-center gap-2 font-bold text-pine-900">
+                {item.cta}
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </span>
             </div>
-            <h3 className="mt-6 text-2xl font-semibold text-pine-900">{title}</h3>
-            <p className="mt-2 leading-relaxed text-stone">{text}</p>
-            <span className="mt-6 inline-flex items-center gap-2 font-bold text-pine-900">
-              {cta}
-              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-            </span>
+            <div className="relative size-20 shrink-0 sm:size-36">
+              <Image
+                src={item.image}
+                alt=""
+                fill
+                sizes="144px"
+                className="object-contain transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3"
+              />
+            </div>
           </Link>
         ))}
       </div>

@@ -6,8 +6,10 @@ import { phoneHref, site } from "@/lib/site";
 import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
 import SeasonSteps from "@/components/sections/SeasonSteps";
+import PriceExample from "@/components/sections/PriceExample";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
+import { INSTALLATION_SERVICE } from "@/components/InquiryForm";
 
 export const metadata: Metadata = {
   title: "Kalėdinių lempučių montavimas ir nuėmimas",
@@ -91,9 +93,10 @@ export default function InstallationPage() {
         </div>
       </section>
 
+      <PriceExample />
       <SeasonSteps />
       <FAQ />
-      <ContactSection defaultServices={["Montavimas", "Nuėmimas po švenčių"]} />
+      <ContactSection defaultServices={[INSTALLATION_SERVICE]} />
     </>
   );
 }

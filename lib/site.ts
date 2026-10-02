@@ -1,6 +1,6 @@
 // Visi kontaktai vienoje vietoje — pakeitus čia, atsinaujina visame puslapyje.
 export const site = {
-  name: "Bembis",
+  name: "Kalėdų Dekoras",
   description:
     "Kalėdinių lempučių pardavimas, nuoma ir montavimas. Atvažiuojame, papuošiame jūsų namus, o po švenčių viską nuimame.",
   phone: "+370 600 00 000",

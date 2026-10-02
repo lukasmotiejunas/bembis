@@ -1,4 +1,4 @@
-# Bembis
+# Kalėdų Dekoras
 
 Kalėdinių lempučių parduotuvė: pardavimas, nuoma sezonui ir montavimas su nuėmimu po švenčių.
 
@@ -18,6 +18,7 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 | Telefonas, el. paštas, darbo laikas, socialiniai tinklai | `lib/site.ts`             |
 | Lemputės, pirkimo ir nuomos kainos               | `lib/data/products.ts`    |
 | Žingsniai, DUK, nuotraukų galerija               | `lib/data/services.ts`    |
+| Kainos pavyzdys Montavimo puslapyje (metrai, €/m) | `lib/data/priceExample.ts` |
 | Spalvos ir šriftai                               | `app/globals.css` (`@theme`) |
 
 ## Puslapiai
