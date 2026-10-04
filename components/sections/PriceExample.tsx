@@ -39,7 +39,7 @@ function Lines({ title, lines }: { title: string; lines: EstimateLine[] }) {
 export default function PriceExample() {
   const [mode, setMode] = useState<PurchaseMode>("rent");
   const estimate = buildEstimate(mode);
-  const { title, location, image, areas, installDuration } = priceExample;
+  const { title, location, images, areas, installDuration } = priceExample;
 
   const facts = [
     ...areas.map((a) => ({ value: `${a.meters} m`, label: a.name })),
@@ -58,7 +58,8 @@ export default function PriceExample() {
         <div>
           <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem]">
             <Image
-              src={image}
+              key={mode}
+              src={images[mode]}
               alt="Dviaukštis namas su lemputėmis ant stogo kraštų ir aplink langus"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"

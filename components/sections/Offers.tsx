@@ -1,24 +1,25 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
+import { productFor, productHref } from "@/lib/data/products";
 import SectionHeading from "../ui/SectionHeading";
 
 const installation = ["Individualus dekoro planas", "Montavimas prieš šventes", "Demontavimas po švenčių"];
 
 const small = [
   {
-    href: "/rent",
-    image: "/product-2.jpg",
+    href: productHref(productFor("rent")),
+    image: productFor("rent").image,
     title: "Dekoracijų nuoma",
-    text: "Visam sezonui. Be pirkimo ir sandėliavimo.",
+    text: "Spalvotos lemputės visam sezonui. Be pirkimo ir sandėliavimo.",
     cta: "Žiūrėti nuomą",
   },
   {
-    href: "/shop",
-    image: "/product-1.jpg",
+    href: productHref(productFor("buy")),
+    image: productFor("buy").image,
     title: "Dekoracijų pirkimas",
-    text: "Kokybiškos dekoracijos, kurios tarnaus ilgus metus.",
-    cta: "Žiūrėti dekoracijas",
+    text: "Aukščiausios kokybės šiltos baltos lemputės su 2 metų garantija.",
+    cta: "Žiūrėti lemputes",
   },
 ];
 

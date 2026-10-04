@@ -1,19 +1,13 @@
 "use client";
 import { useState } from "react";
 import { CheckCircle2, Send } from "lucide-react";
-import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
-import { formatPrice } from "@/lib/format";
 import { emailHref, phoneHref, site } from "@/lib/site";
-import { modeLabel } from "./ModeBadge";
 
 export const INSTALLATION_SERVICE = "Montavimas ir nuėmimas po švenčių";
 export const serviceOptions = [INSTALLATION_SERVICE, "Lempučių nuoma", "Lempučių pirkimas"];
 
 export default function InquiryForm({ defaultServices = [] }: { defaultServices?: string[] }) {
   const [sent, setSent] = useState(false);
-  const items = useCartStore((s) => s.items);
-  const lines = resolveLines(items);
-  const { total } = cartTotals(lines);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -27,15 +21,6 @@ export default function InquiryForm({ defaultServices = [] }: { defaultServices?
       field("email") && `El. paštas: ${field("email")}`,
       field("address") && `Adresas: ${field("address")}`,
       services.length > 0 && `Domina: ${services.join(", ")}`,
-      lines.length > 0 &&
-        [
-          "",
-          "Krepšelis:",
-          ...lines.map(
-            (l) => `– ${l.product.name} (${modeLabel[l.mode].toLowerCase()}) × ${l.quantity} = ${formatPrice(l.unitPrice * l.quantity)}`
-          ),
-          `Iš viso: ${formatPrice(total)}`,
-        ].join("\n"),
       field("message") && `\nŽinutė:\n${field("message")}`,
     ]
       .filter(Boolean)
@@ -110,26 +95,6 @@ export default function InquiryForm({ defaultServices = [] }: { defaultServices?
           ))}
         </div>
       </fieldset>
-
-      {lines.length > 0 && (
-        <div className="mt-6 rounded-2xl bg-cream p-4">
-          <p className="text-sm font-bold text-pine-900">Jūsų krepšelis bus pridėtas prie užklausos:</p>
-          <ul className="mt-2 space-y-1 text-sm text-stone">
-            {lines.map((l) => (
-              <li key={`${l.productId}-${l.mode}`} className="flex justify-between gap-4">
-                <span>
-                  {l.product.name} · {modeLabel[l.mode].toLowerCase()} × {l.quantity}
-                </span>
-                <span className="font-semibold text-pine-900">{formatPrice(l.unitPrice * l.quantity)}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-2 flex justify-between border-t border-sand pt-2 text-sm font-bold text-pine-900">
-            <span>Iš viso</span>
-            <span>{formatPrice(total)}</span>
-          </p>
-        </div>
-      )}
 
       <label className="mt-6 block">
         <span className="mb-1.5 block text-sm font-bold text-pine-900">Žinutė</span>

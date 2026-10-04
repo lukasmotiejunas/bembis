@@ -1,10 +1,6 @@
 import clsx from "clsx";
+import { modeLabel } from "@/lib/orders/order";
 import { PurchaseMode } from "@/lib/types";
-
-export const modeLabel: Record<PurchaseMode, string> = {
-  buy: "Pirkimas",
-  rent: "Nuoma sezonui",
-};
 
 export default function ModeBadge({ mode, className }: { mode: PurchaseMode; className?: string }) {
   return (

@@ -4,7 +4,7 @@ import { ArrowRight, Check, Phone } from "lucide-react";
 import { phoneHref, site } from "@/lib/site";
 import { Garland } from "../Lights";
 
-const promises = ["Nemokama apžiūra", "Pirkimas arba nuoma", "Nuimame po švenčių"];
+const promises = ["2 metų garantija", "Nemokama apžiūra", "Nuimame po švenčių"];
 
 const season = [
   { month: "Lapkritis", text: "Sumontuojame", color: "bg-glow" },

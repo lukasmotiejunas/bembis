@@ -4,17 +4,17 @@ export interface Product {
   id: string;
   slug: string;
   name: string;
-  /** Pirkimo kaina, € */
+  /** Ar ši lemputė parduodama, ar nuomojama */
+  mode: PurchaseMode;
+  /** Pirkimo kaina arba nuomos kaina visam sezonui, € */
   price: number;
-  /** Nuomos kaina visam sezonui, € */
-  rentPrice: number;
   image: string;
   color: string;
-  length: string;
+  /** Girliandos ilgis metrais — pagal jį skaičiuojamas montavimas ir nuėmimas */
+  meters: number;
   description: string;
   features: string[];
   specs: { label: string; value: string }[];
-  badge?: string;
 }
 
 export interface CartItem {

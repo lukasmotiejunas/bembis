@@ -1,22 +1,20 @@
 import { formatPrice } from "../format";
 import { PurchaseMode } from "../types";
-import { getProductById, priceFor } from "./products";
+import { pricing } from "./pricing";
+import { productFor } from "./products";
 
 // Pavyzdinis užsakymas Montavimo puslapyje. Pakeitus skaičius, sumos persiskaičiuoja automatiškai.
 export const priceExample = {
   title: "Dviaukštis namas",
   location: "Vilniaus r.",
-  image: "/work/modern-villa.jpg",
+  /** Nuotrauka keičiasi kartu su lemputėmis: pirkimui — šiltos baltos, nuomai — spalvotos */
+  images: { buy: "/work/modern-villa.jpg", rent: "/work/multicolor-house.jpg" },
   areas: [
     { name: "stogo kraštai", meters: 40 },
     { name: "langai ir įėjimas", meters: 20 },
   ],
   installDuration: "1 diena",
-  /** Lemputės iš katalogo (lib/data/products.ts) */
-  productId: "1",
-  /** € už metrą */
-  installPerMeter: 3,
-  removalPerMeter: 2,
+  // Lemputės ir jų kainos — lib/data/products.ts, darbų kainos — lib/data/pricing.ts
 };
 
 export interface EstimateLine {
@@ -28,17 +26,17 @@ export interface EstimateLine {
 const sum = (lines: EstimateLine[]) => lines.reduce((s, l) => s + l.total, 0);
 
 export function buildEstimate(mode: PurchaseMode) {
-  const { areas, productId, installPerMeter, removalPerMeter } = priceExample;
-  const product = getProductById(productId);
-  if (!product) throw new Error(`priceExample: product ${productId} not found`);
+  const { areas } = priceExample;
+  const { installPerMeter, removalPerMeter } = pricing;
+  const product = productFor(mode);
 
   const meters = areas.reduce((s, a) => s + a.meters, 0);
-  const strings = Math.ceil(meters / parseInt(product.length, 10));
-  const unitPrice = priceFor(product, mode);
+  const strings = Math.ceil(meters / product.meters);
+  const unitPrice = product.price;
 
   const decor: EstimateLine[] = [
     {
-      name: `${product.name}, ${product.length}`,
+      name: `${product.name}, ${product.meters} m`,
       detail: `${strings} vnt. × ${formatPrice(unitPrice)}${mode === "rent" ? " / sezonui" : ""}`,
       total: strings * unitPrice,
     },

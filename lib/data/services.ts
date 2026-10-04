@@ -29,7 +29,11 @@ export const seasonSteps = [
 export const faqs = [
   {
     q: "Kuo skiriasi pirkimas nuo nuomos?",
-    a: "Pirktos lemputės lieka jums ir tarnaus daugelį sezonų. Išnuomotos lemputės šviečia visą sezoną, o po švenčių jas išsivežame — nereikia nei pirkti, nei sandėliuoti.",
+    a: "Parduodame šiltas baltas filamentines lemputes — jos lieka jums ir tarnaus daugelį sezonų. Nuomai siūlome spalvotas lemputes: jos šviečia visą sezoną, o po švenčių jas išsivežame — nereikia nei pirkti, nei sandėliuoti.",
+  },
+  {
+    q: "Kokia garantija suteikiama lemputėms?",
+    a: "Mūsų lemputėms suteikiame 2 metų garantiją. Jei sezono metu kuri nors lemputė sugestų — paskambinkite, pakeisime ją nemokamai.",
   },
   {
     q: "Kiek kainuoja montavimas?",
@@ -58,5 +62,5 @@ export const showcase = [
   { src: "/work/modern-villa.jpg", alt: "Modernus namas, apjuostas šiltomis lemputėmis", label: "Šilta balta · modernus namas" },
   { src: "/work/multicolor-house.jpg", alt: "Dviaukštis namas su spalvotomis lemputėmis", label: "Spalvotos · visas fasadas" },
   { src: "/work/warm-cabin.jpg", alt: "Medinis namas su lemputėmis ant stogo ir medžių", label: "Šilta balta · stogas ir medžiai" },
-  { src: "/work/blue-white-house.jpg", alt: "Namas su mėlynomis ir baltomis lemputėmis", label: "Mėlyna ir balta · stogas ir kolonos" },
+  { src: "/work/modern-pool.jpg", alt: "Modernus namas su šiltomis lemputėmis ant stogo ir langų", label: "Šilta balta · stogas ir langai" },
 ];

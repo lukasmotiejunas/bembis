@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { productFor, productHref } from "@/lib/data/products";
 import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
 import Logo from "./Logo";
 
 const links = [
   { href: "/installation", label: "Montavimas ir nuėmimas" },
-  { href: "/shop", label: "Pirkti lemputes" },
-  { href: "/rent", label: "Nuomotis lemputes" },
+  { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
+  { href: productHref(productFor("rent")), label: "Nuomotis lemputes" },
   { href: "/contact", label: "Kontaktai" },
 ];
 

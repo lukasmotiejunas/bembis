@@ -25,8 +25,8 @@ const included = [
   },
   {
     icon: Lightbulb,
-    title: "Pirktos arba nuomotos lemputės",
-    text: "Kokybiškos lauko LED lemputės — jūs renkatės, ar jas pirkti, ar nuomotis.",
+    title: "Aukščiausios kokybės lemputės",
+    text: "Šiltas baltas galite pirkti, spalvotas — išsinuomoti sezonui. Abiem — 2 metų garantija.",
   },
   {
     icon: ShieldCheck,

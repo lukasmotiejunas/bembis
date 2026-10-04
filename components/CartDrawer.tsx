@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
+import { productFor, productHref } from "@/lib/data/products";
 import { formatPrice } from "@/lib/format";
-import { modeLabel } from "./ModeBadge";
+import { modeLabel } from "@/lib/orders/order";
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem } = useCartStore();
@@ -53,10 +54,10 @@ export default function CartDrawer() {
             <p className="text-lg font-semibold text-pine-900">Krepšelis tuščias</p>
             <p className="text-stone">Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui.</p>
             <div className="mt-2 flex gap-3">
-              <Link href="/shop" onClick={closeCart} className="btn btn-dark">
+              <Link href={productHref(productFor("buy"))} onClick={closeCart} className="btn btn-dark">
                 Pirkti
               </Link>
-              <Link href="/rent" onClick={closeCart} className="btn btn-outline">
+              <Link href={productHref(productFor("rent"))} onClick={closeCart} className="btn btn-outline">
                 Nuomotis
               </Link>
             </div>
@@ -119,10 +120,10 @@ export default function CartDrawer() {
                 <span className="font-display text-3xl font-semibold text-pine-900">{formatPrice(total)}</span>
               </div>
               <p className="mt-2 text-sm text-stone">
-                Pateikę užsakymą, susisieksime su jumis ir suderinsime pristatymą bei montavimą.
+                Montavimą ir nuėmimą po švenčių galėsite pasirinkti kitame žingsnyje.
               </p>
-              <Link href="/contact#forma" onClick={closeCart} className="btn btn-primary mt-5 w-full">
-                Pateikti užsakymą
+              <Link href="/checkout" onClick={closeCart} className="btn btn-primary mt-5 w-full">
+                Pereiti prie apmokėjimo
               </Link>
               <button type="button" onClick={closeCart} className="mt-3 w-full py-2 text-sm font-semibold text-stone hover:text-pine-900">
                 Tęsti apsipirkimą

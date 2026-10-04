@@ -2,10 +2,16 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, ChevronRight, Wrench } from "lucide-react";
-import { getProductBySlug, products } from "@/lib/data/products";
+import { ArrowRight, Check, ChevronRight, ShieldCheck, Wrench } from "lucide-react";
+import { getProductBySlug, guarantee, productFor, productHref, products } from "@/lib/data/products";
+import { formatPrice } from "@/lib/format";
+import { GuaranteeBadge } from "@/components/Guarantee";
+import { QualityPoints } from "@/components/sections/LightsSection";
 import ProductPurchase from "@/components/shop/ProductPurchase";
-import ProductCard from "@/components/shop/ProductCard";
+
+export function generateStaticParams() {
+  return products.map((p) => ({ slug: p.slug }));
+}
 
 export async function generateMetadata(props: PageProps<"/shop/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
@@ -16,19 +22,18 @@ export async function generateMetadata(props: PageProps<"/shop/[slug]">): Promis
 
 export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
   const { slug } = await props.params;
-  const { mode } = await props.searchParams;
   const product = getProductBySlug(slug);
   if (!product) notFound();
 
-  const initialMode = mode === "rent" ? "rent" : "buy";
-  const others = products.filter((p) => p.id !== product.id).slice(0, 3);
+  const rent = product.mode === "rent";
+  const other = productFor(rent ? "buy" : "rent");
 
   return (
     <>
       <section className="container-page pt-8 pb-20 sm:pb-28">
         <nav aria-label="Kelias" className="flex items-center gap-1.5 text-sm text-stone">
-          <Link href={initialMode === "rent" ? "/rent" : "/shop"} className="hover:text-pine-900">
-            {initialMode === "rent" ? "Nuoma" : "Lemputės"}
+          <Link href="/shop" className="hover:text-pine-900">
+            Dekoracijos
           </Link>
           <ChevronRight className="size-3.5" aria-hidden="true" />
           <span className="truncate font-semibold text-pine-900">{product.name}</span>
@@ -44,42 +49,64 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-contain p-10"
             />
-            {product.badge && (
-              <span className="absolute top-5 left-5 rounded-full bg-pine-900 px-3 py-1 text-xs font-bold text-snow">
-                {product.badge}
-              </span>
-            )}
+            <GuaranteeBadge className="absolute top-5 left-5" />
           </div>
 
           <div>
-            <p className="text-stone">
-              {product.color} · {product.length}
-            </p>
-            <h1 className="mt-2 text-4xl leading-tight font-semibold text-pine-900 sm:text-5xl">{product.name}</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className={
+                  rent
+                    ? "rounded-full bg-glow-soft px-3 py-1 text-xs font-extrabold text-glow-deep"
+                    : "rounded-full bg-pine-900 px-3 py-1 text-xs font-extrabold text-snow"
+                }
+              >
+                {rent ? "Nuoma sezonui" : "Pirkimas"}
+              </span>
+              <span className="text-sm text-stone">
+                {product.color} · {product.meters} m
+              </span>
+            </div>
+            <h1 className="mt-3 text-4xl leading-tight font-semibold text-pine-900 sm:text-5xl">{product.name}</h1>
             <p className="mt-5 text-lg leading-relaxed text-stone">{product.description}</p>
 
-            <div className="mt-8">
-              <ProductPurchase product={product} initialMode={initialMode} />
+            <div className="mt-8 rounded-[1.75rem] border border-sand bg-white p-6">
+              <div className="flex flex-wrap items-baseline justify-between gap-3">
+                <p>
+                  <span className="font-display text-5xl font-semibold text-pine-900">{formatPrice(product.price)}</span>
+                  <span className="ml-1.5 text-stone">{rent ? "už visą sezoną" : "už 10 m girliandą"}</span>
+                </p>
+                <p className="flex items-center gap-1.5 text-sm font-bold text-pine-700">
+                  <ShieldCheck className="size-4 text-glow-deep" aria-hidden="true" />
+                  {guarantee.label}
+                </p>
+              </div>
+              <p className="mt-2 text-sm text-stone">
+                {rent ? "Nuoma nuo lapkričio iki sausio. Po švenčių lemputes pasiimame." : "Lemputės lieka jums ir tarnaus daugelį sezonų."}
+              </p>
+              <div className="mt-5">
+                <ProductPurchase product={product} />
+              </div>
             </div>
 
             <Link
               href="/installation"
-              className="group mt-6 flex items-center gap-4 rounded-2xl bg-cream p-5 transition-colors hover:bg-glow-soft"
+              className="group mt-4 flex items-center gap-4 rounded-2xl bg-cream p-5 transition-colors hover:bg-glow-soft"
             >
               <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-glow">
                 <Wrench className="size-5" aria-hidden="true" />
               </span>
               <span className="flex-1">
                 <span className="block font-bold text-pine-900">Sumontuosime už jus</span>
-                <span className="block text-sm text-stone">Atvažiuosime, sumontuosime, o po švenčių — nuimsime.</span>
+                <span className="block text-sm text-stone">Montavimą ir nuėmimą po švenčių pasirinksite apmokėdami.</span>
               </span>
               <ArrowRight className="size-5 text-pine-900 transition-transform group-hover:translate-x-1" aria-hidden="true" />
             </Link>
 
             <div className="mt-10 border-t border-sand pt-8">
-              <h2 className="font-sans text-sm font-extrabold tracking-widest text-pine-900 uppercase">Privalumai</h2>
+              <h2 className="font-sans text-sm font-extrabold tracking-widest text-pine-900 uppercase">Kodėl šios lemputės</h2>
               <ul className="mt-4 grid gap-3 sm:grid-cols-2">
-                {product.features.map((f) => (
+                {[guarantee.label, ...product.features].map((f) => (
                   <li key={f} className="flex items-start gap-3 text-pine-900">
                     <Check className="mt-0.5 size-5 shrink-0 text-glow-deep" aria-hidden="true" />
                     {f}
@@ -105,11 +132,30 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
 
       <section className="bg-cream py-20">
         <div className="container-page">
-          <h2 className="text-3xl font-semibold text-pine-900 sm:text-4xl">Kitos lemputės</h2>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {others.map((p) => (
-              <ProductCard key={p.id} product={p} mode={initialMode} />
-            ))}
+          <h2 className="text-3xl font-semibold text-pine-900 sm:text-4xl">{rent ? "Norite lempučių visam laikui?" : "Norite tik vienam sezonui?"}</h2>
+          <Link
+            href={productHref(other)}
+            className="group mt-8 flex flex-col gap-6 rounded-[2rem] bg-white p-6 transition hover:shadow-[0_24px_48px_-28px_rgb(18_42_31/0.35)] sm:flex-row sm:items-center sm:p-8"
+          >
+            <div className="relative size-32 shrink-0">
+              <Image src={other.image} alt="" fill sizes="128px" className="object-contain" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-bold text-glow-deep">{other.mode === "rent" ? "Nuoma sezonui" : "Pirkimas"}</p>
+              <p className="mt-1 font-display text-2xl font-semibold text-pine-900">{other.name}</p>
+              <p className="mt-1 text-stone">
+                {other.mode === "rent"
+                  ? `Išsinuomokite spalvotas lemputes visam sezonui — ${formatPrice(other.price)}.`
+                  : `Pirkite šiltas baltas lemputes su 2 metų garantija — ${formatPrice(other.price)}.`}
+              </p>
+            </div>
+            <span className="btn btn-dark shrink-0">
+              Žiūrėti
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </span>
+          </Link>
+          <div className="mt-6">
+            <QualityPoints onCream />
           </div>
         </div>
       </section>

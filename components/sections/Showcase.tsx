@@ -13,7 +13,7 @@ export default function Showcase() {
           light
           eyebrow="Įkvėpimui"
           title="Taip gali atrodyti jūsų namai"
-          text="Šilta balta, spalvota ar mėlyna — padėsime išsirinkti stilių, kuris tiks būtent jūsų namui."
+          text="Šiltos baltos — elegantiškai ir jaukiai, spalvotos — linksmai ir tradiciškai. Padėsime išsirinkti, kas tiks jūsų namams."
         />
 
         <div className="mt-12 grid auto-rows-[14rem] gap-4 sm:grid-cols-2 lg:auto-rows-[16rem] lg:grid-cols-4">
