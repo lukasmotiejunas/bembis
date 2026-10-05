@@ -17,7 +17,7 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 
 | Ką keisti                                                | Failas                       |
 | -------------------------------------------------------- | ---------------------------- |
-| Telefonas, el. paštas, darbo laikas, socialiniai tinklai | `lib/site.ts`                |
+| Telefonas, el. paštas, aptarnaujama teritorija, socialiniai tinklai | `lib/site.ts`                |
 | Lemputės (viena pirkimui, viena nuomai), kainos, garantija | `lib/data/products.ts`       |
 | Montavimo ir nuėmimo kaina (€/m), pristatymo kaina        | `lib/data/pricing.ts`        |
 | Žingsniai, DUK, nuotraukų galerija                       | `lib/data/services.ts`       |

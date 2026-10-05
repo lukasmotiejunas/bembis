@@ -61,14 +61,6 @@ export default function Footer() {
               {site.serviceArea}
             </li>
           </ul>
-          <dl className="mt-6 space-y-1 text-sm">
-            {site.hours.map((h) => (
-              <div key={h.days} className="flex gap-3">
-                <dt className="w-10 font-semibold text-snow">{h.days}</dt>
-                <dd>{h.time}</dd>
-              </div>
-            ))}
-          </dl>
           {activeSocials.length > 0 && (
             <div className="mt-6 flex gap-3">
               {activeSocials.map((s) => (

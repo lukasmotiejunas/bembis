@@ -6,10 +6,6 @@ export const site = {
   phone: "+370 623 73 199",
   email: "info@kaledudekoras.lt",
   serviceArea: "Vilnius ir Vilniaus apskritis",
-  hours: [
-    { days: "I–V", time: "9:00–19:00" },
-    { days: "VI", time: "10:00–16:00" },
-  ],
   // Įrašykite pilną nuorodą, kad ji atsirastų puslapio apačioje.
   socials: [
     { label: "Facebook", href: "" },

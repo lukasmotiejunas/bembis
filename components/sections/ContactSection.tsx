@@ -1,4 +1,4 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { emailHref, phoneHref, site } from "@/lib/site";
 import InquiryForm from "../InquiryForm";
 import SectionHeading from "../ui/SectionHeading";
@@ -47,24 +47,11 @@ export default function ContactSection({
                 <span className="block truncate text-xl font-bold text-pine-900">{site.email}</span>
               </span>
             </a>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <div className="flex gap-4 rounded-3xl bg-white p-6">
-                <MapPin className="mt-0.5 size-5 shrink-0 text-glow-deep" aria-hidden="true" />
-                <div>
-                  <p className="text-sm text-stone">Dirbame</p>
-                  <p className="font-bold text-pine-900">{site.serviceArea}</p>
-                </div>
-              </div>
-              <div className="flex gap-4 rounded-3xl bg-white p-6">
-                <Clock className="mt-0.5 size-5 shrink-0 text-glow-deep" aria-hidden="true" />
-                <div>
-                  <p className="text-sm text-stone">Darbo laikas</p>
-                  {site.hours.map((h) => (
-                    <p key={h.days} className="font-bold text-pine-900">
-                      {h.days} {h.time}
-                    </p>
-                  ))}
-                </div>
+            <div className="flex gap-4 rounded-3xl bg-white p-6">
+              <MapPin className="mt-0.5 size-5 shrink-0 text-glow-deep" aria-hidden="true" />
+              <div>
+                <p className="text-sm text-stone">Dirbame</p>
+                <p className="font-bold text-pine-900">{site.serviceArea}</p>
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { emailHref, phoneHref, site } from "@/lib/site";
 
 export default function TopBar() {
@@ -14,14 +14,10 @@ export default function TopBar() {
             <Mail className="size-3.5 text-glow" aria-hidden="true" />
             {site.email}
           </a>
-          <span className="hidden items-center gap-1.5 lg:inline-flex">
-            <MapPin className="size-3.5 text-glow" aria-hidden="true" />
-            {site.serviceArea}
-          </span>
         </div>
         <span className="hidden items-center gap-1.5 sm:inline-flex">
-          <Clock className="size-3.5 text-glow" aria-hidden="true" />
-          {site.hours.map((h) => `${h.days} ${h.time}`).join(" · ")}
+          <MapPin className="size-3.5 text-glow" aria-hidden="true" />
+          {site.serviceArea}
         </span>
       </div>
     </div>
