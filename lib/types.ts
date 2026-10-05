@@ -15,6 +15,9 @@ export interface Product {
   description: string;
   features: string[];
   specs: { label: string; value: string }[];
+  /** Pavadinimas ir aprašymas Google paieškos rezultatuose */
+  seoTitle: string;
+  seoDescription: string;
 }
 
 export interface CartItem {

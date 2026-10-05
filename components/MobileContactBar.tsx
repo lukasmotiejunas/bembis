@@ -15,7 +15,7 @@ export default function MobileContactBar() {
           <Phone className="size-4" aria-hidden="true" />
           Skambinti
         </a>
-        <Link href="/contact#forma" className="btn btn-primary">
+        <Link href="/kontaktai#forma" className="btn btn-primary">
           <MessageCircle className="size-4" aria-hidden="true" />
           Parašyti
         </Link>

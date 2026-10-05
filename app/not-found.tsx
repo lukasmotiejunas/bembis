@@ -11,7 +11,7 @@ export default function NotFound() {
         <Link href="/" className="btn btn-dark">
           Į pradžią
         </Link>
-        <Link href="/shop" className="btn btn-outline">
+        <Link href="/kaledines-lemputes" className="btn btn-outline">
           Lemputės
         </Link>
       </div>

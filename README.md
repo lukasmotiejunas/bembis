@@ -27,12 +27,24 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 ## Puslapiai
 
 - `/` — pradžia
-- `/installation` — montavimas ir nuėmimas
-- `/shop` — dekoracijos: šiltos baltos lemputės pirkimui ir spalvotos — nuomai (`/rent` nukreipia čia)
-- `/shop/[slug]` — lemputės puslapis
+- `/montavimas` — kalėdinių lempučių montavimas ir nuėmimas
+- `/nuoma` — kalėdinių lempučių nuoma
+- `/kaledines-lemputes` — dekoracijos: šiltos baltos lemputės pirkimui ir spalvotos — nuomai
+- `/kaledines-lemputes/[slug]` — lemputės puslapis
 - `/checkout` — užsakymas: prekės, paslaugos (montavimas ir nuėmimas atskirai), kontaktai, apmokėjimas
 - `/checkout/success` — užsakymas apmokėtas
-- `/contact` — kontaktai ir užklausos forma (užklausa ateina el. paštu ir įrašoma į Google Sheets)
+- `/kontaktai` — kontaktai ir užklausos forma (užklausa ateina el. paštu ir įrašoma į Google Sheets)
+
+Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus.
+
+## SEO
+
+- Kiekvienas puslapis turi savo pavadinimą, aprašymą ir pagrindinį adresą (`pageMetadata` faile `lib/seo.ts`).
+- Struktūrizuoti duomenys Google (`lib/seo.ts`): verslas (LocalBusiness), paslaugos, prekės su kainomis ir garantija,
+  DUK, „duonos trupiniai“.
+- `/sitemap.xml` ir `/robots.txt` generuojami automatiškai (`app/sitemap.ts`, `app/robots.ts`).
+- Dalinimosi paveikslėlis — `app/opengraph-image.png`.
+- Pagrindinis adresas — `site.url` faile `lib/site.ts` (`https://www.kaledudekoras.lt`). Miestai, kuriuose dirbate — `site.serviceTowns`.
 
 ## Mokėjimai ir užsakymai
 

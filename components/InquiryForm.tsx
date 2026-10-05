@@ -1,7 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
 import { CheckCircle2, Loader2, Mail, Send } from "lucide-react";
-import { sendInquiry } from "@/app/contact/actions";
+import { sendInquiry } from "@/app/kontaktai/actions";
 import { serviceOptions } from "@/lib/inquiry";
 import { emailHref, phoneHref, site } from "@/lib/site";
 

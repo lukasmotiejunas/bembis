@@ -8,7 +8,7 @@ const installation = ["Individualus dekoro planas", "Montavimas prieš šventes"
 
 const small = [
   {
-    href: productHref(productFor("rent")),
+    href: "/nuoma",
     image: productFor("rent").image,
     title: "Dekoracijų nuoma",
     text: "Spalvotos lemputės visam sezonui. Be pirkimo ir sandėliavimo.",
@@ -34,7 +34,7 @@ export default function Offers() {
 
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
         <Link
-          href="/installation"
+          href="/montavimas"
           className="group relative flex flex-col overflow-hidden rounded-[2rem] bg-pine-900 text-snow lg:row-span-2"
         >
           <div className="relative z-10 p-8 sm:p-10">

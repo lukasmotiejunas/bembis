@@ -10,9 +10,9 @@ import Logo from "./Logo";
 import CartDrawer from "./CartDrawer";
 
 const nav = [
-  { href: "/installation", label: "Montavimas" },
-  { href: "/shop", label: "Dekoracijos" },
-  { href: "/contact", label: "Kontaktai" },
+  { href: "/montavimas", label: "Montavimas" },
+  { href: "/kaledines-lemputes", label: "Dekoracijos" },
+  { href: "/kontaktai", label: "Kontaktai" },
 ];
 
 export default function Header() {

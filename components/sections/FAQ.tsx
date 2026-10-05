@@ -1,13 +1,19 @@
 import { Phone, Plus } from "lucide-react";
-import { faqs } from "@/lib/data/services";
+import { faqs as defaultFaqs } from "@/lib/data/services";
 import { phoneHref, site } from "@/lib/site";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function FAQ() {
+export default function FAQ({
+  faqs = defaultFaqs,
+  title = "Turite klausimų?",
+}: {
+  faqs?: { q: string; a: string }[];
+  title?: string;
+}) {
   return (
     <section id="duk" className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
       <div>
-        <SectionHeading eyebrow="Dažni klausimai" title="Turite klausimų?" />
+        <SectionHeading eyebrow="Dažni klausimai" title={title} />
         <p className="mt-4 text-lg text-stone">Neradote atsakymo? Paskambinkite — mielai viską paaiškinsime.</p>
         <a href={phoneHref} className="btn btn-dark mt-6">
           <Phone className="size-4" aria-hidden="true" />

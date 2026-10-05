@@ -21,7 +21,7 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
       <Link href={productHref(product)} className="relative block aspect-[4/3]" aria-label={product.name}>
         <Image
           src={product.image}
-          alt={product.name}
+          alt={`${product.name} kalėdinės lemputės`}
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
           className="object-contain p-10 transition-transform duration-500 group-hover:scale-105 sm:p-12"

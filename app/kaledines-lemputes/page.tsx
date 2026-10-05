@@ -1,19 +1,28 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { GuaranteeBadge } from "@/components/Guarantee";
+import JsonLd from "@/components/JsonLd";
 import LightsSection from "@/components/sections/LightsSection";
 import PageHeader from "@/components/ui/PageHeader";
+import { productFor } from "@/lib/data/products";
+import { formatPrice } from "@/lib/format";
+import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Kalėdinės lemputės — pirkimas ir nuoma",
-  description:
-    "Aukščiausios kokybės kalėdinės lemputės su 2 metų garantija: šiltos baltos filamentinės C9 pirkimui ir spalvotos C9 nuomai visam sezonui.",
-};
+export const metadata = pageMetadata({
+  title: "Kalėdinės lemputės lauko namams — pirkimas ir nuoma",
+  description: `Aukščiausios kokybės lauko kalėdinės lemputės su 2 metų garantija: šiltos baltos C9 pirkimui (${formatPrice(productFor("buy").price)}) ir spalvotos C9 nuomai (${formatPrice(productFor("rent").price)} sezonui).`,
+  path: "/kaledines-lemputes",
+});
 
 export default function ShopPage() {
   return (
     <>
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Pradžia", path: "/" },
+          { name: "Kalėdinės lemputės", path: "/kaledines-lemputes" },
+        ])}
+      />
       <PageHeader
         eyebrow="Dekoracijos"
         title="Aukščiausios kokybės kalėdinės lemputės"
@@ -26,7 +35,7 @@ export default function ShopPage() {
 
       <section className="container-page pb-20 sm:pb-28">
         <Link
-          href="/installation"
+          href="/montavimas"
           className="group flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-pine-900 p-8 text-snow sm:flex-row sm:items-center sm:p-10"
         >
           <div>

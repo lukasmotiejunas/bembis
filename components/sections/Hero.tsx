@@ -20,21 +20,25 @@ export default function Hero() {
 
       <div className="container-page grid items-center gap-14 pt-4 pb-20 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pt-8 lg:pb-28">
         <div>
-          <p className="eyebrow">Kalėdinių lempučių montavimas ir nuoma</p>
-          <h1 className="mt-5 text-[2.6rem] leading-[1.04] font-semibold text-pine-900 sm:text-6xl lg:text-[4rem]">
+          {/* The keyword line is the page's main heading for search engines; the slogan stays the visual headline. */}
+          <h1 className="eyebrow font-sans">Kalėdinių lempučių montavimas ir nuoma Vilniuje</h1>
+          <p
+            className="mt-5 font-display text-[2.6rem] leading-[1.04] font-semibold tracking-[-0.02em] text-balance text-pine-900 sm:text-6xl lg:text-[4rem]"
+            style={{ fontVariationSettings: '"SOFT" 60, "opsz" 72' }}
+          >
             Jūsų namai švies.
             <br />
             Mes pasirūpinsime{" "}
             <span className="text-glow-deep italic" style={{ fontVariationSettings: '"SOFT" 100, "opsz" 144' }}>
               viskuo.
             </span>
-          </h1>
+          </p>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone sm:text-xl">
             Parduodame ir nuomojame kalėdines lemputes, atvažiuojame jų sumontuoti, o po švenčių viską nuimame.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Link href="/contact#forma" className="btn btn-primary">
+            <Link href="/kontaktai#forma" className="btn btn-primary">
               Užsakyti montavimą
               <ArrowRight className="size-4" aria-hidden="true" />
             </Link>

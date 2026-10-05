@@ -1,5 +1,8 @@
 import { formatPrice } from "../format";
+import { site } from "../site";
+import { pricing } from "./pricing";
 import { buildEstimate } from "./priceExample";
+import { productFor } from "./products";
 
 const example = buildEstimate("rent");
 
@@ -53,7 +56,7 @@ export const faqs = [
   },
   {
     q: "Kur dirbate?",
-    a: "Vilniuje ir Vilniaus apskrityje. Gyvenate kitur? Paskambinkite — pažiūrėsime, ką galime padaryti.",
+    a: `Vilniuje ir visoje Vilniaus apskrityje: ${site.serviceTowns.join(", ")}. Gyvenate kitur? Paskambinkite — pažiūrėsime, ką galime padaryti.`,
   },
 ];
 
@@ -63,4 +66,40 @@ export const showcase = [
   { src: "/work/multicolor-house.jpg", alt: "Dviaukštis namas su spalvotomis lemputėmis", label: "Spalvotos · visas fasadas" },
   { src: "/work/warm-cabin.jpg", alt: "Medinis namas su lemputėmis ant stogo ir medžių", label: "Šilta balta · stogas ir medžiai" },
   { src: "/work/modern-pool.jpg", alt: "Modernus namas su šiltomis lemputėmis ant stogo ir langų", label: "Šilta balta · stogas ir langai" },
+];
+
+/** „Ką papuošiame“ — Montavimo puslapyje. */
+export const decorAreas = [
+  { icon: "roof", title: "Stogo kraštai", text: "Klasikinė lempučių linija palei stogą — namas matosi iš toli." },
+  { icon: "window", title: "Langai ir durys", text: "Apjuosiame langus, duris ir įėjimą — jauku iš lauko ir vidaus." },
+  { icon: "terrace", title: "Terasos ir turėklai", text: "Verandos, balkonai, turėklai ir laiptai." },
+  { icon: "tree", title: "Medžiai ir eglės", text: "Apšviečiame kiemo medžius, eglutes ir krūmus." },
+  { icon: "fence", title: "Tvoros ir vartai", text: "Lemputės palei tvorą ir vartus pasitinka svečius." },
+  { icon: "estate", title: "Sodybos ir dideli namai", text: "Individualus planas visam kiemui, pastatams ir aplinkai." },
+] as const;
+
+const rentLight = productFor("rent");
+
+/** DUK Nuomos puslapyje. */
+export const rentalFaqs = [
+  {
+    q: "Kiek kainuoja kalėdinių lempučių nuoma?",
+    a: `${rentLight.name} lempučių ${rentLight.meters} m girlianda kainuoja ${formatPrice(rentLight.price)} už visą sezoną. Montavimas — ${formatPrice(pricing.installPerMeter)} už metrą, nuėmimas po švenčių — ${formatPrice(pricing.removalPerMeter)} už metrą.`,
+  },
+  {
+    q: "Kiek laiko trunka nuoma?",
+    a: "Visą Kalėdų sezoną — nuo lapkričio iki sausio. Lemputes nuimame po Trijų Karalių.",
+  },
+  {
+    q: "Ar galiu išsinuomoti lemputes be montavimo?",
+    a: `Taip. Lemputes pristatysime į namus (${pricing.deliveryArea}) už ${formatPrice(pricing.deliveryFee)}, o po švenčių suderinsime, kaip jas grąžinti. Užsisakius montavimą, pristatymas nemokamas.`,
+  },
+  {
+    q: "Kas, jei sezono metu lemputė sugenda?",
+    a: "Paskambinkite — sugedusią lemputę pakeisime nemokamai. Lemputėms suteikiame 2 metų garantiją.",
+  },
+  {
+    q: "Ar nuomotos lemputės tinka lauke?",
+    a: "Taip. Tai lauko lemputės, atsparios lietui ir sniegui — tinka stogo kraštams, langams, medžiams ir tvoroms.",
+  },
 ];

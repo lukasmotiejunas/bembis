@@ -31,7 +31,7 @@ export async function sendInquiry(formData: FormData): Promise<SendInquiryResult
 
   const h = await headers();
   const origin = h.get("origin") ?? `${h.get("x-forwarded-proto") ?? "https"}://${h.get("host")}`;
-  const pageUrl = h.get("referer") ?? `${origin}/contact`;
+  const pageUrl = h.get("referer") ?? `${origin}/kontaktai`;
   const email = buildInquiryEmail(parsed.value, pageUrl);
 
   try {

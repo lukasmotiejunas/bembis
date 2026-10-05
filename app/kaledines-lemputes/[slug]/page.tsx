@@ -8,31 +8,49 @@ import { formatPrice } from "@/lib/format";
 import { GuaranteeBadge } from "@/components/Guarantee";
 import { QualityPoints } from "@/components/sections/LightsSection";
 import ProductPurchase from "@/components/shop/ProductPurchase";
+import JsonLd from "@/components/JsonLd";
+import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata(props: PageProps<"/shop/[slug]">): Promise<Metadata> {
+export async function generateMetadata(props: PageProps<"/kaledines-lemputes/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) return {};
-  return { title: product.name, description: product.description };
+  return pageMetadata({
+    title: product.seoTitle,
+    description: product.seoDescription,
+    path: productHref(product),
+    images: [{ url: product.image, width: 679, height: 655, alt: `${product.name} kalėdinės lemputės` }],
+  });
 }
 
-export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
+export default async function ProductPage(props: PageProps<"/kaledines-lemputes/[slug]">) {
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) notFound();
 
   const rent = product.mode === "rent";
   const other = productFor(rent ? "buy" : "rent");
+  const alt = `${product.name} kalėdinės lemputės`;
 
   return (
     <>
+      <JsonLd
+        data={[
+          productSchema(product),
+          breadcrumbSchema([
+            { name: "Pradžia", path: "/" },
+            { name: "Kalėdinės lemputės", path: "/kaledines-lemputes" },
+            { name: product.name, path: productHref(product) },
+          ]),
+        ]}
+      />
       <section className="container-page pt-8 pb-20 sm:pb-28">
         <nav aria-label="Kelias" className="flex items-center gap-1.5 text-sm text-stone">
-          <Link href="/shop" className="hover:text-pine-900">
+          <Link href="/kaledines-lemputes" className="hover:text-pine-900">
             Dekoracijos
           </Link>
           <ChevronRight className="size-3.5" aria-hidden="true" />
@@ -43,7 +61,7 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
           <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-sand bg-white lg:sticky lg:top-28 lg:self-start">
             <Image
               src={product.image}
-              alt={product.name}
+              alt={alt}
               fill
               preload
               sizes="(max-width: 1024px) 100vw, 50vw"
@@ -82,7 +100,16 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
                 </p>
               </div>
               <p className="mt-2 text-sm text-stone">
-                {rent ? "Nuoma nuo lapkričio iki sausio. Po švenčių lemputes pasiimame." : "Lemputės lieka jums ir tarnaus daugelį sezonų."}
+                {rent ? (
+                  <>
+                    Nuoma nuo lapkričio iki sausio. Po švenčių lemputes pasiimame.{" "}
+                    <Link href="/nuoma" className="font-bold text-pine-900 underline underline-offset-4">
+                      Kaip veikia nuoma?
+                    </Link>
+                  </>
+                ) : (
+                  "Lemputės lieka jums ir tarnaus daugelį sezonų."
+                )}
               </p>
               <div className="mt-5">
                 <ProductPurchase product={product} />
@@ -90,7 +117,7 @@ export default async function ProductPage(props: PageProps<"/shop/[slug]">) {
             </div>
 
             <Link
-              href="/installation"
+              href="/montavimas"
               className="group mt-4 flex items-center gap-4 rounded-2xl bg-cream p-5 transition-colors hover:bg-glow-soft"
             >
               <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-pine-900 text-glow">

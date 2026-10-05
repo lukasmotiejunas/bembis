@@ -20,18 +20,30 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
     template: `%s | ${site.name}`,
-    default: `${site.name} — kalėdinės lemputės su montavimu`,
+    default: `Kalėdinių lempučių montavimas ir nuoma Vilniuje | ${site.name}`,
   },
-  description: site.description,
+  description:
+    "Kalėdinių lempučių montavimas, nuoma ir pardavimas Vilniuje ir Vilniaus apskrityje. Atvažiuojame, papuošiame namus, po švenčių nuimame. 2 metų garantija.",
+  applicationName: site.name,
   keywords: [
-    "kalėdinės lemputės",
     "kalėdinių lempučių montavimas",
     "kalėdinių lempučių nuoma",
-    "namų puošimas",
+    "kalėdinės lemputės",
+    "lauko kalėdinės lemputės",
+    "namo puošimas Kalėdoms",
+    "kalėdinis namo apšvietimas",
     "Vilnius",
   ],
+  openGraph: {
+    type: "website",
+    locale: "lt_LT",
+    siteName: site.name,
+  },
+  twitter: { card: "summary_large_image" },
+  formatDetection: { telephone: true, email: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

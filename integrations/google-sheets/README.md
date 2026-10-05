@@ -28,7 +28,7 @@ Reikšmes laikykite `.env.local` ir Vercel projekto nustatymuose. Į Git jų nek
 
 ## Tikrinimas ir klaidos
 
-- Bandomąją užklausą pateikite per veikiančios svetainės `/contact` formą ir patikrinkite įrašą „Užklausos“ bei laišką sutarto gavėjo pašto dėžutėje.
+- Bandomąją užklausą pateikite per veikiančios svetainės `/kontaktai` formą ir patikrinkite įrašą „Užklausos“ bei laišką sutarto gavėjo pašto dėžutėje.
 - Sėkmingas užklausos atsakymas yra `{ ok: true, recorded: true, emailed: true }` — `MailApp.sendEmail` baigė darbą. Tai savaime nepatvirtina laiško gavimo pašto dėžutėje.
 - Jei laiško siuntimas nepavyksta, įrašas lieka lentelėje, o aplikacija gauna klaidą ir parodo atsarginį susisiekimo būdą. Pakartotinis formos pateikimas gali sukurti dar vieną užklausos įrašą.
 - Užsakymams reikia `Stripe ID`; pakartotinis to paties mokėjimo pranešimas naujos eilutės nesukuria. Kontaktų integracijos tikrinimui tikro mokėjimo nereikia.

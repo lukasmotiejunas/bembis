@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Clock, Lightbulb, Phone, RotateCcw, Ruler, ShieldCheck } from "lucide-react";
@@ -9,13 +8,19 @@ import SeasonSteps from "@/components/sections/SeasonSteps";
 import PriceExample from "@/components/sections/PriceExample";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
+import DecorAreas from "@/components/sections/DecorAreas";
+import ServiceArea from "@/components/sections/ServiceArea";
+import JsonLd from "@/components/JsonLd";
 import { INSTALLATION_SERVICE } from "@/lib/inquiry";
+import { pricing } from "@/lib/data/pricing";
+import { formatPrice } from "@/lib/format";
+import { breadcrumbSchema, installationServiceSchema, pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Kalėdinių lempučių montavimas ir nuėmimas",
-  description:
-    "Atvažiuojame, sumontuojame kalėdines lemputes ant jūsų namų, o po švenčių viską nuimame. Nemokama apžiūra ir kainos pasiūlymas.",
-};
+export const metadata = pageMetadata({
+  title: "Kalėdinių lempučių montavimas ir nuėmimas Vilniuje",
+  description: `Sumontuojame kalėdines lemputes ant stogo, langų, medžių ir tvorų, o po švenčių nuimame. Montavimas ${formatPrice(pricing.installPerMeter)}/m, nemokama apžiūra. Vilnius ir apskritis.`,
+  path: "/montavimas",
+});
 
 const included = [
   {
@@ -48,9 +53,18 @@ const included = [
 export default function InstallationPage() {
   return (
     <>
+      <JsonLd
+        data={[
+          installationServiceSchema(),
+          breadcrumbSchema([
+            { name: "Pradžia", path: "/" },
+            { name: "Montavimas", path: "/montavimas" },
+          ]),
+        ]}
+      />
       <PageHeader
         eyebrow="Pagrindinė paslauga"
-        title="Montavimas ir nuėmimas"
+        title="Kalėdinių lempučių montavimas ir nuėmimas"
         text="Atvažiuojame ir papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po švenčių viską nuimame. Jums nereikia nei kopėčių, nei laiko, nei vietos sandėliuoti."
       >
         <div className="flex flex-col gap-3 sm:flex-row">
@@ -93,9 +107,11 @@ export default function InstallationPage() {
         </div>
       </section>
 
+      <DecorAreas />
       <PriceExample />
       <SeasonSteps />
       <FAQ />
+      <ServiceArea what="Kalėdines lemputes montuojame ir nuimame" />
       <ContactSection defaultServices={[INSTALLATION_SERVICE]} />
     </>
   );
