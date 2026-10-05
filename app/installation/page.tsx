@@ -9,7 +9,7 @@ import SeasonSteps from "@/components/sections/SeasonSteps";
 import PriceExample from "@/components/sections/PriceExample";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
-import { INSTALLATION_SERVICE } from "@/components/InquiryForm";
+import { INSTALLATION_SERVICE } from "@/lib/inquiry";
 
 export const metadata: Metadata = {
   title: "Kalėdinių lempučių montavimas ir nuėmimas",

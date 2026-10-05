@@ -32,7 +32,7 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 - `/shop/[slug]` — lemputės puslapis
 - `/checkout` — užsakymas: prekės, paslaugos (montavimas ir nuėmimas atskirai), kontaktai, apmokėjimas
 - `/checkout/success` — užsakymas apmokėtas
-- `/contact` — kontaktai ir užklausos forma (atidaro el. laišką)
+- `/contact` — kontaktai ir užklausos forma (užklausa ateina el. paštu ir įrašoma į Google Sheets)
 
 ## Mokėjimai ir užsakymai
 
@@ -57,13 +57,14 @@ Kainas visada perskaičiuoja serveris pagal `lib/data/*` — naršyklėje jų pa
 
 Testiniame režime mokėkite kortele `4242 4242 4242 4242`, bet kokia būsima data ir bet kokiu CVC.
 
-### 2. Google Sheets
+### 2. Google Sheets ir užklausų laiškai
 
-Žr. [`integrations/google-sheets/README.md`](integrations/google-sheets/README.md) → `GOOGLE_SHEETS_WEBHOOK_URL` ir `GOOGLE_SHEETS_SECRET`.
+Žr. [`integrations/google-sheets/README.md`](integrations/google-sheets/README.md) → `GOOGLE_SHEETS_WEBHOOK_URL`,
+`GOOGLE_SHEETS_SECRET` ir `INQUIRY_EMAILS` (kam siųsti užklausas iš kontaktų formos).
 
 ### 3. Vercel
 
-**Settings → Environment Variables** → įrašykite visus 4 kintamuosius iš `.env.example` → **Deployments → Redeploy**.
+**Settings → Environment Variables** → įrašykite visus kintamuosius iš `.env.example` → **Deployments → Redeploy**.
 
 ### Bandymas savo kompiuteryje
 

@@ -9,11 +9,13 @@ const vilniusTime = new Intl.DateTimeFormat("lt-LT", {
   timeStyle: "short",
 });
 
+export const formatVilnius = (date: Date) => vilniusTime.format(date);
+
 /** One Google Sheet row (column name → value) for a paid Stripe Checkout session. */
 export function sheetFieldsFromSession(session: Stripe.Checkout.Session): Record<string, string | number> {
   const m = session.metadata ?? {};
   return {
-    Gauta: vilniusTime.format(new Date(session.created * 1000)),
+    Gauta: formatVilnius(new Date(session.created * 1000)),
     "Užsakymo nr.": m.order_number ?? session.client_reference_id ?? "",
     Būsena: "Naujas",
     Vardas: m.name ?? session.customer_details?.name ?? "",
@@ -31,8 +33,8 @@ export function sheetFieldsFromSession(session: Stripe.Checkout.Session): Record
   };
 }
 
-/** Sends the row to the Apps Script attached to the orders sheet (see integrations/google-sheets). */
-export async function appendOrderToSheet(fields: Record<string, string | number>) {
+/** Calls the Apps Script attached to the orders sheet (see integrations/google-sheets). */
+export async function postToAppsScript(payload: Record<string, unknown>) {
   const url = process.env.GOOGLE_SHEETS_WEBHOOK_URL;
   const secret = process.env.GOOGLE_SHEETS_SECRET;
   if (!url || !secret) throw new Error("GOOGLE_SHEETS_WEBHOOK_URL or GOOGLE_SHEETS_SECRET is not set");
@@ -40,10 +42,12 @@ export async function appendOrderToSheet(fields: Record<string, string | number>
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ secret, fields }),
+    body: JSON.stringify({ ...payload, secret }),
   });
   const data: unknown = await res.json().catch(() => null);
   if (!res.ok || typeof data !== "object" || data === null || (data as { ok?: unknown }).ok !== true) {
     throw new Error(`Google Sheets responded ${res.status}: ${JSON.stringify(data)}`);
   }
 }
+
+export const appendOrderToSheet = (fields: Record<string, string | number>) => postToAppsScript({ type: "order", fields });

@@ -3,8 +3,8 @@ export const site = {
   name: "Kalėdų Dekoras",
   description:
     "Kalėdinių lempučių pardavimas, nuoma ir montavimas. Atvažiuojame, papuošiame jūsų namus, o po švenčių viską nuimame.",
-  phone: "+370 600 00 000",
-  email: "labas@bembis.lt",
+  phone: "+370 623 73 199",
+  email: "info@kaledudekoras.lt",
   serviceArea: "Vilnius ir Vilniaus apskritis",
   hours: [
     { days: "I–V", time: "9:00–19:00" },
