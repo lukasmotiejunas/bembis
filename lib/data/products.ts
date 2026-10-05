@@ -14,7 +14,7 @@ export const products: Product[] = [
     color: "Šilta balta",
     meters: 10,
     description:
-      "Aukščiausios kokybės šiltos baltos lemputės su skaidriu stiklu ir filamentu. Jaukus, elegantiškas švytėjimas, kuris lieka jums ilgiems metams.",
+      "Aukščiausios kokybės šiltos baltos lemputės su skaidriu stiklu ir filamentu. Jaukus, elegantiškas švytėjimas, kuris džiugins daugelį metų.",
     seoTitle: "Šiltos baltos kalėdinės lemputės C9, 10 m",
     seoDescription:
       "Šiltos baltos filamentinės lauko kalėdinės lemputės C9: 10 m girlianda, 25 lemputės, IP65. Peržiūrėkite aprašymą, nuotrauką ir specifikacijas.",
@@ -28,7 +28,7 @@ export const products: Product[] = [
       { label: "Garantija", value: "2 metai" },
       { label: "Ilgis", value: "10 m" },
       { label: "Lempučių skaičius", value: "25" },
-      { label: "Spalva", value: "Šilta balta (2700K)" },
+      { label: "Spalva", value: "Šilta balta (2700 K)" },
       { label: "Apsauga", value: "IP65, lauko" },
       { label: "Maitinimas", value: "230 V, ES kištukas" },
       { label: "Jungiamasis laidas", value: "5 m" },
@@ -47,7 +47,7 @@ export const products: Product[] = [
       "Ryškios raudonos, žalios, oranžinės, mėlynos ir geltonos lemputės — linksmos, tradicinės Kalėdos jūsų kieme. Išnuomojame visam sezonui, o po švenčių pasiimame.",
     seoTitle: "Spalvotos kalėdinės lemputės C9, 10 m — nuoma",
     seoDescription:
-      "Spalvotos lauko kalėdinės lemputės C9 nuomai: 10 m girlianda, 25 lemputės, IP44. Peržiūrėkite specifikacijas ir pasiteiraukite dėl nuomos sezonui.",
+      "Spalvotos lauko kalėdinės lemputės C9 nuomai: 10 m girlianda, 25 lemputės, IP44. Peržiūrėkite specifikacijas ir pasiteiraukite apie nuomą sezonui.",
     features: [
       "5 spalvų derinys ir 8 šviesos režimai",
       "Tinka lauke — atsparios lietui ir sniegui",

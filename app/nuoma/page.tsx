@@ -21,7 +21,7 @@ const exampleMeters = priceExample.areas.reduce((s, a) => s + a.meters, 0);
 
 export const metadata = pageMetadata({
   title: "Kalėdinių lempučių nuoma Vilniuje — visam sezonui",
-  description: "Spalvotų lauko kalėdinių lempučių C9 nuoma sezonui Vilniuje ir Vilniaus apskrityje. Peržiūrėkite girliandą ir pasiteiraukite dėl montavimo bei nuėmimo.",
+  description: "Spalvotų lauko kalėdinių lempučių C9 nuoma sezonui Vilniuje ir Vilniaus apskrityje. Peržiūrėkite girliandą ir pasiteiraukite apie montavimą ir nuėmimą.",
   path: "/nuoma",
 });
 
@@ -29,11 +29,11 @@ const benefits = [
   { icon: CalendarCheck, title: "Mokate tik už sezoną", text: `${formatPrice(light.price)} už ${light.meters} m girliandą — visas Kalėdas nuo lapkričio iki sausio.` },
   { icon: PackageX, title: "Nereikia sandėliuoti", text: "Po švenčių lemputes pasiimame — jokių dėžių palėpėje." },
   { icon: ShieldCheck, title: "Sezono garantija", text: "Jei sezono metu lemputė sugestų — pakeisime ją nemokamai." },
-  { icon: Wrench, title: "Sumontuojame už jus", text: "Norite — atvažiuosime, sumontuosime ir sausį viską nuimsime." },
+  { icon: Wrench, title: "Sumontuojame už jus", text: "Jei norite, atvažiuosime, sumontuosime, o sausį viską nuimsime." },
 ];
 
 const steps = [
-  { title: "Užsisakote", text: "Internetu per kelias minutes arba paskambinę mums." },
+  { title: "Užsisakote", text: "Internetu per kelias minutes arba telefonu." },
   { title: "Atvežame arba sumontuojame", text: "Lapkritį–gruodį, jums patogią dieną." },
   { title: "Šviečia visą sezoną", text: "Sugedusią lemputę pakeičiame nemokamai." },
   { title: "Sausį pasiimame", text: "Po Trijų Karalių lemputes nuimame ir išsivežame." },
@@ -99,7 +99,7 @@ export default function RentalPage() {
       <section className="bg-cream py-20 sm:py-28">
         <div className="container-page grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <SectionHeading eyebrow="Kaip tai veikia" title="Nuoma per keturis žingsnius" />
+            <SectionHeading eyebrow="Kaip tai veikia" title="Nuoma — keturi paprasti žingsniai" />
             <ol className="mt-10 space-y-4">
               {steps.map((step, i) => (
                 <li key={step.title} className="flex gap-4 rounded-3xl bg-white p-5">

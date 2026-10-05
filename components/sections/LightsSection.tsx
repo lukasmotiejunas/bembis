@@ -7,8 +7,8 @@ import SectionHeading from "../ui/SectionHeading";
 
 export const qualityPoints = [
   { icon: ShieldCheck, title: "2 metų garantija", text: "Jei sezono metu lemputė sugestų — pakeisime ją nemokamai." },
-  { icon: Snowflake, title: "Pritaikytos žiemai", text: "Nebijo lietaus, sniego ir šalčio — sukurtos lauko sąlygoms." },
-  { icon: Zap, title: "Ilgaamžės LED", text: "Tarnauja dešimtis tūkstančių valandų ir taupo elektrą." },
+  { icon: Snowflake, title: "Pritaikytos žiemai", text: "Nebijo lietaus, sniego ir šalčio — sukurtos naudoti lauke." },
+  { icon: Zap, title: "Ilgaamžės LED lemputės", text: "Tarnauja dešimtis tūkstančių valandų ir taupo elektrą." },
 ];
 
 export function QualityPoints({ onCream = false }: { onCream?: boolean }) {

@@ -16,7 +16,7 @@ import { breadcrumbSchema, installationServiceSchema, pageMetadata } from "@/lib
 
 export const metadata = pageMetadata({
   title: "Kalėdinių lempučių montavimas ir nuėmimas Vilniuje",
-  description: "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite dėl nemokamos apžiūros.",
+  description: "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite apie nemokamą apžiūrą.",
   path: "/montavimas",
 });
 
@@ -63,7 +63,7 @@ export default function InstallationPage() {
       <PageHeader
         eyebrow="Pagrindinė paslauga"
         title="Kalėdinių lempučių montavimas ir nuėmimas"
-        text="Atvažiuojame ir papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po švenčių viską nuimame. Jums nereikia nei kopėčių, nei laiko, nei vietos sandėliuoti."
+        text="Atvažiuojame ir papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po švenčių viską nuimame. Jums nereikės nei kopėčių, nei laiko, nei vietos joms laikyti."
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link href="#forma" className="btn btn-primary">

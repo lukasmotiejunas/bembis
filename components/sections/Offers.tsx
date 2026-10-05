@@ -41,7 +41,7 @@ export default function Offers() {
             <span className="rounded-full bg-glow px-3 py-1 text-xs font-extrabold text-pine-950">Pagrindinė paslauga</span>
             <h3 className="mt-6 text-3xl font-semibold sm:text-4xl">Montavimas ir demontavimas</h3>
             <p className="mt-3 max-w-md text-lg leading-relaxed text-snow/75">
-              Pilnas namų dekoras, individualiai pritaikytas jūsų pageidavimams.
+              Išbaigtas namo dekoras, individualiai pritaikytas jūsų pageidavimams.
             </p>
             <ul className="mt-6 flex flex-wrap gap-2">
               {installation.map((f) => (

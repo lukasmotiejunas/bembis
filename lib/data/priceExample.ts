@@ -46,7 +46,7 @@ export function buildEstimate(mode: PurchaseMode) {
     { name: "Apžiūra ir dekoro planas", total: 0 },
     { name: "Montavimas", detail: `${meters} m × ${formatPrice(installPerMeter)}`, total: meters * installPerMeter },
     { name: "Laikmačio nustatymas", total: 0 },
-    { name: "Demontavimas po švenčių", detail: `${meters} m × ${formatPrice(removalPerMeter)}`, total: meters * removalPerMeter },
+    { name: "Nuėmimas po švenčių", detail: `${meters} m × ${formatPrice(removalPerMeter)}`, total: meters * removalPerMeter },
     { name: "Atvykimas Vilniuje", total: 0 },
   ];
 

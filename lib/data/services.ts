@@ -40,7 +40,7 @@ export const faqs = [
   },
   {
     q: "Kiek kainuoja montavimas?",
-    a: `Kaina priklauso nuo namo dydžio ir lempučių kiekio. Pavyzdžiui, dviaukščiam namui su ${example.meters} m lempučių nuoma, montavimas ir demontavimas kainuoja ${formatPrice(example.total)} už sezoną. Tikslią kainą pasakysime po nemokamos apžiūros.`,
+    a: `Kaina priklauso nuo namo dydžio ir lempučių kiekio. Pavyzdžiui, dviaukščio namo papuošimas ${example.meters} m lempučių (nuoma, montavimas ir nuėmimas) kainuoja ${formatPrice(example.total)} už sezoną. Tikslią kainą pasakysime po nemokamos apžiūros.`,
   },
   {
     q: "Kada montuojate ir kada nuimate?",
@@ -56,12 +56,12 @@ export const faqs = [
   },
   {
     q: "Kur dirbate?",
-    a: `Vilniuje ir visoje Vilniaus apskrityje: ${site.serviceTowns.join(", ")}. Gyvenate kitur? Paskambinkite — pažiūrėsime, ką galime padaryti.`,
+    a: `Vilniuje ir visoje Vilniaus apskrityje. Aptarnaujame šias vietoves: ${site.serviceTowns.join(", ")}. Gyvenate kitur? Paskambinkite — pažiūrėsime, ką galime padaryti.`,
   },
 ];
 
 export const showcase = [
-  { src: "/work/porch-house.jpg", alt: "Namas su verandos ir stogo kraštų šiltomis lemputėmis", label: "Šilta balta · stogas ir veranda" },
+  { src: "/work/porch-house.jpg", alt: "Namas, kurio veranda ir stogo kraštai papuošti šiltomis lemputėmis", label: "Šilta balta · stogas ir veranda" },
   { src: "/work/modern-villa.jpg", alt: "Modernus namas, apjuostas šiltomis lemputėmis", label: "Šilta balta · modernus namas" },
   { src: "/work/multicolor-house.jpg", alt: "Dviaukštis namas su spalvotomis lemputėmis", label: "Spalvotos · visas fasadas" },
   { src: "/work/warm-cabin.jpg", alt: "Medinis namas su lemputėmis ant stogo ir medžių", label: "Šilta balta · stogas ir medžiai" },
@@ -70,7 +70,7 @@ export const showcase = [
 
 /** „Ką papuošiame“ — Montavimo puslapyje. */
 export const decorAreas = [
-  { icon: "roof", title: "Stogo kraštai", text: "Klasikinė lempučių linija palei stogą — namas matosi iš toli." },
+  { icon: "roof", title: "Stogo kraštai", text: "Klasikinė lempučių linija palei stogą — namą matyti iš toli." },
   { icon: "window", title: "Langai ir durys", text: "Apjuosiame langus, duris ir įėjimą — jauku iš lauko ir vidaus." },
   { icon: "terrace", title: "Terasos ir turėklai", text: "Verandos, balkonai, turėklai ir laiptai." },
   { icon: "tree", title: "Medžiai ir eglės", text: "Apšviečiame kiemo medžius, eglutes ir krūmus." },
@@ -84,7 +84,7 @@ const rentLight = productFor("rent");
 export const rentalFaqs = [
   {
     q: "Kiek kainuoja kalėdinių lempučių nuoma?",
-    a: `${rentLight.name} lempučių ${rentLight.meters} m girlianda kainuoja ${formatPrice(rentLight.price)} už visą sezoną. Montavimas — ${formatPrice(pricing.installPerMeter)} už metrą, nuėmimas po švenčių — ${formatPrice(pricing.removalPerMeter)} už metrą.`,
+    a: `${rentLight.meters} m girliandos („${rentLight.name}“) nuoma kainuoja ${formatPrice(rentLight.price)} už visą sezoną. Montavimas — ${formatPrice(pricing.installPerMeter)} už metrą, nuėmimas po švenčių — ${formatPrice(pricing.removalPerMeter)} už metrą.`,
   },
   {
     q: "Kiek laiko trunka nuoma?",
@@ -95,7 +95,7 @@ export const rentalFaqs = [
     a: `Taip. Lemputes pristatysime į namus (${pricing.deliveryArea}) už ${formatPrice(pricing.deliveryFee)}, o po švenčių suderinsime, kaip jas grąžinti. Užsisakius montavimą, pristatymas nemokamas.`,
   },
   {
-    q: "Kas, jei sezono metu lemputė sugenda?",
+    q: "Ką daryti, jei sezono metu lemputė sugenda?",
     a: "Paskambinkite — sugedusią lemputę pakeisime nemokamai. Lemputėms suteikiame 2 metų garantiją.",
   },
   {

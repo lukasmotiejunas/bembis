@@ -34,7 +34,7 @@ export default function Hero() {
             </span>
           </p>
           <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone sm:text-xl">
-            Parduodame ir nuomojame kalėdines lemputes, atvažiuojame jų sumontuoti, o po švenčių viską nuimame.
+            Parduodame ir nuomojame kalėdines lemputes, jas sumontuojame, o po švenčių viską nuimame.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">

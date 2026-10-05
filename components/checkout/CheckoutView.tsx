@@ -320,7 +320,7 @@ export default function CheckoutView({
           </div>
         </Section>
 
-        <Section step={3} title="Kontaktai ir adresas" text="Pagal juos susisieksime ir suderinsime laiką.">
+        <Section step={3} title="Kontaktai ir adresas" text="Šiais kontaktais susisieksime ir suderinsime laiką.">
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="Vardas ir pavardė" required autoComplete="name" placeholder="Vardenis Pavardenis" {...field("name")} />
             <Field label="Telefonas" required type="tel" autoComplete="tel" placeholder="+370 6.. ....." {...field("phone")} />
@@ -331,7 +331,7 @@ export default function CheckoutView({
               autoComplete="email"
               placeholder="vardas@pastas.lt"
               className="sm:col-span-2"
-              hint="Čia atsiųsime mokėjimo patvirtinimą."
+              hint="Šiuo adresu atsiųsime mokėjimo patvirtinimą."
               {...field("email")}
             />
             <Field label="Adresas" required autoComplete="street-address" placeholder="Gatvė, namo nr." {...field("address")} />
@@ -418,7 +418,7 @@ export default function CheckoutView({
 
           <p className="relative mt-5 flex items-center justify-center gap-2 text-xs text-snow/60">
             <Lock className="size-3.5" aria-hidden="true" />
-            Saugus mokėjimas per Stripe · kortelė, Apple Pay, Google Pay
+            Saugų mokėjimą užtikrina „Stripe“ · kortelė, Apple Pay, Google Pay
           </p>
         </div>
 

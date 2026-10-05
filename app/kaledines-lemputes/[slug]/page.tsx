@@ -159,7 +159,7 @@ export default async function ProductPage(props: PageProps<"/kaledines-lemputes/
 
       <section className="bg-cream py-20">
         <div className="container-page">
-          <h2 className="text-3xl font-semibold text-pine-900 sm:text-4xl">{rent ? "Norite lempučių visam laikui?" : "Norite tik vienam sezonui?"}</h2>
+          <h2 className="text-3xl font-semibold text-pine-900 sm:text-4xl">{rent ? "Norite lempučių visam laikui?" : "Lempučių reikia tik vienam sezonui?"}</h2>
           <Link
             href={productHref(other)}
             className="group mt-8 flex flex-col gap-6 rounded-[2rem] bg-white p-6 transition hover:shadow-[0_24px_48px_-28px_rgb(18_42_31/0.35)] sm:flex-row sm:items-center sm:p-8"

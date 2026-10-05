@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Fraunces, Manrope } from "next/font/google";
+import { Manrope } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
@@ -8,10 +9,13 @@ import MobileContactBar from "@/components/MobileContactBar";
 import CartHydration from "@/components/CartHydration";
 import { site } from "@/lib/site";
 
-const fraunces = Fraunces({
-  subsets: ["latin", "latin-ext"],
-  axes: ["SOFT", "opsz"],
+// Self-hosted as one file: Google's split version renders "ū" with the macron over the next letter
+// ("Jūs" looked like "Juš"). Fraunces (SIL OFL), Latin + Latin Extended-A, axes opsz/wght/SOFT.
+const fraunces = localFont({
+  src: "./fonts/Fraunces.woff2",
+  weight: "100 900",
   variable: "--font-fraunces",
+  display: "swap",
 });
 
 const manrope = Manrope({

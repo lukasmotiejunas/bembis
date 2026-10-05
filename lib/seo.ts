@@ -172,7 +172,7 @@ export function rentalServiceSchema(product: Product) {
     "@type": "Service",
     serviceType: "Kalėdinių lempučių nuoma",
     name: "Kalėdinių lempučių nuoma visam sezonui",
-    description: `${product.name} nuoma visam Kalėdų sezonui Vilniuje ir Vilniaus apskrityje. Galime sumontuoti ir po švenčių nuimti.`,
+    description: `„${product.name}“ lempučių nuoma visam Kalėdų sezonui Vilniuje ir Vilniaus apskrityje. Galime sumontuoti ir po švenčių nuimti.`,
     url: absoluteUrl("/nuoma"),
     provider: { "@id": BUSINESS_ID },
     areaServed,
