@@ -12,7 +12,7 @@ import { pricing } from "@/lib/data/pricing";
 import { productFor, productHref } from "@/lib/data/products";
 import { rentalFaqs } from "@/lib/data/services";
 import { formatPrice } from "@/lib/format";
-import { breadcrumbSchema, faqSchema, pageMetadata, rentalServiceSchema } from "@/lib/seo";
+import { breadcrumbSchema, pageMetadata, rentalServiceSchema } from "@/lib/seo";
 import { phoneHref, site } from "@/lib/site";
 
 const light = productFor("rent");
@@ -21,7 +21,7 @@ const exampleMeters = priceExample.areas.reduce((s, a) => s + a.meters, 0);
 
 export const metadata = pageMetadata({
   title: "Kalėdinių lempučių nuoma Vilniuje — visam sezonui",
-  description: `Išsinuomokite aukščiausios kokybės lauko kalėdines lemputes visam sezonui: ${formatPrice(light.price)} už ${light.meters} m. Sumontuojame ir po švenčių nuimame. Vilnius ir apskritis.`,
+  description: "Spalvotų lauko kalėdinių lempučių C9 nuoma sezonui Vilniuje ir Vilniaus apskrityje. Peržiūrėkite girliandą ir pasiteiraukite dėl montavimo bei nuėmimo.",
   path: "/nuoma",
 });
 
@@ -52,7 +52,6 @@ export default function RentalPage() {
       <JsonLd
         data={[
           rentalServiceSchema(light),
-          faqSchema(rentalFaqs),
           breadcrumbSchema([
             { name: "Pradžia", path: "/" },
             { name: "Nuoma", path: "/nuoma" },

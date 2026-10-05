@@ -6,22 +6,21 @@ import LightsSection from "@/components/sections/LightsSection";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
 import JsonLd from "@/components/JsonLd";
-import { faqs } from "@/lib/data/services";
-import { businessSchema, faqSchema, pageMetadata, websiteSchema } from "@/lib/seo";
+import { businessSchema, pageMetadata, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export const metadata = pageMetadata({
-  title: `Kalėdinių lempučių montavimas ir nuoma Vilniuje | ${site.name}`,
+  title: `Lauko kalėdinės lemputės, nuoma ir montavimas | ${site.name}`,
   absoluteTitle: true,
   description:
-    "Kalėdinių lempučių montavimas, nuoma ir pardavimas Vilniuje ir apskrityje. Atvažiuojame, papuošiame namus, po švenčių nuimame. 2 metų garantija.",
+    "Lauko kalėdinės lemputės C9: šiltos baltos ir spalvotos girliandos. Peržiūrėkite katalogą. Montavimas ir nuoma Vilniuje bei Vilniaus apskrityje.",
   path: "/",
 });
 
 export default function HomePage() {
   return (
     <>
-      <JsonLd data={[businessSchema(), websiteSchema(), faqSchema(faqs)]} />
+      <JsonLd data={[businessSchema(), websiteSchema()]} />
       <Hero />
       <Offers />
       <SeasonSteps />

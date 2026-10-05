@@ -4,13 +4,11 @@ import { GuaranteeBadge } from "@/components/Guarantee";
 import JsonLd from "@/components/JsonLd";
 import LightsSection from "@/components/sections/LightsSection";
 import PageHeader from "@/components/ui/PageHeader";
-import { productFor } from "@/lib/data/products";
-import { formatPrice } from "@/lib/format";
-import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
+import { breadcrumbSchema, catalogSchema, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Kalėdinės lemputės lauko namams — pirkimas ir nuoma",
-  description: `Aukščiausios kokybės lauko kalėdinės lemputės su 2 metų garantija: šiltos baltos C9 pirkimui (${formatPrice(productFor("buy").price)}) ir spalvotos C9 nuomai (${formatPrice(productFor("rent").price)} sezonui).`,
+  description: "Lauko kalėdinės lemputės C9: šiltos baltos filamentinės ir spalvotos, 10 m girliandos. Nuotraukos, aprašymai ir specifikacijos viename kataloge.",
   path: "/kaledines-lemputes",
 });
 
@@ -18,10 +16,13 @@ export default function ShopPage() {
   return (
     <>
       <JsonLd
-        data={breadcrumbSchema([
-          { name: "Pradžia", path: "/" },
-          { name: "Kalėdinės lemputės", path: "/kaledines-lemputes" },
-        ])}
+        data={[
+          catalogSchema(),
+          breadcrumbSchema([
+            { name: "Pradžia", path: "/" },
+            { name: "Kalėdinės lemputės", path: "/kaledines-lemputes" },
+          ]),
+        ]}
       />
       <PageHeader
         eyebrow="Dekoracijos"

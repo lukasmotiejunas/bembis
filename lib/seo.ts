@@ -1,8 +1,7 @@
 // SEO helpers: per-page metadata and structured data (schema.org JSON-LD) that tells Google
 // what the business offers, where and for how much.
 import type { Metadata } from "next";
-import { guarantee, productHref } from "./data/products";
-import { pricing } from "./data/pricing";
+import { productHref, products } from "./data/products";
 import { Product } from "./types";
 import { activeSocials, site } from "./site";
 
@@ -63,7 +62,7 @@ const areaServed = [
 export function businessSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "Organization",
     "@id": BUSINESS_ID,
     name: site.name,
     url: site.url,
@@ -72,21 +71,6 @@ export function businessSchema() {
     description: site.description,
     telephone: phone,
     email: site.email,
-    priceRange: "€€",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Vilnius",
-      addressRegion: "Vilniaus apskritis",
-      addressCountry: "LT",
-    },
-    areaServed,
-    // Dirbame visada
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      opens: "00:00",
-      closes: "23:59",
-    },
     knowsAbout: [
       "Kalėdinių lempučių montavimas",
       "Kalėdinių lempučių nuoma",
@@ -134,45 +118,39 @@ export function breadcrumbSchema(items: { name: string; path: string }[]) {
   };
 }
 
-const warranty = {
-  "@type": "WarrantyPromise",
-  durationOfWarranty: { "@type": "QuantitativeValue", value: guarantee.years, unitCode: "ANN" },
-};
-
 export function productSchema(product: Product) {
-  const rent = product.mode === "rent";
+  // Prices and stock are not confirmed yet. Keep descriptive Product data without
+  // offers, availability, ratings or an assumed manufacturer's brand.
   return {
     "@context": "https://schema.org",
     "@type": "Product",
-    name: rent ? `${product.name} — nuoma sezonui` : product.name,
+    "@id": `${absoluteUrl(productHref(product))}#product`,
+    url: absoluteUrl(productHref(product)),
+    name: product.name,
     description: product.description,
     image: [absoluteUrl(product.image)],
-    sku: `KD-${product.id}`,
-    brand: { "@type": "Brand", name: site.name },
     color: product.color,
     additionalProperty: product.specs.map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value })),
-    offers: {
-      "@type": "Offer",
-      url: absoluteUrl(productHref(product)),
-      price: product.price.toFixed(2),
-      priceCurrency: "EUR",
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition",
-      businessFunction: rent ? "http://purl.org/goodrelations/v1#LeaseOut" : "http://purl.org/goodrelations/v1#Sell",
-      ...(rent ? { description: "Nuoma visam sezonui (lapkritis–sausis)" } : {}),
-      areaServed,
-      warranty,
-      seller: { "@id": BUSINESS_ID },
-    },
   };
 }
 
-const perMeter = (name: string, price: number) => ({
-  "@type": "Offer",
-  name,
-  priceCurrency: "EUR",
-  priceSpecification: { "@type": "UnitPriceSpecification", price: price.toFixed(2), priceCurrency: "EUR", unitText: "metras" },
-});
+export function catalogSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Lauko kalėdinės lemputės C9",
+    url: absoluteUrl("/kaledines-lemputes"),
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: products.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: product.name,
+        url: absoluteUrl(productHref(product)),
+      })),
+    },
+  };
+}
 
 export function installationServiceSchema() {
   return {
@@ -185,7 +163,6 @@ export function installationServiceSchema() {
     url: absoluteUrl("/montavimas"),
     provider: { "@id": BUSINESS_ID },
     areaServed,
-    offers: [perMeter("Montavimas", pricing.installPerMeter), perMeter("Nuėmimas po švenčių", pricing.removalPerMeter)],
   };
 }
 
@@ -199,13 +176,5 @@ export function rentalServiceSchema(product: Product) {
     url: absoluteUrl("/nuoma"),
     provider: { "@id": BUSINESS_ID },
     areaServed,
-    offers: {
-      "@type": "Offer",
-      price: product.price.toFixed(2),
-      priceCurrency: "EUR",
-      businessFunction: "http://purl.org/goodrelations/v1#LeaseOut",
-      description: "10 m girlianda visam sezonui",
-      url: absoluteUrl(productHref(product)),
-    },
   };
 }

@@ -12,13 +12,11 @@ import DecorAreas from "@/components/sections/DecorAreas";
 import ServiceArea from "@/components/sections/ServiceArea";
 import JsonLd from "@/components/JsonLd";
 import { INSTALLATION_SERVICE } from "@/lib/inquiry";
-import { pricing } from "@/lib/data/pricing";
-import { formatPrice } from "@/lib/format";
 import { breadcrumbSchema, installationServiceSchema, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Kalėdinių lempučių montavimas ir nuėmimas Vilniuje",
-  description: `Sumontuojame kalėdines lemputes ant stogo, langų, medžių ir tvorų, o po švenčių nuimame. Montavimas ${formatPrice(pricing.installPerMeter)}/m, nemokama apžiūra. Vilnius ir apskritis.`,
+  description: "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite dėl nemokamos apžiūros.",
   path: "/montavimas",
 });
 
