@@ -2,7 +2,19 @@
 import { formatVilnius } from "./orders/sheet";
 
 export const INSTALLATION_SERVICE = "Montavimas ir nuėmimas po švenčių";
-export const serviceOptions = [INSTALLATION_SERVICE, "Lempučių nuoma", "Lempučių pirkimas"];
+export const serviceOptions = [
+  INSTALLATION_SERVICE,
+  "Lempučių nuoma",
+  "Lempučių pirkimas",
+];
+
+export function inquiryHref(services: string[], message: string) {
+  const params = new URLSearchParams({ zinute: message.slice(0, 2000) });
+  services
+    .filter((s) => serviceOptions.includes(s))
+    .forEach((s) => params.append("paslauga", s));
+  return `/kontaktai?${params.toString()}#forma`;
+}
 
 export interface Inquiry {
   name: string;
@@ -15,9 +27,12 @@ export interface Inquiry {
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE = /^\+?[\d\s()-]{6,20}$/;
-const text = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
+const text = (v: unknown, max: number) =>
+  typeof v === "string" ? v.trim().slice(0, max) : "";
 
-export function validateInquiry(raw: Record<string, unknown>): { ok: true; value: Inquiry } | { ok: false; error: string } {
+export function validateInquiry(
+  raw: Record<string, unknown>,
+): { ok: true; value: Inquiry } | { ok: false; error: string } {
   const picked = Array.isArray(raw.services) ? (raw.services as unknown[]) : [];
   const value: Inquiry = {
     name: text(raw.name, 100),
@@ -28,17 +43,29 @@ export function validateInquiry(raw: Record<string, unknown>): { ok: true; value
     services: serviceOptions.filter((s) => picked.includes(s)),
     message: text(raw.message, 2000),
   };
-  if (value.name.length < 2) return { ok: false, error: "Įrašykite savo vardą." };
-  if (!PHONE.test(value.phone)) return { ok: false, error: "Įrašykite teisingą telefono numerį." };
-  if (value.email && !EMAIL.test(value.email)) return { ok: false, error: "Patikrinkite el. pašto adresą." };
+  if (value.name.length < 2)
+    return { ok: false, error: "Įrašykite savo vardą." };
+  if (!PHONE.test(value.phone))
+    return { ok: false, error: "Įrašykite teisingą telefono numerį." };
+  if (value.email && !EMAIL.test(value.email))
+    return { ok: false, error: "Patikrinkite el. pašto adresą." };
   return { ok: true, value };
 }
 
 const escapeHtml = (s: string) =>
-  s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 
 /** Email for us (plain text + HTML) and the matching row for the "Užklausos" sheet. */
-export function buildInquiryEmail(q: Inquiry, pageUrl: string, now = new Date()) {
+export function buildInquiryEmail(
+  q: Inquiry,
+  pageUrl: string,
+  now = new Date(),
+) {
   const received = formatVilnius(now);
   const rows: [string, string, string?][] = [
     ["Vardas", q.name],
@@ -62,7 +89,8 @@ export function buildInquiryEmail(q: Inquiry, pageUrl: string, now = new Date())
     `Išsiųsta iš ${pageUrl}`,
   ].join("\n");
 
-  const cell = "padding:10px 12px;border-bottom:1px solid #e7dfd1;vertical-align:top";
+  const cell =
+    "padding:10px 12px;border-bottom:1px solid #e7dfd1;vertical-align:top";
   const html = `<div style="font-family:Arial,Helvetica,sans-serif;color:#16231c;max-width:560px">
   <h2 style="margin:0 0 4px;color:#122a1f;font-size:20px">Nauja užklausa iš svetainės</h2>
   <p style="margin:0 0 18px;color:#59665f;font-size:13px">${escapeHtml(received)}</p>
@@ -70,8 +98,10 @@ export function buildInquiryEmail(q: Inquiry, pageUrl: string, now = new Date())
     .map(
       ([label, value, href]) =>
         `<tr><td style="${cell};color:#59665f;width:120px">${label}</td><td style="${cell};font-weight:bold">${
-          href ? `<a href="${escapeHtml(href)}" style="color:#122a1f">${escapeHtml(value)}</a>` : escapeHtml(value)
-        }</td></tr>`
+          href
+            ? `<a href="${escapeHtml(href)}" style="color:#122a1f">${escapeHtml(value)}</a>`
+            : escapeHtml(value)
+        }</td></tr>`,
     )
     .join("")}</table>
   <p style="margin:20px 0 6px;color:#59665f;font-size:13px">Žinutė</p>
@@ -90,5 +120,11 @@ export function buildInquiryEmail(q: Inquiry, pageUrl: string, now = new Date())
     Puslapis: pageUrl,
   };
 
-  return { subject, text: textBody, html, replyTo: q.email || undefined, sheetFields };
+  return {
+    subject,
+    text: textBody,
+    html,
+    replyTo: q.email || undefined,
+    sheetFields,
+  };
 }

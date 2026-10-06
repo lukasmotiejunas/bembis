@@ -7,8 +7,9 @@ import PageHeader from "@/components/ui/PageHeader";
 import { breadcrumbSchema, catalogSchema, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: "Kalėdinės lemputės lauko namams — pirkimas ir nuoma",
-  description: "Lauko kalėdinės lemputės C9: šiltos baltos filamentinės ir spalvotos, 10 m girliandos. Nuotraukos, aprašymai ir specifikacijos viename kataloge.",
+  title: "XP ir LLinks lauko LED girliandos ir komplektai",
+  description:
+    "Šiltai baltos XP ir LLinks lauko LED girliandos: 7,5 m motininės ir papildomos sekcijos, 45 m ir 60 m komplektai. Sudėtis, pardavimo kainos ir nuomos pasirinkimai.",
   path: "/kaledines-lemputes",
 });
 
@@ -25,9 +26,9 @@ export default function ShopPage() {
         ]}
       />
       <PageHeader
-        eyebrow="Dekoracijos"
-        title="Aukščiausios kokybės kalėdinės lemputės"
-        text="Turime dvi kruopščiai atrinktas lemputes: šiltas baltas — pirkti, spalvotas — išsinuomoti visam sezonui."
+        eyebrow="Lempučių ir komplektų katalogas"
+        title="Šiltai baltos lauko LED girliandos"
+        text="XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Pardavimo kainos nurodytos už vienetą arba visą komplektą."
       >
         <GuaranteeBadge dark className="px-4 py-2 text-sm" />
       </PageHeader>
@@ -40,14 +41,20 @@ export default function ShopPage() {
           className="group flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-pine-900 p-8 text-snow sm:flex-row sm:items-center sm:p-10"
         >
           <div>
-            <p className="font-display text-2xl font-semibold sm:text-3xl">Nenorite lipti ant kopėčių?</p>
+            <p className="font-display text-2xl font-semibold sm:text-3xl">
+              Nenorite lipti ant kopėčių?
+            </p>
             <p className="mt-2 max-w-xl text-snow/70">
-              Atvažiuosime ir sumontuosime lemputes, o po švenčių — viską nuimsime. Pasirinksite apmokėdami.
+              Atvažiuosime, papuošime ir sumontuosime, o po sezono viską
+              nuimsime. Konkrečiam objektui suderinsime pasiūlymą.
             </p>
           </div>
           <span className="btn btn-primary shrink-0">
             Apie montavimą
-            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            <ArrowRight
+              className="size-4 transition-transform group-hover:translate-x-1"
+              aria-hidden="true"
+            />
           </span>
         </Link>
       </section>

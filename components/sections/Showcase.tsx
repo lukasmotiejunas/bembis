@@ -13,7 +13,7 @@ export default function Showcase() {
           light
           eyebrow="Įkvėpimui"
           title="Taip gali atrodyti jūsų namai"
-          text="Šiltos baltos — elegantiškai ir jaukiai, spalvotos — linksmai ir tradiciškai. Padėsime išsirinkti, kas tiks jūsų namams."
+          text="Stogo kraštai, veranda, langai ir medžiai — apšvietimą pritaikome jūsų objektui. Nuotraukose pateikiamos dekoravimo idėjos."
         />
 
         <div className="mt-12 grid auto-rows-[14rem] gap-4 sm:grid-cols-2 lg:auto-rows-[16rem] lg:grid-cols-4">
@@ -22,14 +22,18 @@ export default function Showcase() {
               key={item.src}
               className={clsx(
                 "group relative overflow-hidden rounded-3xl",
-                i === 0 && "sm:col-span-2 sm:row-span-2"
+                i === 0 && "sm:col-span-2 sm:row-span-2",
               )}
             >
               <Image
                 src={item.src}
                 alt={item.alt}
                 fill
-                sizes={i === 0 ? "(max-width: 640px) 100vw, 50vw" : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"}
+                sizes={
+                  i === 0
+                    ? "(max-width: 640px) 100vw, 50vw"
+                    : "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                }
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <figcaption className="absolute bottom-3 left-3 rounded-full bg-pine-950/70 px-3 py-1.5 text-xs font-semibold text-snow backdrop-blur-sm">

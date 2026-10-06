@@ -6,13 +6,20 @@ import SectionHeading from "../ui/SectionHeading";
 export default function ContactSection({
   titleAs = "h2",
   defaultServices,
+  defaultMessage,
 }: {
   titleAs?: "h1" | "h2";
   defaultServices?: string[];
+  defaultMessage?: string;
 }) {
   const isPage = titleAs === "h1";
   return (
-    <section id="kontaktai" className={isPage ? "bg-cream pt-6 pb-20 sm:pb-28" : "bg-cream py-20 sm:py-28"}>
+    <section
+      id="kontaktai"
+      className={
+        isPage ? "bg-cream pt-6 pb-20 sm:pb-28" : "bg-cream py-20 sm:py-28"
+      }
+    >
       <div className="container-page grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
         <div>
           <SectionHeading
@@ -32,7 +39,9 @@ export default function ContactSection({
               </span>
               <span>
                 <span className="block text-sm text-snow/65">Skambinkite</span>
-                <span className="font-display text-2xl font-medium sm:text-3xl">{site.phone}</span>
+                <span className="font-display text-2xl font-medium sm:text-3xl">
+                  {site.phone}
+                </span>
               </span>
             </a>
             <a
@@ -44,11 +53,16 @@ export default function ContactSection({
               </span>
               <span className="min-w-0">
                 <span className="block text-sm text-stone">Rašykite</span>
-                <span className="block truncate text-xl font-bold text-pine-900">{site.email}</span>
+                <span className="block truncate text-xl font-bold text-pine-900">
+                  {site.email}
+                </span>
               </span>
             </a>
             <div className="flex gap-4 rounded-3xl bg-white p-6">
-              <MapPin className="mt-0.5 size-5 shrink-0 text-glow-deep" aria-hidden="true" />
+              <MapPin
+                className="mt-0.5 size-5 shrink-0 text-glow-deep"
+                aria-hidden="true"
+              />
               <div>
                 <p className="text-sm text-stone">Dirbame</p>
                 <p className="font-bold text-pine-900">{site.serviceArea}</p>
@@ -58,7 +72,10 @@ export default function ContactSection({
         </div>
 
         <div id="forma" className="scroll-mt-28">
-          <InquiryForm defaultServices={defaultServices} />
+          <InquiryForm
+            defaultServices={defaultServices}
+            defaultMessage={defaultMessage}
+          />
         </div>
       </div>
     </section>

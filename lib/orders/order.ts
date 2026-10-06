@@ -1,6 +1,5 @@
-// Shared by the checkout page (to show prices) and the server (to charge them),
-// so both always compute the exact same order from the catalog.
-import { formatPrice } from "../format";
+// Vienas kainų skaičiavimas krepšeliui, checkout ir serveriui.
+import { formatMeters, formatPrice, money } from "../format";
 import { pricing } from "../data/pricing";
 import { getProduct } from "../data/products";
 import { CartItem, PurchaseMode } from "../types";
@@ -9,12 +8,10 @@ export const modeLabel: Record<PurchaseMode, string> = {
   buy: "Pirkimas",
   rent: "Nuoma sezonui",
 };
-
 export interface OrderServices {
   installation: boolean;
   removal: boolean;
 }
-
 export interface OrderLine {
   key: string;
   kind: "product" | "service" | "delivery";
@@ -27,92 +24,79 @@ export interface OrderLine {
   quantity: number;
   total: number;
 }
-
 export function buildOrder(items: CartItem[], services: OrderServices) {
   const products: OrderLine[] = [];
   let meters = 0;
-
   for (const item of items) {
     const product = getProduct(item.productId, item.mode);
-    if (!product) continue;
-    const unitPrice = product.price;
+    if (
+      !product ||
+      !Number.isInteger(item.quantity) ||
+      item.quantity < 1 ||
+      item.quantity > 99
+    )
+      continue;
+    const unitCents = Math.round(product.price * 100);
     meters += product.meters * item.quantity;
-    const length = product.name.includes(`${product.meters} m`) ? "" : `${product.meters} m · `;
     products.push({
       key: `${product.id}-${item.mode}`,
       kind: "product",
       productId: product.id,
       name: product.name,
-      detail: `${length}${modeLabel[item.mode].toLowerCase()}`,
+      detail: `${formatMeters(product.meters)} · ${product.kind === "bundle" ? "visas komplektas" : "viena sekcija"}`,
       image: product.image,
       mode: item.mode,
-      unitPrice,
+      unitPrice: unitCents / 100,
       quantity: item.quantity,
-      total: unitPrice * item.quantity,
+      total: (unitCents * item.quantity) / 100,
     });
   }
-
-  const quotes = {
-    installation: meters * pricing.installPerMeter,
-    removal: meters * pricing.removalPerMeter,
-  };
-
+  const serviceRequested = services.installation || services.removal;
+  const deliveryNeedsQuote = pricing.deliveryFee === null;
+  const requiresQuote = serviceRequested || deliveryNeedsQuote;
   const extras: OrderLine[] = [];
-  if (products.length > 0) {
-    if (services.installation) {
-      extras.push({
-        key: "installation",
-        kind: "service",
-        name: "Montavimas",
-        detail: `${meters} m × ${formatPrice(pricing.installPerMeter)}`,
-        unitPrice: quotes.installation,
-        quantity: 1,
-        total: quotes.installation,
-      });
-    }
-    if (services.removal) {
-      extras.push({
-        key: "removal",
-        kind: "service",
-        name: "Nuėmimas po švenčių",
-        detail: `${meters} m × ${formatPrice(pricing.removalPerMeter)}`,
-        unitPrice: quotes.removal,
-        quantity: 1,
-        total: quotes.removal,
-      });
-    }
-    // With installation we bring the lights ourselves, so delivery is free.
-    if (!services.installation) {
-      extras.push({
-        key: "delivery",
-        kind: "delivery",
-        name: "Pristatymas į namus",
-        detail: pricing.deliveryArea,
-        unitPrice: pricing.deliveryFee,
-        quantity: 1,
-        total: pricing.deliveryFee,
-      });
-    }
+  // Individualūs darbai į apmokėtiną sumą neįtraukiami. Nuėmimas įeina į kabinimo tarifą.
+  if (products.length && !serviceRequested && pricing.deliveryFee !== null) {
+    extras.push({
+      key: "delivery",
+      kind: "delivery",
+      name: "Pristatymas į namus",
+      detail: pricing.deliveryArea,
+      unitPrice: pricing.deliveryFee,
+      quantity: 1,
+      total: pricing.deliveryFee,
+    });
   }
-
   const lines = [...products, ...extras];
   return {
     lines,
     products,
     extras,
-    meters,
-    quotes,
+    meters: money(meters),
+    installationEstimate: money(meters * pricing.installPerMeter),
+    serviceRequested,
+    deliveryNeedsQuote,
+    requiresQuote,
     hasRentals: products.some((l) => l.mode === "rent"),
     itemCount: products.reduce((s, l) => s + l.quantity, 0),
-    total: lines.reduce((s, l) => s + l.total, 0),
+    productsTotal:
+      products.reduce((s, l) => s + Math.round(l.total * 100), 0) / 100,
+    total: lines.reduce((s, l) => s + Math.round(l.total * 100), 0) / 100,
   };
 }
-
 export type Order = ReturnType<typeof buildOrder>;
-
-/** One human-readable line, used in the Google Sheet and on the success page. */
 export function describeLine(line: OrderLine) {
   const detail = line.detail ? ` (${line.detail})` : "";
   const qty = line.quantity > 1 ? ` × ${line.quantity}` : "";
   return `${line.name}${detail}${qty} — ${formatPrice(line.total)}`;
+}
+export function describeOrderInquiry(order: Order) {
+  return [
+    "Domina šios prekės:",
+    ...order.products.map(describeLine),
+    `Prekių suma: ${formatPrice(order.productsTotal)}.`,
+    order.serviceRequested
+      ? `Domina ir montavimas bei nuėmimas po sezono. Pagal prekių ilgį (${formatMeters(order.meters)}) standartinis darbų įvertis yra ${formatPrice(order.installationEstimate)}. Prašau galutinio pasiūlymo mano objektui.`
+      : "Prašau suderinti pristatymo sąlygas ir galutinį užsakymo pasiūlymą.",
+  ].join("\n");
 }

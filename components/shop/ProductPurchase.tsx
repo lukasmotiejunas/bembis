@@ -24,14 +24,19 @@ export default function ProductPurchase({ product }: { product: Product }) {
         </span>
         <button
           type="button"
-          onClick={() => setQuantity((q) => q + 1)}
+          onClick={() => setQuantity((q) => Math.min(99, q + 1))}
+          disabled={quantity >= 99}
           className="flex size-12 items-center justify-center text-pine-900"
           aria-label="Daugiau"
         >
           <Plus className="size-4" />
         </button>
       </div>
-      <AddToCartButton product={product} quantity={quantity} className="flex-1" />
+      <AddToCartButton
+        product={product}
+        quantity={quantity}
+        className="flex-1"
+      />
     </div>
   );
 }

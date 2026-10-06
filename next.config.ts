@@ -6,9 +6,23 @@ const nextConfig: NextConfig = {
     return [
       { source: "/installation", destination: "/montavimas", permanent: true },
       { source: "/shop", destination: "/kaledines-lemputes", permanent: true },
-      { source: "/shop/:slug", destination: "/kaledines-lemputes/:slug", permanent: true },
+      {
+        source: "/shop/:slug",
+        destination: "/kaledines-lemputes/:slug",
+        permanent: true,
+      },
       { source: "/rent", destination: "/nuoma", permanent: true },
       { source: "/contact", destination: "/kontaktai", permanent: true },
+      {
+        source: "/kaledines-lemputes/siltos-baltos-filamentines-c9",
+        destination: "/kaledines-lemputes",
+        permanent: true,
+      },
+      {
+        source: "/kaledines-lemputes/spalvotos-c9",
+        destination: "/kaledines-lemputes",
+        permanent: true,
+      },
     ];
   },
 };

@@ -1,22 +1,44 @@
+import Link from "next/link";
 import clsx from "clsx";
-import { ShieldCheck, Snowflake, Zap } from "lucide-react";
-import { productFor } from "@/lib/data/products";
-import { GuaranteeSeal } from "../Guarantee";
+import { ShieldCheck, Layers, Lightbulb } from "lucide-react";
+import { products } from "@/lib/data/products";
 import ProductFeatureCard from "../shop/ProductFeatureCard";
 import SectionHeading from "../ui/SectionHeading";
 
 export const qualityPoints = [
-  { icon: ShieldCheck, title: "2 metų garantija", text: "Jei sezono metu lemputė sugestų — pakeisime ją nemokamai." },
-  { icon: Snowflake, title: "Pritaikytos žiemai", text: "Nebijo lietaus, sniego ir šalčio — sukurtos naudoti lauke." },
-  { icon: Zap, title: "Ilgaamžės LED lemputės", text: "Tarnauja dešimtis tūkstančių valandų ir taupo elektrą." },
+  {
+    icon: ShieldCheck,
+    title: "2 metų garantija",
+    text: "Dėl lempučių gedimo kreipkitės į mus.",
+  },
+  {
+    icon: Layers,
+    title: "Modulinės girliandos",
+    text: "7,5 m motininės ir papildomos sekcijos arba 45 m ir 60 m komplektai.",
+  },
+  {
+    icon: Lightbulb,
+    title: "Šiltai baltas LED",
+    text: "XP ir komercinės klasės LLinks lauko apšvietimas.",
+  },
 ];
-
-export function QualityPoints({ onCream = false }: { onCream?: boolean }) {
+export function QualityPoints({
+  onCream = false,
+}: {
+  withHeading?: boolean;
+  onCream?: boolean;
+}) {
   return (
     <ul className="grid gap-4 sm:grid-cols-3">
       {qualityPoints.map(({ icon: Icon, title, text }) => (
-        <li key={title} className={clsx("flex gap-4 rounded-3xl p-6", onCream ? "bg-white" : "bg-cream")}>
-          <span className={clsx("flex size-11 shrink-0 items-center justify-center rounded-2xl", onCream ? "bg-cream" : "bg-white")}>
+        <li
+          key={title}
+          className={clsx(
+            "flex gap-4 rounded-3xl p-6",
+            onCream ? "bg-white" : "bg-cream",
+          )}
+        >
+          <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-glow-soft">
             <Icon className="size-5 text-glow-deep" aria-hidden="true" />
           </span>
           <div>
@@ -28,27 +50,46 @@ export function QualityPoints({ onCream = false }: { onCream?: boolean }) {
     </ul>
   );
 }
-
-/** The two lights we offer: one to buy, one to rent. */
-export default function LightsSection({ withHeading = true }: { withHeading?: boolean }) {
+export default function LightsSection({
+  withHeading = true,
+}: {
+  withHeading?: boolean;
+}) {
+  const shown = withHeading
+    ? products.filter((p) => p.kind === "bundle" && p.sections === 6)
+    : products;
   return (
-    <section className={withHeading ? "container-page py-20 sm:py-28" : "container-page py-14 sm:py-20"}>
+    <section
+      className={
+        withHeading
+          ? "container-page py-20 sm:py-28"
+          : "container-page py-14 sm:py-20"
+      }
+    >
       {withHeading && (
-        <div className="mb-12 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-10">
           <SectionHeading
-            eyebrow="Mūsų lemputės"
-            title="Tik aukščiausios kokybės lemputės"
-            text="Dvi kruopščiai atrinktos lemputės: vieną galite pirkti, kitą — išsinuomoti sezonui. Abiem suteikiame 2 metų garantiją."
+            eyebrow="Lempučių pardavimas"
+            title="Girliandos, kurios lieka jums"
+            text="Pasirinkite XP arba LLinks. Pradėkite nuo motininės girliandos, papildykite sekcijomis arba įsigykite visą komplektą."
           />
-          <GuaranteeSeal className="hidden sm:flex" />
         </div>
       )}
-
       <div className="grid gap-6 lg:grid-cols-2">
-        <ProductFeatureCard product={productFor("buy")} />
-        <ProductFeatureCard product={productFor("rent")} />
+        {shown.map((p) => (
+          <ProductFeatureCard key={p.id} product={p} />
+        ))}
       </div>
-
+      {withHeading && (
+        <div className="mt-7 flex flex-wrap gap-3">
+          <Link href="/kaledines-lemputes" className="btn btn-dark">
+            Visos girliandos ir komplektai
+          </Link>
+          <Link href="/nuoma" className="btn btn-outline">
+            Nuomos pasirinkimai
+          </Link>
+        </div>
+      )}
       <div className="mt-6">
         <QualityPoints />
       </div>

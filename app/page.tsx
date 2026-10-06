@@ -10,10 +10,10 @@ import { businessSchema, pageMetadata, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
 
 export const metadata = pageMetadata({
-  title: `Lauko kalėdinės lemputės, nuoma ir montavimas | ${site.name}`,
+  title: `Kalėdinių lempučių montavimas ir nuoma Vilniuje | ${site.name}`,
   absoluteTitle: true,
   description:
-    "Lauko kalėdinės lemputės C9: šiltos baltos ir spalvotos girliandos. Peržiūrėkite katalogą. Montavimas ir nuoma Vilniuje bei Vilniaus apskrityje.",
+    "Atvykstame, papuošiame ir sumontuojame kalėdines lemputes, po sezono nuimame. XP ir LLinks lauko LED pardavimas bei nuoma. Vilnius ir Vilniaus apskritis.",
   path: "/",
 });
 

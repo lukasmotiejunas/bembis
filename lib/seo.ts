@@ -2,11 +2,13 @@
 // what the business offers, where and for how much.
 import type { Metadata } from "next";
 import { productHref, products } from "./data/products";
+import { pricing } from "./data/pricing";
 import { Product } from "./types";
 import { activeSocials, site } from "./site";
 
 /** Full address of a page; the home page is the bare domain, exactly as in its canonical tag. */
-export const absoluteUrl = (path = "/") => (path === "/" ? site.url : new URL(path, site.url).toString());
+export const absoluteUrl = (path = "/") =>
+  path === "/" ? site.url : new URL(path, site.url).toString();
 
 const defaultShareImage = {
   url: "/opengraph-image.png",
@@ -56,7 +58,9 @@ const phone = site.phone.replace(/\s/g, "");
 const areaServed = [
   { "@type": "City", name: "Vilnius" },
   { "@type": "AdministrativeArea", name: "Vilniaus apskritis" },
-  ...site.serviceTowns.filter((t) => t !== "Vilnius").map((name) => ({ "@type": "Place", name })),
+  ...site.serviceTowns
+    .filter((t) => t !== "Vilnius")
+    .map((name) => ({ "@type": "Place", name })),
 ];
 
 export function businessSchema() {
@@ -78,7 +82,9 @@ export function businessSchema() {
       "Namų puošimas Kalėdoms",
       "Lauko kalėdinis apšvietimas",
     ],
-    ...(activeSocials.length ? { sameAs: activeSocials.map((s) => s.href) } : {}),
+    ...(activeSocials.length
+      ? { sameAs: activeSocials.map((s) => s.href) }
+      : {}),
   };
 }
 
@@ -119,8 +125,7 @@ export function breadcrumbSchema(items: { name: string; path: string }[]) {
 }
 
 export function productSchema(product: Product) {
-  // Prices and stock are not confirmed yet. Keep descriptive Product data without
-  // offers, availability, ratings or an assumed manufacturer's brand.
+  // Pardavimo kainos ir prekių gavimas patvirtinti 2026-10-06.
   return {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -128,9 +133,22 @@ export function productSchema(product: Product) {
     url: absoluteUrl(productHref(product)),
     name: product.name,
     description: product.description,
-    image: [absoluteUrl(product.image)],
+    // Apšvietimo schemos neteikiame kaip produkto nuotraukos paieškai.
+    ...(product.kind !== "bundle" ? { sku: product.id } : {}),
     color: product.color,
-    additionalProperty: product.specs.map((s) => ({ "@type": "PropertyValue", name: s.label, value: s.value })),
+    additionalProperty: product.specs.map((s) => ({
+      "@type": "PropertyValue",
+      name: s.label,
+      value: s.value,
+    })),
+    offers: {
+      "@type": "Offer",
+      url: absoluteUrl(productHref(product)),
+      price: product.price.toFixed(2),
+      priceCurrency: "EUR",
+      availability: "https://schema.org/InStock",
+      seller: { "@id": BUSINESS_ID },
+    },
   };
 }
 
@@ -138,7 +156,7 @@ export function catalogSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Lauko kalėdinės lemputės C9",
+    name: "XP ir LLinks lauko LED girliandos ir komplektai",
     url: absoluteUrl("/kaledines-lemputes"),
     mainEntity: {
       "@type": "ItemList",
@@ -166,13 +184,13 @@ export function installationServiceSchema() {
   };
 }
 
-export function rentalServiceSchema(product: Product) {
+export function rentalServiceSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
     serviceType: "Kalėdinių lempučių nuoma",
     name: "Kalėdinių lempučių nuoma visam sezonui",
-    description: `„${product.name}“ lempučių nuoma visam Kalėdų sezonui Vilniuje ir Vilniaus apskrityje. Galime sumontuoti ir po švenčių nuimti.`,
+    description: `Šiltai baltų XP ir komercinės klasės LLinks lauko LED nuoma Vilniuje ir Vilniaus apskrityje. Standartiniai tarifai: XP ${pricing.rentalPerMeter.xp} EUR/m, LLinks ${pricing.rentalPerMeter.llinks} EUR/m. Darbų ir nuomos sąlygos suderinamos konkrečiam objektui.`,
     url: absoluteUrl("/nuoma"),
     provider: { "@id": BUSINESS_ID },
     areaServed,

@@ -2,104 +2,129 @@ import { formatPrice } from "../format";
 import { site } from "../site";
 import { pricing } from "./pricing";
 import { buildEstimate } from "./priceExample";
-import { productFor } from "./products";
 
-const example = buildEstimate("rent");
-
+const example = buildEstimate("llinks")!;
 export const seasonSteps = [
   {
-    when: "Spalis–lapkritis",
+    when: "Prieš sezoną",
     title: "Susisiekiate",
-    text: "Paskambinkite arba parašykite. Atvažiuojame, apžiūrime namą ir pasiūlome kainą — nemokamai.",
+    text: "Paskambinkite arba parašykite. Aptariame objektą, apžiūrime ir suderiname pasiūlymą.",
   },
   {
-    when: "Tą pačią savaitę",
-    title: "Išsirenkate lemputes",
-    text: "Pirkite arba išsinuomokite sezonui. Padėsime išsirinkti ir apskaičiuosime, kiek jų reikia.",
+    when: "Pagal jūsų poreikį",
+    title: "Pasirenkate apšvietimą",
+    text: "Nuomojamos XP arba LLinks lemputės, pirktos girliandos arba jūsų turimos lemputės.",
   },
   {
-    when: "Lapkritis–gruodis",
+    when: "Suderintu laiku",
     title: "Mes sumontuojame",
-    text: "Atvažiuojame su visa įranga ir viską sumontuojame. Jums nereikia lipti ant kopėčių.",
+    text: "Atvažiuojame, papuošiame ir sumontuojame sutartą apšvietimą.",
   },
   {
-    when: "Sausis",
-    title: "Po švenčių nuimame",
-    text: "Po Trijų Karalių viską nuimame. Nuomotas lemputes išsivežame, pirktas supakuojame jums.",
+    when: "Po sezono",
+    title: "Viską nuimame",
+    text: "Montavimo tarifas apima ir nuėmimą po sezono. Nuomotas lemputes pasiimame, jūsų lemputės lieka jums.",
   },
 ];
-
 export const faqs = [
   {
     q: "Kuo skiriasi pirkimas nuo nuomos?",
-    a: "Parduodame šiltas baltas filamentines lemputes — jos lieka jums ir tarnaus daugelį sezonų. Nuomai siūlome spalvotas lemputes: jos šviečia visą sezoną, o po švenčių jas išsivežame — nereikia nei pirkti, nei sandėliuoti.",
+    a: "XP ir komercinės klasės LLinks girliandas galite įsigyti 7,5 m sekcijomis arba 45 m ir 60 m komplektais. Jos lieka jums. Nuoma skaičiuojama pagal dekoruojamo kontūro ilgį ir suderinama individualiu pasiūlymu; po sezono nuomotas lemputes pasiimame.",
   },
   {
     q: "Kokia garantija suteikiama lemputėms?",
-    a: "Mūsų lemputėms suteikiame 2 metų garantiją. Jei sezono metu kuri nors lemputė sugestų — paskambinkite, pakeisime ją nemokamai.",
+    a: "Lemputėms suteikiame 2 metų garantiją. Pastebėję gedimą, susisiekite su mumis.",
   },
   {
-    q: "Kiek kainuoja montavimas?",
-    a: `Kaina priklauso nuo namo dydžio ir lempučių kiekio. Pavyzdžiui, dviaukščio namo papuošimas ${example.meters} m lempučių (nuoma, montavimas ir nuėmimas) kainuoja ${formatPrice(example.total)} už sezoną. Tikslią kainą pasakysime po nemokamos apžiūros.`,
+    q: "Kiek kainuoja montavimas ir nuėmimas?",
+    a: `Naudojant mūsų lemputes standartinis kabinimo ir nuėmimo po sezono tarifas yra ${formatPrice(pricing.installPerMeter)}/m, naudojant jūsų lemputes — ${formatPrice(pricing.clientLightsPerMeter)}/m. Pavyzdžiui, 12 × 12 m pastato 48 m kontūras su LLinks nuoma ir darbais kainuoja ${formatPrice(example.total)}. Galutinę darbo kainą suderiname pagal objektą.`,
   },
   {
-    q: "Kada montuojate ir kada nuimate?",
-    a: "Montuojame nuo lapkričio pradžios iki gruodžio vidurio, nuimame sausį, po Trijų Karalių. Tikslią dieną suderiname su jumis iš anksto.",
+    q: "Kada montuojate ir nuimate?",
+    a: "Montavimo laiką sutariame su jumis, o po šventinio sezono apšvietimą nuimame. Konkretų grafiką aptariame suderindami pasiūlymą.",
   },
   {
-    q: "Ar tvirtinimas nepažeis mano namo?",
-    a: "Ne. Naudojame specialius laikiklius, kurie nepalieka skylių ar žymių ant stogo, latakų ir sienų.",
+    q: "Ar galite papuošti mano turimomis lemputėmis?",
+    a: `Taip. Kabinimo ir nuėmimo po sezono standartinis tarifas su kliento lemputėmis yra ${formatPrice(pricing.clientLightsPerMeter)}/m. Prieš darbus aptariame jų tinkamumą ir konkretaus objekto sąlygas.`,
   },
   {
-    q: "Ar reikia būti namuose montavimo metu?",
-    a: "Nebūtina. Užtenka, kad būtų prieiga prie lauko elektros lizdo. Visas detales suderiname telefonu.",
+    q: "Ar papildomą sekciją galima naudoti kaip pradinį rinkinį?",
+    a: "Papildoma sekcija skirta papildyti tos pačios serijos motininę girliandą. Pradiniam rinkiniui rinkitės motininę girliandą arba komplektą, kuriame ji jau yra. XP ir LLinks kataloge išskirtos atskirai.",
   },
   {
     q: "Kur dirbate?",
-    a: `Vilniuje ir visoje Vilniaus apskrityje. Aptarnaujame šias vietoves: ${site.serviceTowns.join(", ")}. Gyvenate kitur? Paskambinkite — pažiūrėsime, ką galime padaryti.`,
+    a: `Vilniuje ir Vilniaus apskrityje: ${site.serviceTowns.join(", ")}. Dėl konkretaus objekto susisiekite su mumis.`,
   },
 ];
-
 export const showcase = [
-  { src: "/work/porch-house.jpg", alt: "Namas, kurio veranda ir stogo kraštai papuošti šiltomis lemputėmis", label: "Šilta balta · stogas ir veranda" },
-  { src: "/work/modern-villa.jpg", alt: "Modernus namas, apjuostas šiltomis lemputėmis", label: "Šilta balta · modernus namas" },
-  { src: "/work/multicolor-house.jpg", alt: "Dviaukštis namas su spalvotomis lemputėmis", label: "Spalvotos · visas fasadas" },
-  { src: "/work/warm-cabin.jpg", alt: "Medinis namas su lemputėmis ant stogo ir medžių", label: "Šilta balta · stogas ir medžiai" },
-  { src: "/work/modern-pool.jpg", alt: "Modernus namas su šiltomis lemputėmis ant stogo ir langų", label: "Šilta balta · stogas ir langai" },
+  {
+    src: "/work/porch-house.jpg",
+    alt: "Namo stogo ir verandos dekoravimo pavyzdys",
+    label: "Stogas ir veranda",
+  },
+  {
+    src: "/work/modern-villa.jpg",
+    alt: "Modernaus namo apšvietimo pavyzdys",
+    label: "Modernaus namo kontūrai",
+  },
+  {
+    src: "/work/warm-cabin.jpg",
+    alt: "Namo stogo ir medžių dekoravimo pavyzdys",
+    label: "Stogas ir medžiai",
+  },
+  {
+    src: "/work/modern-pool.jpg",
+    alt: "Stogo kraštų ir langų apšvietimo pavyzdys",
+    label: "Stogas ir langai",
+  },
 ];
-
-/** „Ką papuošiame“ — Montavimo puslapyje. */
 export const decorAreas = [
-  { icon: "roof", title: "Stogo kraštai", text: "Klasikinė lempučių linija palei stogą — namą matyti iš toli." },
-  { icon: "window", title: "Langai ir durys", text: "Apjuosiame langus, duris ir įėjimą — jauku iš lauko ir vidaus." },
-  { icon: "terrace", title: "Terasos ir turėklai", text: "Verandos, balkonai, turėklai ir laiptai." },
-  { icon: "tree", title: "Medžiai ir eglės", text: "Apšviečiame kiemo medžius, eglutes ir krūmus." },
-  { icon: "fence", title: "Tvoros ir vartai", text: "Lemputės palei tvorą ir vartus pasitinka svečius." },
-  { icon: "estate", title: "Sodybos ir dideli namai", text: "Individualus planas visam kiemui, pastatams ir aplinkai." },
+  {
+    icon: "roof",
+    title: "Stogo kraštai",
+    text: "Apšvietimas palei stogo kontūrą.",
+  },
+  {
+    icon: "window",
+    title: "Langai ir durys",
+    text: "Langų, durų ir įėjimo kontūrai.",
+  },
+  {
+    icon: "terrace",
+    title: "Terasos ir turėklai",
+    text: "Verandos, balkonai, turėklai ir laiptai.",
+  },
+  {
+    icon: "tree",
+    title: "Medžiai ir eglės",
+    text: "Kiemo medžių ir eglučių apšvietimas.",
+  },
+  {
+    icon: "fence",
+    title: "Tvoros ir vartai",
+    text: "Šventinis apšvietimas palei tvorą ir vartus.",
+  },
+  {
+    icon: "estate",
+    title: "Sodybos ir dideli namai",
+    text: "Individualus planas pastatams ir jų aplinkai.",
+  },
 ] as const;
-
-const rentLight = productFor("rent");
-
-/** DUK Nuomos puslapyje. */
 export const rentalFaqs = [
   {
-    q: "Kiek kainuoja kalėdinių lempučių nuoma?",
-    a: `${rentLight.meters} m girliandos („${rentLight.name}“) nuoma kainuoja ${formatPrice(rentLight.price)} už visą sezoną. Montavimas — ${formatPrice(pricing.installPerMeter)} už metrą, nuėmimas po švenčių — ${formatPrice(pricing.removalPerMeter)} už metrą.`,
+    q: "Kiek kainuoja lempučių nuoma?",
+    a: `XP lauko LED nuoma kainuoja ${formatPrice(pricing.rentalPerMeter.xp)}/m, komercinės klasės LLinks — ${formatPrice(pricing.rentalPerMeter.llinks)}/m. Tai nuomos tarifas už dekoruojamą metrą. Kabinimas ir nuėmimas su mūsų lemputėmis — ${formatPrice(pricing.installPerMeter)}/m. Konkrečiam objektui suderiname galutinį pasiūlymą.`,
   },
   {
-    q: "Kiek laiko trunka nuoma?",
-    a: "Visą Kalėdų sezoną — nuo lapkričio iki sausio. Lemputes nuimame po Trijų Karalių.",
+    q: "Ar nuėmimas apmokestinamas atskirai?",
+    a: "Ne. Nurodytas darbo tarifas apima kabinimą ir nuėmimą po sezono. Lempučių nuomos dalis pateikiama atskirai nuo darbų.",
   },
   {
-    q: "Ar galiu išsinuomoti lemputes be montavimo?",
-    a: `Taip. Lemputes pristatysime į namus (${pricing.deliveryArea}) už ${formatPrice(pricing.deliveryFee)}, o po švenčių suderinsime, kaip jas grąžinti. Užsisakius montavimą, pristatymas nemokamas.`,
+    q: "Ar galiu nuomotis be montavimo?",
+    a: "Parašykite, kokio apšvietimo ir ilgio reikia. Atskirai suderinsime nuomos, pristatymo ir grąžinimo sąlygas. Galutinį nuomos pasiūlymą pateiksime pagal jūsų poreikį.",
   },
   {
-    q: "Ką daryti, jei sezono metu lemputė sugenda?",
-    a: "Paskambinkite — sugedusią lemputę pakeisime nemokamai. Lemputėms suteikiame 2 metų garantiją.",
-  },
-  {
-    q: "Ar nuomotos lemputės tinka lauke?",
-    a: "Taip. Tai lauko lemputės, atsparios lietui ir sniegui — tinka stogo kraštams, langams, medžiams ir tvoroms.",
+    q: "Kuo skiriasi XP ir LLinks?",
+    a: "Kataloge LLinks nurodyta kaip komercinės klasės profesionali lauko LED sistema, XP — kaip aukščiausios kokybės lauko LED serija. Abi serijos yra šiltai baltos. Padėsime pasirinkti pagal jūsų objektą.",
   },
 ];

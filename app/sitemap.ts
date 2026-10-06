@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     page("/montavimas"),
     page("/nuoma"),
     page("/kaledines-lemputes"),
-    ...products.map((p) => ({ ...page(productHref(p)), images: [absoluteUrl(p.image)] })),
+    ...products.map((p) => page(productHref(p))),
     page("/kontaktai"),
   ];
 }

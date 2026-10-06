@@ -1,4 +1,6 @@
 export type PurchaseMode = "buy" | "rent";
+export type LightSeries = "xp" | "llinks";
+export type ProductKind = "starter" | "extension" | "bundle";
 
 export interface Product {
   id: string;
@@ -6,6 +8,9 @@ export interface Product {
   name: string;
   /** Ar ši lemputė parduodama, ar nuomojama */
   mode: PurchaseMode;
+  series: LightSeries;
+  kind: ProductKind;
+  sections: number;
   /** Pirkimo kaina arba nuomos kaina visam sezonui, € */
   price: number;
   image: string;

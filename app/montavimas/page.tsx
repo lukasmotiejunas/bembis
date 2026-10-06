@@ -1,6 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Clock, Lightbulb, Phone, RotateCcw, Ruler, ShieldCheck } from "lucide-react";
+import {
+  ArrowRight,
+  Clock,
+  Lightbulb,
+  Phone,
+  RotateCcw,
+  Ruler,
+  ShieldCheck,
+} from "lucide-react";
 import { phoneHref, site } from "@/lib/site";
 import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
@@ -12,11 +20,18 @@ import DecorAreas from "@/components/sections/DecorAreas";
 import ServiceArea from "@/components/sections/ServiceArea";
 import JsonLd from "@/components/JsonLd";
 import { INSTALLATION_SERVICE } from "@/lib/inquiry";
-import { breadcrumbSchema, installationServiceSchema, pageMetadata } from "@/lib/seo";
+import { pricing } from "@/lib/data/pricing";
+import { formatPrice } from "@/lib/format";
+import {
+  breadcrumbSchema,
+  installationServiceSchema,
+  pageMetadata,
+} from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Kalėdinių lempučių montavimas ir nuėmimas Vilniuje",
-  description: "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite apie nemokamą apžiūrą.",
+  description:
+    "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite apie nemokamą apžiūrą.",
   path: "/montavimas",
 });
 
@@ -29,7 +44,7 @@ const included = [
   {
     icon: Lightbulb,
     title: "Aukščiausios kokybės lemputės",
-    text: "Šiltas baltas galite pirkti, spalvotas — išsinuomoti sezonui. Abiem — 2 metų garantija.",
+    text: "Šiltai baltas XP ir LLinks lauko LED girliandas galite pirkti arba išsinuomoti. Galime naudoti ir jūsų turimas lemputes.",
   },
   {
     icon: ShieldCheck,
@@ -38,8 +53,8 @@ const included = [
   },
   {
     icon: Clock,
-    title: "Laikmačio nustatymas",
-    text: "Lemputės pačios įsijungs vakare ir išsijungs naktį.",
+    title: "Pasiūlymas jūsų objektui",
+    text: "Suderiname apšvietimo ilgį, lempučių pasirinkimą ir galutinę darbo kainą.",
   },
   {
     icon: RotateCcw,
@@ -88,7 +103,10 @@ export default function InstallationPage() {
           />
         </div>
         <div>
-          <SectionHeading eyebrow="Kas įskaičiuota" title="Jūs tik pasirenkate — visa kita padarome mes" />
+          <SectionHeading
+            eyebrow="Kas įskaičiuota"
+            title="Jūs tik pasirenkate — visa kita padarome mes"
+          />
           <ul className="mt-10 space-y-7">
             {included.map(({ icon: Icon, title, text }) => (
               <li key={title} className="flex gap-5">
@@ -96,7 +114,9 @@ export default function InstallationPage() {
                   <Icon className="size-6 text-glow-deep" aria-hidden="true" />
                 </span>
                 <div>
-                  <h3 className="font-sans text-lg font-bold text-pine-900">{title}</h3>
+                  <h3 className="font-sans text-lg font-bold text-pine-900">
+                    {title}
+                  </h3>
                   <p className="mt-1 leading-relaxed text-stone">{text}</p>
                 </div>
               </li>
@@ -105,6 +125,34 @@ export default function InstallationPage() {
         </div>
       </section>
 
+      <section className="container-page pb-10">
+        <div className="grid gap-5 sm:grid-cols-2">
+          <div className="rounded-3xl bg-pine-900 p-7 text-snow">
+            <h2 className="text-2xl font-semibold">Su mūsų lemputėmis</h2>
+            <p className="mt-3 font-display text-4xl">
+              {formatPrice(pricing.installPerMeter)} / m
+            </p>
+            <p className="mt-3 text-snow/75">
+              Kabinimas ir nuėmimas po sezono. Lempučių nuoma arba pirkimas
+              skaičiuojami atskirai.
+            </p>
+          </div>
+          <div className="rounded-3xl bg-cream p-7 text-pine-900">
+            <h2 className="text-2xl font-semibold">Su jūsų lemputėmis</h2>
+            <p className="mt-3 font-display text-4xl">
+              {formatPrice(pricing.clientLightsPerMeter)} / m
+            </p>
+            <p className="mt-3 text-stone">
+              Kabinimas ir nuėmimas po sezono. Prieš darbus suderiname lempučių
+              ir objekto sąlygas.
+            </p>
+          </div>
+        </div>
+        <p className="mt-4 text-sm text-stone">
+          Standartiniai darbo tarifai. Galutinė kaina priklauso nuo konkretaus
+          projekto ir suderinama pasiūlyme.
+        </p>
+      </section>
       <DecorAreas />
       <PriceExample />
       <SeasonSteps />

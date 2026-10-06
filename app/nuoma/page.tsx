@@ -1,153 +1,130 @@
 import Link from "next/link";
-import { ArrowRight, CalendarCheck, PackageX, Phone, ShieldCheck, Truck, Wrench } from "lucide-react";
+import { ArrowRight, CalendarCheck, PackageX, Wrench } from "lucide-react";
 import JsonLd from "@/components/JsonLd";
 import ContactSection from "@/components/sections/ContactSection";
 import FAQ from "@/components/sections/FAQ";
 import ServiceArea from "@/components/sections/ServiceArea";
-import ProductFeatureCard from "@/components/shop/ProductFeatureCard";
 import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { buildEstimate, priceExample } from "@/lib/data/priceExample";
 import { pricing } from "@/lib/data/pricing";
-import { productFor, productHref } from "@/lib/data/products";
 import { rentalFaqs } from "@/lib/data/services";
+import { seriesNames } from "@/lib/data/products";
+import { LightSeries } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { breadcrumbSchema, pageMetadata, rentalServiceSchema } from "@/lib/seo";
-import { phoneHref, site } from "@/lib/site";
-
-const light = productFor("rent");
-const example = buildEstimate("rent");
-const exampleMeters = priceExample.areas.reduce((s, a) => s + a.meters, 0);
+import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
 
 export const metadata = pageMetadata({
-  title: "Kalėdinių lempučių nuoma Vilniuje — visam sezonui",
-  description: "Spalvotų lauko kalėdinių lempučių C9 nuoma sezonui Vilniuje ir Vilniaus apskrityje. Peržiūrėkite girliandą ir pasiteiraukite apie montavimą ir nuėmimą.",
+  title: "XP ir LLinks lempučių nuoma Vilniuje",
+  description:
+    "Šiltai baltų XP ir komercinės klasės LLinks lauko LED lempučių nuoma. Standartiniai tarifai už metrą, montavimas ir nuėmimas po sezono. Vilnius ir apskritis.",
   path: "/nuoma",
 });
-
-const benefits = [
-  { icon: CalendarCheck, title: "Mokate tik už sezoną", text: `${formatPrice(light.price)} už ${light.meters} m girliandą — visas Kalėdas nuo lapkričio iki sausio.` },
-  { icon: PackageX, title: "Nereikia sandėliuoti", text: "Po švenčių lemputes pasiimame — jokių dėžių palėpėje." },
-  { icon: ShieldCheck, title: "Sezono garantija", text: "Jei sezono metu lemputė sugestų — pakeisime ją nemokamai." },
-  { icon: Wrench, title: "Sumontuojame už jus", text: "Jei norite, atvažiuosime, sumontuosime, o sausį viską nuimsime." },
-];
-
-const steps = [
-  { title: "Užsisakote", text: "Internetu per kelias minutes arba telefonu." },
-  { title: "Atvežame arba sumontuojame", text: "Lapkritį–gruodį, jums patogią dieną." },
-  { title: "Šviečia visą sezoną", text: "Sugedusią lemputę pakeičiame nemokamai." },
-  { title: "Sausį pasiimame", text: "Po Trijų Karalių lemputes nuimame ir išsivežame." },
-];
-
-const prices = [
-  { label: `Lemputės, ${light.meters} m girlianda`, value: `${formatPrice(light.price)} / sezonui` },
-  { label: "Montavimas", value: `${formatPrice(pricing.installPerMeter)} / m` },
-  { label: "Nuėmimas po švenčių", value: `${formatPrice(pricing.removalPerMeter)} / m` },
-  { label: "Pristatymas (be montavimo)", value: formatPrice(pricing.deliveryFee) },
-];
-
 export default function RentalPage() {
   return (
     <>
       <JsonLd
         data={[
-          rentalServiceSchema(light),
+          rentalServiceSchema(),
           breadcrumbSchema([
             { name: "Pradžia", path: "/" },
             { name: "Nuoma", path: "/nuoma" },
           ]),
         ]}
       />
-
       <PageHeader
-        eyebrow="Nuoma"
-        title="Kalėdinių lempučių nuoma Vilniuje"
-        text="Išsinuomokite aukščiausios kokybės spalvotas kalėdines lemputes visam sezonui — be pirkimo ir sandėliavimo. Galime sumontuoti, o po švenčių nuimti."
+        eyebrow="Nuoma sezonui"
+        title="Kalėdinis apšvietimas be sandėliavimo rūpesčių"
+        text="Pasirinkite XP arba komercinės klasės LLinks lauko LED. Atvykstame pas jus, papuošiame ir sumontuojame, o po sezono apšvietimą nuimame bei pasiimame."
       >
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <Link href={productHref(light)} className="btn btn-primary">
-            Išsinuomoti — {formatPrice(light.price)} / sezonui
-            <ArrowRight className="size-4" aria-hidden="true" />
-          </Link>
-          <a href={phoneHref} className="btn btn-outline">
-            <Phone className="size-4" aria-hidden="true" />
-            {site.phone}
-          </a>
-        </div>
+        <Link href="/montavimas#kainos" className="btn btn-primary">
+          Palyginti standartinę sąmatą
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
       </PageHeader>
-
-      <section className="container-page grid gap-6 py-20 sm:py-28 lg:grid-cols-2 lg:gap-12">
-        <ProductFeatureCard product={light} />
-        <div className="lg:pt-4">
-          <SectionHeading eyebrow="Kodėl verta nuomotis" title="Kalėdos be rūpesčių ir didelių išlaidų" />
-          <ul className="mt-10 space-y-6">
-            {benefits.map(({ icon: Icon, title, text }) => (
-              <li key={title} className="flex gap-5">
-                <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-glow-soft">
-                  <Icon className="size-6 text-glow-deep" aria-hidden="true" />
-                </span>
-                <div>
-                  <h3 className="font-sans text-lg font-bold text-pine-900">{title}</h3>
-                  <p className="mt-1 leading-relaxed text-stone">{text}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="bg-cream py-20 sm:py-28">
-        <div className="container-page grid gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <SectionHeading eyebrow="Kaip tai veikia" title="Nuoma — keturi paprasti žingsniai" />
-            <ol className="mt-10 space-y-4">
-              {steps.map((step, i) => (
-                <li key={step.title} className="flex gap-4 rounded-3xl bg-white p-5">
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-pine-900 text-sm font-extrabold text-snow">
-                    {i + 1}
-                  </span>
-                  <div>
-                    <p className="font-bold text-pine-900">{step.title}</p>
-                    <p className="text-stone">{step.text}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </div>
-
-          <div>
-            <SectionHeading eyebrow="Kainos" title="Kiek kainuoja nuoma?" />
-            <div className="mt-10 rounded-[2rem] bg-white p-6 sm:p-8">
-              <dl className="divide-y divide-sand">
-                {prices.map((p) => (
-                  <div key={p.label} className="flex justify-between gap-4 py-3.5 first:pt-0">
-                    <dt className="text-stone">{p.label}</dt>
-                    <dd className="text-right font-bold text-pine-900">{p.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <p className="mt-5 flex gap-3 rounded-2xl bg-glow-soft px-4 py-3.5 text-sm leading-relaxed text-pine-900">
-                <Truck className="mt-0.5 size-4 shrink-0 text-glow-deep" aria-hidden="true" />
-                <span>
-                  Pavyzdžiui, {exampleMeters} m lempučių su montavimu ir nuėmimu — <strong>{formatPrice(example.total)}</strong> už visą
-                  sezoną.{" "}
-                  <Link href="/montavimas#kainos" className="font-bold underline underline-offset-4">
-                    Žiūrėti skaičiavimą
-                  </Link>
-                </span>
+      <section className="container-page py-16 sm:py-20">
+        <SectionHeading
+          eyebrow="Du pasirinkimai"
+          title="Nuoma skaičiuojama už metrą"
+          text="Lempučių nuomos ir darbo dalys pateikiamos atskirai. Konkretaus objekto ilgį ir galutinį pasiūlymą suderiname prieš užsakymą."
+        />
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
+          {(["xp", "llinks"] as LightSeries[]).map((series) => (
+            <article
+              id={series}
+              key={series}
+              className="scroll-mt-28 rounded-[2rem] border border-sand bg-white p-7 sm:p-10"
+            >
+              <p className="text-sm font-bold text-glow-deep">
+                {series === "llinks"
+                  ? "Komercinės klasės profesionalios LED"
+                  : "Aukščiausios kokybės LED"}
               </p>
-              <Link href={productHref(light)} className="btn btn-primary mt-6 w-full">
-                Užsakyti nuomą
+              <h2 className="mt-2 text-3xl font-semibold text-pine-900">
+                {seriesNames[series]} lauko girliandos
+              </h2>
+              <p className="mt-3 text-stone">
+                Šiltai baltas apšvietimas jūsų pastato ar aplinkos kontūrams.
+              </p>
+              <p className="mt-7">
+                <strong className="font-display text-5xl text-pine-900">
+                  {formatPrice(pricing.rentalPerMeter[series])}
+                </strong>
+                <span className="ml-2 text-stone">/ m nuomai sezonui</span>
+              </p>
+              <p className="mt-3 text-sm text-stone">
+                Montavimas ir nuėmimas po sezono su mūsų lemputėmis —{" "}
+                {formatPrice(pricing.installPerMeter)}/m. Nuėmimas jau
+                įskaičiuotas į darbo tarifą.
+              </p>
+              <Link
+                href={inquiryHref(
+                  ["Lempučių nuoma", INSTALLATION_SERVICE],
+                  `Domina ${seriesNames[series]} lempučių nuoma ir montavimas su nuėmimu po sezono. Prašau pasiūlymo mano objektui.`,
+                )}
+                className="btn btn-primary mt-7"
+              >
+                Gauti nuomos pasiūlymą
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Link>
-            </div>
-          </div>
+            </article>
+          ))}
         </div>
       </section>
-
+      <section className="bg-cream py-16">
+        <div className="container-page grid gap-5 sm:grid-cols-3">
+          {[
+            {
+              icon: CalendarCheck,
+              title: "Visam sezonui",
+              text: "Nuomos laiką ir darbų datas suderiname su jumis.",
+            },
+            {
+              icon: Wrench,
+              title: "Montuojame ir nuimame",
+              text: "Darbo tarifas apima visą kabinimo ir nuėmimo ciklą.",
+            },
+            {
+              icon: PackageX,
+              title: "Pasiimame po sezono",
+              text: "Nuomotas girliandas grąžinate sutarta tvarka.",
+            },
+          ].map(({ icon: Icon, title, text }) => (
+            <div key={title} className="rounded-3xl bg-white p-7">
+              <Icon className="size-7 text-glow-deep" aria-hidden="true" />
+              <h3 className="mt-4 text-xl font-semibold text-pine-900">
+                {title}
+              </h3>
+              <p className="mt-2 text-stone">{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
       <FAQ faqs={rentalFaqs} title="Klausimai apie nuomą" />
-      <ServiceArea what="Kalėdines lemputes nuomojame" />
-      <ContactSection defaultServices={["Lempučių nuoma"]} />
+      <ServiceArea what="Kalėdines lemputes nuomojame ir montuojame" />
+      <ContactSection
+        defaultServices={["Lempučių nuoma", INSTALLATION_SERVICE]}
+      />
     </>
   );
 }
