@@ -49,6 +49,16 @@ test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąr
     assert.equal(schema.offers.price, price.toFixed(2));
     assert.equal(schema.offers.availability, "https://schema.org/InStock");
     assert.equal(schema.offers.priceCurrency, "EUR");
+    assert.equal(schema.offers.hasMerchantReturnPolicy.merchantReturnDays, 14);
+    assert.equal(
+      schema.offers.hasMerchantReturnPolicy.returnFees,
+      "https://schema.org/ReturnFeesCustomerResponsibility",
+    );
+    assert.equal(schema.offers.shippingDetails?.shippingRate.value, 0);
+    assert.equal(
+      schema.offers.shippingDetails?.shippingDestination.addressCountry,
+      "LT",
+    );
     assert.equal(getProduct(id, "rent"), undefined);
   }
 });

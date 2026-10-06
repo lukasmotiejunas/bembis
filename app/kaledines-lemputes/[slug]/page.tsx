@@ -7,6 +7,7 @@ import {
   getProductBySlug,
   productHref,
   products,
+  returnPolicy,
   seriesNames,
 } from "@/lib/data/products";
 import { pricing } from "@/lib/data/pricing";
@@ -127,6 +128,10 @@ export default async function ProductPage(
               <p className="mt-2 text-sm text-stone">
                 Nemokamas prekių pristatymas. Laiką suderiname su jumis.
                 Lemputės lieka jums.
+              </p>
+              <p className="mt-1 text-sm text-stone">
+                Prekes galite grąžinti per {returnPolicy.days} dienų,
+                grąžinimo išlaidas apmoka pirkėjas.
               </p>
               <div className="mt-5">
                 <ProductPurchase product={product} />

@@ -2,6 +2,8 @@ import { LightSeries, Product, ProductKind, PurchaseMode } from "../types";
 import { formatMeters } from "../format";
 
 export const guarantee = { years: 2, label: "2 metų garantija" };
+/** Vartotojo patvirtinta: pirktas prekes galima grąžinti per 14 d., grąžinimo išlaidas apmoka pirkėjas. */
+export const returnPolicy = { days: 14 };
 export const seriesNames: Record<LightSeries, string> = {
   xp: "XP",
   llinks: "LLinks",

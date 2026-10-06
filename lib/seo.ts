@@ -1,7 +1,7 @@
 // SEO helpers: per-page metadata and structured data (schema.org JSON-LD) that tells Google
 // what the business offers, where and for how much.
 import type { Metadata } from "next";
-import { productHref, products } from "./data/products";
+import { productHref, products, returnPolicy } from "./data/products";
 import { pricing } from "./data/pricing";
 import { Product } from "./types";
 import { activeSocials, site } from "./site";
@@ -124,6 +124,33 @@ export function breadcrumbSchema(items: { name: string; path: string }[]) {
   };
 }
 
+const merchantReturnPolicy = {
+  "@type": "MerchantReturnPolicy",
+  applicableCountry: "LT",
+  returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
+  merchantReturnDays: returnPolicy.days,
+  returnMethod: "https://schema.org/ReturnByMail",
+  returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
+};
+
+// Pristatome tik Vilniaus apskrityje (ISO 3166-2 LT-VL).
+const shippingDetails =
+  pricing.deliveryFee === null
+    ? undefined
+    : {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: pricing.deliveryFee,
+          currency: "EUR",
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "LT",
+          addressRegion: "VL",
+        },
+      };
+
 export function productSchema(product: Product) {
   // Pardavimo kainos ir prekių gavimas patvirtinti 2026-10-06.
   return {
@@ -148,6 +175,8 @@ export function productSchema(product: Product) {
       priceCurrency: "EUR",
       availability: "https://schema.org/InStock",
       seller: { "@id": BUSINESS_ID },
+      hasMerchantReturnPolicy: merchantReturnPolicy,
+      ...(shippingDetails ? { shippingDetails } : {}),
     },
   };
 }
