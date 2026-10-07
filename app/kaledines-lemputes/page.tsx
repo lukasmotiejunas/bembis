@@ -3,7 +3,9 @@ import { ArrowRight } from "lucide-react";
 import { GuaranteeBadge } from "@/components/Guarantee";
 import JsonLd from "@/components/JsonLd";
 import LightsSection from "@/components/sections/LightsSection";
+import LightSetBuilder from "@/components/shop/LightSetBuilder";
 import PageHeader from "@/components/ui/PageHeader";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { breadcrumbSchema, catalogSchema, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -31,8 +33,18 @@ export default function ShopPage() {
         text="XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Pardavimo kainos nurodytos už vienetą arba visą komplektą."
       >
         <GuaranteeBadge dark className="px-4 py-2 text-sm" />
+        <div className="mt-10">
+          <LightSetBuilder />
+        </div>
       </PageHeader>
 
+      <section id="katalogas" className="container-page scroll-mt-28 pt-16 sm:pt-24">
+        <SectionHeading
+          eyebrow="Visas katalogas"
+          title="Arba išsirinkite patys"
+          text="Motininės girliandos, papildomos sekcijos ir komplektai atskirai — sudėkite krepšelį savo nuožiūra."
+        />
+      </section>
       <LightsSection withHeading={false} />
 
       <section className="container-page pb-20 sm:pb-28">

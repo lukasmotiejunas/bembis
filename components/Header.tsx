@@ -11,6 +11,7 @@ import CartDrawer from "./CartDrawer";
 
 const nav = [
   { href: "/montavimas", label: "Montavimas" },
+  { href: "/kiek-kainuoja", label: "Kiek kainuoja" },
   { href: "/kaledines-lemputes", label: "Dekoracijos" },
   { href: "/kontaktai", label: "Kontaktai" },
 ];

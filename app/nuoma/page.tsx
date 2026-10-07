@@ -37,7 +37,7 @@ export default function RentalPage() {
         title="Kalėdinis apšvietimas be sandėliavimo rūpesčių"
         text="Pasirinkite XP arba komercinės klasės LLinks lauko LED. Atvykstame pas jus, papuošiame ir sumontuojame, o po sezono apšvietimą nuimame bei pasiimame."
       >
-        <Link href="/montavimas#kainos" className="btn btn-primary">
+        <Link href="/kiek-kainuoja" className="btn btn-primary">
           Palyginti standartinę sąmatą
           <ArrowRight className="size-4" aria-hidden="true" />
         </Link>

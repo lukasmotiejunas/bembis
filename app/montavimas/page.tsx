@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
+  Calculator,
   Clock,
   Lightbulb,
   Phone,
@@ -13,7 +14,6 @@ import { phoneHref, site } from "@/lib/site";
 import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
 import SeasonSteps from "@/components/sections/SeasonSteps";
-import PriceExample from "@/components/sections/PriceExample";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
 import DecorAreas from "@/components/sections/DecorAreas";
@@ -148,13 +148,18 @@ export default function InstallationPage() {
             </p>
           </div>
         </div>
-        <p className="mt-4 text-sm text-stone">
-          Standartiniai darbo tarifai. Galutinė kaina priklauso nuo konkretaus
-          projekto ir suderinama pasiūlyme.
-        </p>
+        <div className="mt-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-stone">
+            Standartiniai darbo tarifai. Galutinė kaina priklauso nuo konkretaus
+            projekto ir suderinama pasiūlyme.
+          </p>
+          <Link href="/kiek-kainuoja" className="btn btn-dark shrink-0">
+            <Calculator className="size-4" aria-hidden="true" />
+            Apskaičiuoti savo namo kainą
+          </Link>
+        </div>
       </section>
       <DecorAreas />
-      <PriceExample />
       <SeasonSteps />
       <FAQ />
       <ServiceArea what="Kalėdines lemputes montuojame ir nuimame" />

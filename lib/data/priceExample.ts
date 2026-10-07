@@ -11,6 +11,27 @@ export const priceExample = {
   choice: "xp" as EstimateChoice,
 };
 
+export const estimateOptions: {
+  value: EstimateChoice;
+  label: string;
+  text: string;
+}[] = [
+  { value: "xp", label: "XP nuoma", text: "Aukščiausios kokybės lauko LED" },
+  {
+    value: "llinks",
+    label: "LLinks nuoma",
+    text: "Komercinės klasės profesionalios LED",
+  },
+  { value: "client", label: "Jūsų lemputės", text: "Kabiname jūsų turimas lemputes" },
+];
+
+/** Tarifai už metrą: lempučių nuoma ir darbas (kabinimas kartu su nuėmimu po sezono). */
+export function estimateRates(choice: EstimateChoice) {
+  return choice === "client"
+    ? { rental: 0, work: pricing.clientLightsPerMeter }
+    : { rental: pricing.rentalPerMeter[choice], work: pricing.installPerMeter };
+}
+
 export function buildEstimate(
   choice: EstimateChoice = priceExample.choice,
   width = priceExample.width,
@@ -27,11 +48,7 @@ export function buildEstimate(
     return null;
   const perimeter = money(2 * (width + length));
   const meters = money(perimeter + extraMeters);
-  const rentalRate = choice === "client" ? 0 : pricing.rentalPerMeter[choice];
-  const workRate =
-    choice === "client"
-      ? pricing.clientLightsPerMeter
-      : pricing.installPerMeter;
+  const { rental: rentalRate, work: workRate } = estimateRates(choice);
   const rentalTotal = money(meters * rentalRate);
   const workTotal = money(meters * workRate);
   const total = money(rentalTotal + workTotal);

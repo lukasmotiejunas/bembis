@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     page("/"),
     page("/montavimas"),
+    page("/kiek-kainuoja"),
     page("/nuoma"),
     page("/kaledines-lemputes"),
     ...products.map((p) => page(productHref(p))),

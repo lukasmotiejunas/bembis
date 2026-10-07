@@ -6,6 +6,7 @@ import Logo from "./Logo";
 
 const links = [
   { href: "/montavimas", label: "Kalėdinių lempučių montavimas" },
+  { href: "/kiek-kainuoja", label: "Kiek kainuoja" },
   { href: "/nuoma", label: "Kalėdinių lempučių nuoma" },
   { href: "/kaledines-lemputes", label: "Kalėdinės lemputės" },
   { href: productHref(productFor("buy")), label: "Pirkti lemputes" },

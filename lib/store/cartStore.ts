@@ -1,5 +1,5 @@
 "use client";
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { getProduct } from "../data/products";
@@ -109,6 +109,11 @@ export const useCartStore = create<CartStore>()(
 
 /** False on the server and until the saved cart has been loaded from this browser. */
 export function useCartHydrated() {
+  // <CartHydration /> normally loads the cart; this covers a store that was never loaded
+  // (e.g. recreated by a dev hot reload), which would otherwise leave the page waiting forever.
+  useEffect(() => {
+    if (!useCartStore.persist.hasHydrated()) useCartStore.persist.rehydrate();
+  }, []);
   return useSyncExternalStore(
     (onChange) => useCartStore.persist.onFinishHydration(onChange),
     () => useCartStore.persist.hasHydrated(),

@@ -10,6 +10,8 @@ import { formatPrice } from "../lib/format";
 import { cartTotals, resolveLines } from "../lib/store/cartStore";
 import { productSchema } from "../lib/seo";
 import { validateInquiry } from "../lib/inquiry";
+import { buildLightSet, lightSetItems } from "../lib/data/lightSet";
+import { plural } from "../lib/format";
 
 const expected = [
   ["61030", 7.5, 38.99],
@@ -262,4 +264,46 @@ test("Patvirtinto pristatymo atveju tikslus užsakymas išlaiko Stripe kainas ir
   } finally {
     pricing.deliveryFee = originalFee;
   }
+});
+
+test("Rinkinys: viena motininė ir reikiamas papildomų sekcijų kiekis, komplektas tik kai pigiau", () => {
+  const ids = (set: ReturnType<typeof buildLightSet>) =>
+    set!.lines.map((l) => [l.product.id, l.quantity]);
+  // 7,5 m — tik motininė; 30 m — motininė ir 3 papildomos (24,99 + 3 × 17,99).
+  assert.deepEqual(ids(buildLightSet("xp", 7.5)), [["63100", 1]]);
+  const thirty = buildLightSet("xp", 30)!;
+  assert.deepEqual(ids(thirty), [["63100", 1], ["63110", 3]]);
+  assert.equal(thirty.total, 78.96);
+  assert.equal(thirty.savings, 0);
+  // 32 m apvalinama iki 5 sekcijų (37,5 m): 24,99 + 4 × 17,99 pigiau nei 45 m komplektas.
+  const rounded = buildLightSet("xp", 32)!;
+  assert.equal(rounded.meters, 37.5);
+  assert.equal(rounded.total, 96.95);
+  // 45 m: komplektas (97,99) pigesnis nei 24,99 + 5 × 17,99 = 114,94.
+  const kit = buildLightSet("xp", 45)!;
+  assert.deepEqual(ids(kit), [["xp-45", 1]]);
+  assert.equal(kit.savings, 16.95);
+  // 50 m = 7 sekcijos: 45 m komplektas + 1 papildoma (97,99 + 17,99).
+  assert.deepEqual(ids(buildLightSet("xp", 50)), [["xp-45", 1], ["63110", 1]]);
+  assert.equal(buildLightSet("xp", 50)!.total, 115.98);
+  // LLinks 100 m = 14 sekcijų: 60 m komplektas + 6 papildomos (209,99 + 6 × 31,99).
+  const llinks = buildLightSet("llinks", 100)!;
+  assert.deepEqual(ids(llinks), [["llinks-60", 1], ["61040", 6]]);
+  assert.equal(llinks.total, 401.93);
+  assert.equal(llinks.meters, 105);
+  assert.equal(llinks.leds, 700);
+  // Krepšelis ir serveris perskaičiuoja tą pačią sumą.
+  const order = buildOrder(lightSetItems(llinks), services);
+  assert.equal(order.productsTotal, llinks.total);
+  assert.equal(validateCheckout({ ...input, items: lightSetItems(llinks) }).ok, true);
+  // Ilgiausias rinkinys telpa į 99 vienetų eilutę; ribinės reikšmės atmetamos.
+  const longest = buildLightSet("xp", 750)!;
+  assert.ok(longest.lines.every((l) => l.quantity <= 99));
+  assert.equal(longest.sections, 100);
+  for (const m of [0, -1, NaN, Infinity, 750.1])
+    assert.equal(buildLightSet("xp", m), null);
+  assert.equal(
+    [1, 2, 5, 10, 11, 12, 21, 22, 99].map((n) => plural(n, "a", "b", "c")).join(""),
+    "abbcccabb",
+  );
 });

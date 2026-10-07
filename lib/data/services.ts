@@ -31,11 +31,30 @@ export const seasonSteps = [
     text: "Montavimo tarifas apima ir nuėmimą po sezono. Nuomotas lemputes pasiimame, jūsų lemputės lieka jums.",
   },
 ];
+// Klausimai, kurie kartojasi keliuose puslapiuose.
+const buyVsRentFaq = {
+  q: "Kuo skiriasi pirkimas nuo nuomos?",
+  a: "XP ir komercinės klasės LLinks girliandas galite įsigyti 7,5 m sekcijomis arba 45 m ir 60 m komplektais. Jos lieka jums. Nuoma skaičiuojama pagal dekoruojamo kontūro ilgį ir suderinama individualiu pasiūlymu; po sezono nuomotas lemputes pasiimame.",
+};
+const ownLightsFaq = {
+  q: "Ar galite papuošti mano turimomis lemputėmis?",
+  a: `Taip. Kabinimo ir nuėmimo po sezono standartinis tarifas su kliento lemputėmis yra ${formatPrice(pricing.clientLightsPerMeter)}/m. Prieš darbus aptariame jų tinkamumą ir konkretaus objekto sąlygas.`,
+};
+const areaFaq = {
+  q: "Kur dirbate?",
+  a: `Vilniuje ir Vilniaus apskrityje: ${site.serviceTowns.join(", ")}. Dėl konkretaus objekto susisiekite su mumis.`,
+};
+const removalFaq = {
+  q: "Ar nuėmimas apmokestinamas atskirai?",
+  a: "Ne. Nurodytas darbo tarifas apima kabinimą ir nuėmimą po sezono. Lempučių nuomos dalis pateikiama atskirai nuo darbų.",
+};
+const seriesFaq = {
+  q: "Kuo skiriasi XP ir LLinks?",
+  a: "Kataloge LLinks nurodyta kaip komercinės klasės profesionali lauko LED sistema, XP — kaip aukščiausios kokybės lauko LED serija. Abi serijos yra šiltai baltos. Padėsime pasirinkti pagal jūsų objektą.",
+};
+
 export const faqs = [
-  {
-    q: "Kuo skiriasi pirkimas nuo nuomos?",
-    a: "XP ir komercinės klasės LLinks girliandas galite įsigyti 7,5 m sekcijomis arba 45 m ir 60 m komplektais. Jos lieka jums. Nuoma skaičiuojama pagal dekoruojamo kontūro ilgį ir suderinama individualiu pasiūlymu; po sezono nuomotas lemputes pasiimame.",
-  },
+  buyVsRentFaq,
   {
     q: "Kokia garantija suteikiama lemputėms?",
     a: "Lemputėms suteikiame 2 metų garantiją. Pastebėję gedimą, susisiekite su mumis.",
@@ -48,18 +67,12 @@ export const faqs = [
     q: "Kada montuojate ir nuimate?",
     a: "Montavimo laiką sutariame su jumis, o po šventinio sezono apšvietimą nuimame. Konkretų grafiką aptariame suderindami pasiūlymą.",
   },
-  {
-    q: "Ar galite papuošti mano turimomis lemputėmis?",
-    a: `Taip. Kabinimo ir nuėmimo po sezono standartinis tarifas su kliento lemputėmis yra ${formatPrice(pricing.clientLightsPerMeter)}/m. Prieš darbus aptariame jų tinkamumą ir konkretaus objekto sąlygas.`,
-  },
+  ownLightsFaq,
   {
     q: "Ar papildomą sekciją galima naudoti kaip pradinį rinkinį?",
     a: "Papildoma sekcija skirta papildyti tos pačios serijos motininę girliandą. Pradiniam rinkiniui rinkitės motininę girliandą arba komplektą, kuriame ji jau yra. XP ir LLinks kataloge išskirtos atskirai.",
   },
-  {
-    q: "Kur dirbate?",
-    a: `Vilniuje ir Vilniaus apskrityje: ${site.serviceTowns.join(", ")}. Dėl konkretaus objekto susisiekite su mumis.`,
-  },
+  areaFaq,
 ];
 export const showcase = [
   {
@@ -120,16 +133,21 @@ export const rentalFaqs = [
     q: "Kiek kainuoja lempučių nuoma?",
     a: `XP lauko LED nuoma kainuoja ${formatPrice(pricing.rentalPerMeter.xp)}/m, komercinės klasės LLinks — ${formatPrice(pricing.rentalPerMeter.llinks)}/m. Tai nuomos tarifas už dekoruojamą metrą. Kabinimas ir nuėmimas su mūsų lemputėmis — ${formatPrice(pricing.installPerMeter)}/m. Konkrečiam objektui suderiname galutinį pasiūlymą.`,
   },
-  {
-    q: "Ar nuėmimas apmokestinamas atskirai?",
-    a: "Ne. Nurodytas darbo tarifas apima kabinimą ir nuėmimą po sezono. Lempučių nuomos dalis pateikiama atskirai nuo darbų.",
-  },
+  removalFaq,
   {
     q: "Ar galiu nuomotis be montavimo?",
     a: "Parašykite, kokio apšvietimo ir ilgio reikia. Atskirai suderinsime nuomos, pristatymo ir grąžinimo sąlygas. Galutinį nuomos pasiūlymą pateiksime pagal jūsų poreikį.",
   },
+  seriesFaq,
+];
+export const pricingFaqs = [
   {
-    q: "Kuo skiriasi XP ir LLinks?",
-    a: "Kataloge LLinks nurodyta kaip komercinės klasės profesionali lauko LED sistema, XP — kaip aukščiausios kokybės lauko LED serija. Abi serijos yra šiltai baltos. Padėsime pasirinkti pagal jūsų objektą.",
+    q: "Ar skaičiuoklės kaina yra galutinė?",
+    a: "Skaičiuoklė rodo standartinę kainą pagal viešus tarifus. Galutinę darbo kainą ir sąlygas suderiname įvertinę konkretų objektą — atvažiuojame į nemokamą apžiūrą, išmatuojame ir pasakome tikslią kainą.",
   },
+  removalFaq,
+  seriesFaq,
+  ownLightsFaq,
+  buyVsRentFaq,
+  areaFaq,
 ];
