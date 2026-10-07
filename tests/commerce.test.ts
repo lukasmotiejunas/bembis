@@ -72,19 +72,24 @@ test("12 × 12 yra 48 m perimetras; vienas darbo tarifas jau apima nuėmimą", (
   const ll = buildEstimate("llinks")!;
   assert.equal(ll.perimeter, 48);
   assert.equal(ll.meters, 48);
-  assert.equal(ll.rentalTotal, 215.52);
+  assert.equal(ll.rentalTotal, 239.52);
   assert.equal(ll.workTotal, 191.52);
-  assert.equal(ll.total, 407.04);
-  assert.equal(buildEstimate("xp")!.total, 335.04);
+  assert.equal(ll.total, 431.04);
+  assert.equal(buildEstimate("xp")!.total, 359.04);
+  const sheetExample = buildEstimate()!;
+  assert.equal(sheetExample.choice, "xp");
+  assert.equal(sheetExample.rentalTotal, 167.52);
+  assert.equal(sheetExample.workTotal, 191.52);
+  assert.equal(sheetExample.total, 359.04);
   const own = buildEstimate("client")!;
   assert.equal(own.rentalTotal, 0);
   assert.equal(own.workTotal, 287.52);
   assert.equal(own.total, 287.52);
   const extra = buildEstimate("xp", 12, 12, 1)!;
   assert.equal(extra.meters, 49);
-  assert.equal(extra.rentalTotal, 146.51);
+  assert.equal(extra.rentalTotal, 171.01);
   assert.equal(extra.workTotal, 195.51);
-  assert.equal(extra.total, 342.02);
+  assert.equal(extra.total, 366.52);
 });
 test("Sąmatos ribinės reikšmės ir centų apvalinimas", () => {
   for (const [width, length, extra] of [
@@ -100,9 +105,9 @@ test("Sąmatos ribinės reikšmės ir centų apvalinimas", () => {
   assert.equal(buildEstimate("other" as EstimateChoice), null);
   const small = buildEstimate("xp", 0.1, 0.1)!;
   assert.equal(small.perimeter, 0.4);
-  assert.equal(small.rentalTotal, 1.2);
+  assert.equal(small.rentalTotal, 1.4);
   assert.equal(small.workTotal, 1.6);
-  assert.equal(small.total, 2.8);
+  assert.equal(small.total, 3);
   assert.equal(formatPrice(38.99), "38,99\u00a0€");
 });
 test("Krepšelis ir serveris vienodai skaičiuoja visus vienetus centais", () => {

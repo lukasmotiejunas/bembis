@@ -6,6 +6,7 @@ import {
   buildEstimate,
   describeEstimate,
   EstimateChoice,
+  priceExample,
 } from "@/lib/data/priceExample";
 import { pricing } from "@/lib/data/pricing";
 import { formatMeters, formatPrice } from "@/lib/format";
@@ -31,10 +32,10 @@ const choices: { value: EstimateChoice; label: string; text: string }[] = [
 ];
 
 export default function PriceExample() {
-  const [width, setWidth] = useState("12");
-  const [length, setLength] = useState("12");
-  const [extra, setExtra] = useState("0");
-  const [choice, setChoice] = useState<EstimateChoice>("llinks");
+  const [width, setWidth] = useState(String(priceExample.width));
+  const [length, setLength] = useState(String(priceExample.length));
+  const [extra, setExtra] = useState(String(priceExample.extraMeters));
+  const [choice, setChoice] = useState<EstimateChoice>(priceExample.choice);
   const estimate = buildEstimate(
     choice,
     Number(width),

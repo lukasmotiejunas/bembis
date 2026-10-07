@@ -2,8 +2,13 @@ import { formatPrice } from "../format";
 import { site } from "../site";
 import { pricing } from "./pricing";
 import { buildEstimate } from "./priceExample";
+import { seriesNames } from "./products";
 
-const example = buildEstimate("llinks")!;
+const example = buildEstimate()!;
+const exampleLights =
+  example.choice === "client"
+    ? "jūsų lemputėmis"
+    : `${seriesNames[example.choice]} nuoma`;
 export const seasonSteps = [
   {
     when: "Prieš sezoną",
@@ -37,7 +42,7 @@ export const faqs = [
   },
   {
     q: "Kiek kainuoja montavimas ir nuėmimas?",
-    a: `Naudojant mūsų lemputes standartinis kabinimo ir nuėmimo po sezono tarifas yra ${formatPrice(pricing.installPerMeter)}/m, naudojant jūsų lemputes — ${formatPrice(pricing.clientLightsPerMeter)}/m. Pavyzdžiui, 12 × 12 m pastato 48 m kontūras su LLinks nuoma ir darbais kainuoja ${formatPrice(example.total)}. Galutinę darbo kainą suderiname pagal objektą.`,
+    a: `Naudojant mūsų lemputes standartinis kabinimo ir nuėmimo po sezono tarifas yra ${formatPrice(pricing.installPerMeter)}/m, naudojant jūsų lemputes — ${formatPrice(pricing.clientLightsPerMeter)}/m. Pavyzdžiui, 12 × 12 m pastato 48 m kontūras su ${exampleLights} ir darbais kainuoja ${formatPrice(example.total)}. Galutinę darbo kainą suderiname pagal objektą.`,
   },
   {
     q: "Kada montuojate ir nuimate?",

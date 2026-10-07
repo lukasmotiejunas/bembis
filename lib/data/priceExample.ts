@@ -8,7 +8,7 @@ export const priceExample = {
   width: 12,
   length: 12,
   extraMeters: 0,
-  choice: "llinks" as EstimateChoice,
+  choice: "xp" as EstimateChoice,
 };
 
 export function buildEstimate(
