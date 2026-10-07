@@ -7,6 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileContactBar from "@/components/MobileContactBar";
 import CartHydration from "@/components/CartHydration";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 import { site } from "@/lib/site";
 
 // Self-hosted as one file: Google's split version renders "ū" with the macron over the next letter
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main>{children}</main>
         <Footer />
         <MobileContactBar />
+        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} hostname={new URL(site.url).hostname} />
       </body>
     </html>
   );

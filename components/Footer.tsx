@@ -3,6 +3,7 @@ import { Mail, MapPin, Phone } from "lucide-react";
 import { productFor, productHref } from "@/lib/data/products";
 import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
 import Logo from "./Logo";
+import { AnalyticsPreferencesButton } from "./GoogleAnalytics";
 
 const links = [
   { href: "/montavimas", label: "Kalėdinių lempučių montavimas" },
@@ -82,8 +83,9 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-snow/10">
-        <div className="container-page py-6 text-sm text-snow/50">
-          © {new Date().getFullYear()} {site.name}. Visos teisės saugomos.
+        <div className="container-page flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-snow/50">
+          <span>© {new Date().getFullYear()} {site.name}. Visos teisės saugomos.</span>
+          <AnalyticsPreferencesButton measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} />
         </div>
       </div>
     </footer>

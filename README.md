@@ -46,6 +46,19 @@ Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami 
 - Dalinimosi paveikslėlis — `app/opengraph-image.png`.
 - Pagrindinis adresas — `site.url` faile `lib/site.ts` (`https://www.kaledudekoras.lt`). Miestai, kuriuose dirbate — `site.serviceTowns`.
 
+## Google Analytics 4
+
+`NEXT_PUBLIC_GA_MEASUREMENT_ID` nustatykite į šios svetainės Web duomenų srauto ID (`G-…`) savo `.env.local` ir Vercel **Production** aplinkoje. ID yra viešas, o Next.js jį įterpia surinkimo metu, todėl po pakeitimo reikalingas naujas diegimas. Vietinio serverio ir Vercel peržiūros adresų apsilankymai nesiunčiami — matuojamas tik `site.url` domenas.
+
+- Analytics įkeliamas tik lankytojui paspaudus **Leisti statistiką**. **Tik būtini** neįkelia Google žymos.
+- Puslapio apačioje yra **Slapukų nustatymai**, o `/slapukai` paaiškina šį pasirinkimą. Atsisakius jau įjungtos statistikos, žyma išjungiama, Analytics slapukai pašalinami ir puslapis perkraunamas.
+- Pasirinkimas bei statistikos slapukai galioja iki 180 dienų. Reklamos sutikimai visada išjungti.
+- `page_view` siunčiamas vieną kartą atidarius puslapį ir pereinant į kitą puslapį per Next.js navigaciją. URL parametrai ir fragmentai pašalinami, kad nepatektų mokėjimų ID ar kontaktiniai duomenys. Formų turinys nesiunčiamas.
+- GA4 Web duomenų srauto **Enhanced measurement** išjunkite: aplikacija pati siunčia puslapių peržiūras. Tai apsaugo nuo dvigubo SPA puslapių skaičiavimo ir automatinio formų bei kitų nepageidaujamų įvykių rinkimo.
+- Google Analytics **Realtime** rodo naujus apsilankymus; **Reports → Engagement → Pages and screens** — aplankytus puslapius. Istorinių ataskaitų duomenys gali pasirodyti vėliau. Lankytojų skaičiavimas apima sutikusius lankytojus ir gali būti ribojamas naršyklių blokavimo priemonių.
+
+Patikra: `npm run test:analytics`, `npm run lint`, `npm run build`. Naršyklėje patikrinkite pasirinkimo įsiminimą, atsisakymą, sutikimo atšaukimą ir perėjimus tarp puslapių; GA4 realiuoju laiku patikrinkite, kad įvykiai patenka į tinkamą nuosavybę.
+
 ## Mokėjimai ir užsakymai
 
 ```
