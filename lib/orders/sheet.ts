@@ -13,6 +13,14 @@ const vilniusTime = new Intl.DateTimeFormat("lt-LT", {
 
 export const formatVilnius = (date: Date) => vilniusTime.format(date);
 
+function deliveryText(m: Record<string, string>) {
+  if (m.installation === "yes") return "Atvešime montavimo metu";
+  if (m.delivery === "parcel") return `Omniva paštomatas: ${m.parcel_machine ?? ""}`;
+  if (m.delivery === "courier")
+    return `Kurjeris: ${[m.address, m.city].filter(Boolean).join(", ")}`;
+  return "";
+}
+
 /** One Google Sheet row (column name → value) for a paid Stripe Checkout session. */
 export function sheetFieldsFromSession(session: Stripe.Checkout.Session): Record<string, string | number> {
   const m = session.metadata ?? {};
@@ -32,6 +40,7 @@ export function sheetFieldsFromSession(session: Stripe.Checkout.Session): Record
     Pastabos: m.notes ?? "",
     "Suma, €": (session.amount_total ?? 0) / 100,
     "Stripe ID": session.id,
+    Pristatymas: deliveryText(m),
   };
 }
 

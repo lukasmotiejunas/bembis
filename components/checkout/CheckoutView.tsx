@@ -9,6 +9,7 @@ import {
   Info,
   Loader2,
   Lock,
+  MapPin,
   Minus,
   Plus,
   Send,
@@ -18,26 +19,36 @@ import {
   Wrench,
 } from "lucide-react";
 import { sendOrderInquiry, startCheckout } from "@/app/checkout/actions";
+import { DeliveryMethod, deliveryOptions } from "@/lib/data/delivery";
 import { pricing } from "@/lib/data/pricing";
 import { formatMeters, formatPrice } from "@/lib/format";
 import { CustomerDetails } from "@/lib/orders/checkout";
 import { buildOrder } from "@/lib/orders/order";
 import { phoneHref, site } from "@/lib/site";
 import { useCartHydrated, useCartStore } from "@/lib/store/cartStore";
+import ParcelMachinePicker from "./ParcelMachinePicker";
+
+type DeliveryChoice = DeliveryMethod | "installation";
+const deliveryIcons = { parcel: MapPin, courier: Truck, installation: Wrench };
 
 function Section({
   step,
+  id,
   title,
   text,
   children,
 }: {
   step: number;
+  id?: string;
   title: string;
   text?: string;
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-[2rem] border border-sand bg-white p-6 sm:p-8">
+    <section
+      id={id}
+      className="scroll-mt-28 rounded-[2rem] border border-sand bg-white p-6 sm:p-8"
+    >
       <div className="flex items-start gap-4">
         <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-pine-900 text-sm font-extrabold text-snow">
           {step}
@@ -85,8 +96,10 @@ export default function CheckoutView({
     items,
     services,
     customer,
+    delivery,
     setService,
     setCustomerField,
+    setDelivery,
     updateQuantity,
     removeItem,
   } = useCartStore();
@@ -101,7 +114,24 @@ export default function CheckoutView({
         <div className="h-72 animate-pulse rounded-[2rem] bg-cream" />
       </div>
     );
-  const order = buildOrder(items, services);
+  const order = buildOrder(
+    items,
+    services,
+    delivery.method
+      ? { method: delivery.method, parcelMachine: delivery.parcelMachine }
+      : null,
+  );
+  const choice: DeliveryChoice | null = order.serviceRequested
+    ? "installation"
+    : delivery.method;
+  const choose = (value: DeliveryChoice) => {
+    const installing = value === "installation";
+    setService("installation", installing);
+    setService("removal", installing);
+    if (!installing) setDelivery({ method: value });
+  };
+  // Parcel machines need no home address; couriers and our installers do.
+  const needsAddress = choice !== "parcel";
   if (sent)
     return (
       <div className="container-page pb-24">
@@ -114,8 +144,9 @@ export default function CheckoutView({
             Užsakymo užklausą gavome
           </h2>
           <p className="mt-3 max-w-xl text-lg text-stone">
-            Susisieksime ir suderinsime galutinį pasiūlymą, pristatymą bei
-            pageidaujamus darbus. Šiame žingsnyje mokėjimas neatliktas.
+            Susisieksime ir suderinsime montavimo laiką bei galutinį
+            pasiūlymą. Lemputes atvešime montavimo metu. Šiame žingsnyje
+            mokėjimas neatliktas.
           </p>
           <Link href="/kaledines-lemputes" className="btn btn-dark mt-7">
             Grįžti į katalogą
@@ -157,6 +188,17 @@ export default function CheckoutView({
     e.preventDefault();
     const website = String(new FormData(e.currentTarget).get("website") ?? "");
     setError(null);
+    if (order.deliveryMissing) {
+      setError(
+        delivery.method === "parcel"
+          ? "Pasirinkite Omniva paštomatą."
+          : "Pasirinkite pristatymo būdą.",
+      );
+      document
+        .getElementById("pristatymas")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     const selectedItems = order.products.map((line) => ({
       productId: line.productId!,
       mode: line.mode!,
@@ -178,6 +220,10 @@ export default function CheckoutView({
             items: selectedItems,
             services,
             customer,
+            delivery: {
+              method: delivery.method,
+              parcelMachineId: delivery.parcelMachine?.id ?? "",
+            },
           });
           if ("url" in result) {
             setRedirecting(true);
@@ -303,52 +349,99 @@ export default function CheckoutView({
         </Section>
         <Section
           step={2}
-          title="Montavimas ir pristatymas"
-          text="Individualaus objekto darbų ir pristatymo sąlygas suderiname pasiūlyme."
+          id="pristatymas"
+          title="Pristatymas"
+          text="Pasirinkite, kaip norite gauti lemputes."
         >
-          <label className="flex cursor-pointer gap-4 rounded-3xl border-2 border-sand p-5 has-checked:border-pine-900">
-            <input
-              type="checkbox"
-              checked={order.serviceRequested}
-              onChange={(e) => {
-                setService("installation", e.target.checked);
-                setService("removal", e.target.checked);
-              }}
-              className="mt-1 size-5 shrink-0 accent-pine-900"
-            />
-            <span>
-              <strong className="flex items-center gap-2 text-lg text-pine-900">
-                <Wrench className="size-5" aria-hidden="true" />
-                Domina montavimas ir nuėmimas
-              </strong>
-              <span className="mt-2 block text-sm text-stone">
-                Standartinis darbo tarifas su mūsų lemputėmis —{" "}
-                {formatPrice(pricing.installPerMeter)}/m, įskaitant nuėmimą po
-                sezono.
-              </span>
-              {order.serviceRequested && (
-                <span className="mt-3 block text-sm font-semibold text-pine-900">
-                  Pagal prekių ilgį: {formatMeters(order.meters)} ×{" "}
-                  {formatPrice(pricing.installPerMeter)}/m ={" "}
-                  {formatPrice(order.installationEstimate)}. Galutinė darbų
-                  kaina bus suderinta pagal objektą.
-                </span>
-              )}
-            </span>
-          </label>
-          <div className="mt-4 flex gap-3 rounded-2xl bg-cream p-4 text-sm text-pine-900">
-            <Truck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
-            <p>
-              {order.deliveryNeedsQuote
-                ? "Pristatymo sąlygas ir kainą suderiname su jumis."
-                : `Prekių pristatymas (${pricing.deliveryArea}) nemokamas. Laiką suderiname su jumis.`}
-            </p>
-          </div>
+          <fieldset className="min-w-0">
+            <legend className="sr-only">Pristatymo būdas</legend>
+            <div className="space-y-3">
+              {(["parcel", "courier", "installation"] as const).map((value) => {
+                const Icon = deliveryIcons[value];
+                const installing = value === "installation";
+                return (
+                  <div
+                    key={value}
+                    className={clsx(
+                      "rounded-3xl border-2 transition-colors",
+                      choice === value
+                        ? "border-pine-900 bg-white"
+                        : "border-sand hover:border-pine-700/50",
+                    )}
+                  >
+                    <label className="flex cursor-pointer items-center gap-3 p-4 sm:gap-4 sm:p-5">
+                      <input
+                        type="radio"
+                        name="delivery"
+                        value={value}
+                        checked={choice === value}
+                        onChange={() => choose(value)}
+                        className="size-5 shrink-0 accent-pine-900"
+                      />
+                      <span className="hidden size-11 shrink-0 items-center justify-center rounded-2xl bg-glow-soft sm:flex">
+                        <Icon className="size-5 text-glow-deep" aria-hidden="true" />
+                      </span>
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-bold text-pine-900">
+                          {installing
+                            ? "Atvešime ir sumontuosime"
+                            : deliveryOptions[value].label}
+                        </span>
+                        <span className="block text-sm text-stone">
+                          {installing
+                            ? `Lemputes atvešime montavimo metu · ${site.serviceArea}`
+                            : deliveryOptions[value].text}
+                        </span>
+                      </span>
+                      <span className="shrink-0 text-right font-bold text-pine-900">
+                        {installing
+                          ? "Nemokamai"
+                          : formatPrice(pricing.delivery[value])}
+                      </span>
+                    </label>
+                    {choice === value && value === "parcel" && (
+                      <div className="border-t border-sand px-4 py-5 sm:px-5">
+                        <ParcelMachinePicker
+                          value={delivery.parcelMachine}
+                          onChange={(parcelMachine) =>
+                            setDelivery({ parcelMachine })
+                          }
+                        />
+                      </div>
+                    )}
+                    {choice === value && installing && (
+                      <div className="border-t border-sand px-4 py-5 text-sm text-stone sm:px-5">
+                        <p>
+                          Darbų tarifas su mūsų lemputėmis —{" "}
+                          {formatPrice(pricing.installPerMeter)}/m, įskaitant
+                          nuėmimą po sezono. Pagal prekių ilgį:{" "}
+                          <strong className="text-pine-900">
+                            {formatMeters(order.meters)} ×{" "}
+                            {formatPrice(pricing.installPerMeter)}/m ={" "}
+                            {formatPrice(order.installationEstimate)}
+                          </strong>
+                          .
+                        </p>
+                        <p className="mt-2">
+                          Pateiksite užsakymo užklausą — galutinę darbų kainą ir
+                          laiką suderinsime prieš apmokėjimą.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </fieldset>
         </Section>
         <Section
           step={3}
-          title="Kontaktai ir adresas"
-          text="Šiais kontaktais susisieksime dėl jūsų užsakymo."
+          title={needsAddress ? "Kontaktai ir adresas" : "Kontaktai"}
+          text={
+            choice === "parcel"
+              ? "Telefono numeris reikalingas siuntai į paštomatą."
+              : "Šiais kontaktais susisieksime dėl jūsų užsakymo."
+          }
         >
           <div className="grid gap-4 sm:grid-cols-2">
             <Field
@@ -377,18 +470,26 @@ export default function CheckoutView({
               }
               {...field("email")}
             />
-            <Field
-              label="Adresas"
-              required
-              autoComplete="street-address"
-              {...field("address")}
-            />
-            <Field
-              label="Miestas ar gyvenvietė"
-              required
-              autoComplete="address-level2"
-              {...field("city")}
-            />
+            {needsAddress && (
+              <>
+                <Field
+                  label={
+                    choice === "installation"
+                      ? "Montavimo adresas"
+                      : "Pristatymo adresas"
+                  }
+                  required
+                  autoComplete="street-address"
+                  {...field("address")}
+                />
+                <Field
+                  label="Miestas ar gyvenvietė"
+                  required
+                  autoComplete="address-level2"
+                  {...field("city")}
+                />
+              </>
+            )}
             {order.serviceRequested && (
               <Field
                 label="Pageidaujama montavimo data"
@@ -416,20 +517,45 @@ export default function CheckoutView({
         <div className="rounded-[2rem] bg-pine-900 p-6 text-snow sm:p-8">
           <h2 className="text-2xl font-semibold">Užsakymo suvestinė</h2>
           <ul className="mt-6 space-y-3 text-sm">
-            {order.lines.map((line) => (
+            {order.products.map((line) => (
               <li key={line.key} className="flex justify-between gap-4">
                 <span className="text-snow/75">
                   {line.name}
                   {line.quantity > 1 && ` × ${line.quantity}`}
                 </span>
                 <span className="shrink-0 font-semibold">
-                  {line.kind === "delivery" && line.total === 0
-                    ? "Nemokamai"
-                    : formatPrice(line.total)}
+                  {formatPrice(line.total)}
                 </span>
               </li>
             ))}
           </ul>
+          <div className="mt-4 flex justify-between gap-4 border-t border-snow/15 pt-4 text-sm">
+            <span>
+              <span className="block text-snow/75">
+                {choice === "installation"
+                  ? "Atvežimas montavimo metu"
+                  : choice
+                    ? deliveryOptions[choice].lineName
+                    : "Pristatymas"}
+              </span>
+              {choice === "parcel" && delivery.parcelMachine && (
+                <span className="mt-0.5 block text-xs text-snow/55">
+                  {delivery.parcelMachine.name}
+                </span>
+              )}
+            </span>
+            <span className="shrink-0 font-semibold">
+              {choice === "installation"
+                ? "Nemokamai"
+                : choice
+                  ? formatPrice(pricing.delivery[choice])
+                  : (
+                    <a href="#pristatymas" className="text-glow underline-offset-4 hover:underline">
+                      Pasirinkite
+                    </a>
+                  )}
+            </span>
+          </div>
           <div className="mt-6 flex flex-wrap items-baseline justify-between gap-4 border-t border-dashed border-snow/20 pt-5">
             <span className="font-semibold">
               {order.requiresQuote ? "Prekių suma" : "Iš viso"}
@@ -442,8 +568,8 @@ export default function CheckoutView({
             <p className="mt-4 flex gap-2 text-sm text-snow/75">
               <Info className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
               <span>
-                Pateikiate užklausą. Galutinį pasiūlymą su pristatymu ir
-                pageidaujamais darbais suderinsime prieš apmokėjimą.
+                Pateikiate užklausą. Galutinį pasiūlymą su montavimo darbais
+                suderinsime prieš apmokėjimą.
               </span>
             </p>
           )}
@@ -463,7 +589,9 @@ export default function CheckoutView({
               ? "Pateikiama…"
               : order.requiresQuote
                 ? "Pateikti užsakymo užklausą"
-                : `Apmokėti ${formatPrice(order.total)}`}
+                : order.deliveryMissing
+                  ? "Apmokėti"
+                  : `Apmokėti ${formatPrice(order.total)}`}
           </button>
           {error && (
             <p

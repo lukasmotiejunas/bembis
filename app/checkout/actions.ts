@@ -6,6 +6,7 @@ import {
   validateCheckout,
 } from "@/lib/orders/checkout";
 import { buildOrder } from "@/lib/orders/order";
+import { findParcelMachine } from "@/lib/omniva";
 import { site } from "@/lib/site";
 import { getStripe, paymentsConfigured } from "@/lib/stripe";
 import { sendInquiry, SendInquiryResult } from "@/app/kontaktai/actions";
@@ -44,14 +45,32 @@ export async function startCheckout(
     };
   }
 
-  const order = buildOrder(parsed.value.items, parsed.value.services);
-  if (order.products.length === 0) return { error: "Krepšelis tuščias." };
-  if (order.requiresQuote) {
+  const { items, services, delivery } = parsed.value;
+  if (!delivery) {
     return {
       error:
-        "Šiam užsakymui reikia suderinti pristatymo arba individualių darbų pasiūlymą. Pateikite krepšelio užklausą.",
+        "Montavimo užsakymui suderinsime individualų pasiūlymą. Pateikite užsakymo užklausą.",
     };
   }
+  // Only the code comes from the browser; name and address are taken from Omniva's list.
+  let parcelMachine = null;
+  if (delivery.method === "parcel") {
+    try {
+      parcelMachine = await findParcelMachine(delivery.parcelMachineId);
+    } catch (err) {
+      console.error("[checkout] Could not check the parcel machine:", err);
+      return {
+        error: `Nepavyko patikrinti paštomato. Bandykite dar kartą, rinkitės kurjerį arba skambinkite ${site.phone}.`,
+      };
+    }
+    if (!parcelMachine)
+      return { error: "Pasirinkto paštomato neradome. Pasirinkite kitą." };
+  }
+  const order = buildOrder(items, services, {
+    method: delivery.method,
+    parcelMachine,
+  });
+  if (order.products.length === 0) return { error: "Krepšelis tuščias." };
 
   const h = await headers();
   const origin =

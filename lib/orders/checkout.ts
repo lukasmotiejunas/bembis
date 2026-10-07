@@ -1,4 +1,9 @@
 import type Stripe from "stripe";
+import {
+  DeliveryMethod,
+  describeParcelMachine,
+  isDeliveryMethod,
+} from "../data/delivery";
 import { getProduct } from "../data/products";
 import { CartItem } from "../types";
 import { describeLine, modeLabel, Order, OrderServices } from "./order";
@@ -24,10 +29,18 @@ export const emptyCustomer: CustomerDetails = {
   notes: "",
 };
 
+/** The browser only sends the parcel machine's code; its name and address come from Omniva on the server. */
+export interface CheckoutDelivery {
+  method: DeliveryMethod;
+  parcelMachineId: string;
+}
+
 export interface CheckoutInput {
   items: CartItem[];
   services: OrderServices;
   customer: CustomerDetails;
+  /** null when we install the lights and bring them along */
+  delivery: CheckoutDelivery | null;
 }
 
 type Result = { ok: true; value: CheckoutInput } | { ok: false; error: string };
@@ -87,6 +100,19 @@ export function validateCheckout(raw: unknown): Result {
     removal: raw.services.removal === true,
   };
 
+  let delivery: CheckoutDelivery | null = null;
+  if (!services.installation && !services.removal) {
+    const d: Record<string, unknown> = isRecord(raw.delivery) ? raw.delivery : {};
+    if (!isDeliveryMethod(d.method))
+      return { ok: false, error: "Pasirinkite pristatymo būdą." };
+    const parcelMachineId = d.method === "parcel" ? text(d.parcelMachineId, 20) : "";
+    if (d.method === "parcel" && !/^\d{3,10}$/.test(parcelMachineId))
+      return { ok: false, error: "Pasirinkite Omniva paštomatą." };
+    delivery = { method: d.method, parcelMachineId };
+  }
+  // A parcel machine needs no home address; a courier and our installers do.
+  const needsAddress = delivery?.method !== "parcel";
+
   const c = raw.customer;
   const customer: CustomerDetails = {
     name: text(c.name, 100),
@@ -104,15 +130,15 @@ export function validateCheckout(raw: unknown): Result {
     return { ok: false, error: "Įrašykite teisingą telefono numerį." };
   if (!EMAIL.test(customer.email))
     return { ok: false, error: "Įrašykite teisingą el. pašto adresą." };
-  if (customer.address.length < 3)
+  if (needsAddress && customer.address.length < 3)
     return { ok: false, error: "Įrašykite adresą." };
-  if (customer.city.length < 2)
+  if (needsAddress && customer.city.length < 2)
     return { ok: false, error: "Įrašykite miestą ar gyvenvietę." };
   if (customer.installDate && !DATE.test(customer.installDate)) {
     return { ok: false, error: "Neteisinga montavimo data." };
   }
 
-  return { ok: true, value: { items, services, customer } };
+  return { ok: true, value: { items, services, customer, delivery } };
 }
 
 /** e.g. KD-261004-7QX2 — short enough to read over the phone. */
@@ -153,6 +179,9 @@ export function buildSessionParams(
     throw new Error(
       "Individualus pasiūlymas negali būti apmokestintas standartine sąmata.",
     );
+  if (order.deliveryMissing || !order.delivery)
+    throw new Error("Apmokamam užsakymui reikia pristatymo būdo.");
+  const machine = order.delivery.parcelMachine;
   const { customer, services } = input;
   // Stripe can only show product images that are publicly reachable.
   const imageUrl = (path?: string) =>
@@ -171,6 +200,8 @@ export function buildSessionParams(
     removal: services.removal ? "yes" : "no",
     install_date: customer.installDate,
     notes: customer.notes.slice(0, 500),
+    delivery: order.delivery.method,
+    parcel_machine: machine ? describeParcelMachine(machine).slice(0, 490) : "",
     meters: String(order.meters),
     ...toChunks("items", order.lines.map(describeLine).join("\n")),
   };
@@ -205,7 +236,9 @@ export function buildSessionParams(
     custom_text: {
       submit: {
         message:
-          "Po apmokėjimo susisieksime ir suderinsime pristatymo ar montavimo laiką.",
+          order.delivery.method === "parcel"
+            ? "Po apmokėjimo išsiųsime prekes į pasirinktą Omniva paštomatą."
+            : "Po apmokėjimo prekes išsiųsime kurjeriu nurodytu adresu.",
       },
     },
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,

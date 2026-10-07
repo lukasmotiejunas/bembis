@@ -13,22 +13,22 @@ export const seasonSteps = [
   {
     when: "Prieš sezoną",
     title: "Susisiekiate",
-    text: "Paskambinkite arba parašykite. Aptariame objektą, apžiūrime ir suderiname pasiūlymą.",
+    // text: "Paskambinkite arba parašykite. Aptariame objektą, apžiūrime ir suderiname pasiūlymą.",
   },
   {
     when: "Pagal jūsų poreikį",
     title: "Pasirenkate apšvietimą",
-    text: "Nuomojamos XP arba LLinks lemputės, pirktos girliandos arba jūsų turimos lemputės.",
+    // text: "Nuomojamos XP arba LLinks lemputės, pirktos girliandos arba jūsų turimos lemputės.",
   },
   {
     when: "Suderintu laiku",
     title: "Mes sumontuojame",
-    text: "Atvažiuojame, papuošiame ir sumontuojame sutartą apšvietimą.",
+    // text: "Atvažiuojame, papuošiame ir sumontuojame sutartą apšvietimą.",
   },
   {
     when: "Po sezono",
     title: "Viską nuimame",
-    text: "Montavimo tarifas apima ir nuėmimą po sezono. Nuomotas lemputes pasiimame, jūsų lemputės lieka jums.",
+    // text: "Montavimo tarifas apima ir nuėmimą po sezono. Nuomotas lemputes pasiimame, jūsų lemputės lieka jums.",
   },
 ];
 // Klausimai, kurie kartojasi keliuose puslapiuose.
@@ -55,6 +55,10 @@ const seriesFaq = {
 
 export const faqs = [
   buyVsRentFaq,
+  {
+    q: "Kiek kainuoja pristatymas?",
+    a: `Pirktas lemputes pristatome visoje Lietuvoje: į pasirinktą Omniva paštomatą už ${formatPrice(pricing.delivery.parcel)} arba kurjeriu nurodytu adresu už ${formatPrice(pricing.delivery.courier)}. Pristatymo būdą pasirinksite užsakydami. Užsakius montavimą, lemputes atvešime patys montavimo metu nemokamai.`,
+  },
   {
     q: "Kokia garantija suteikiama lemputėms?",
     a: "Lemputėms suteikiame 2 metų garantiją. Pastebėję gedimą, susisiekite su mumis.",

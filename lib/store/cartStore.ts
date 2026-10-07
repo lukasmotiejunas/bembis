@@ -2,6 +2,7 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { DeliveryMethod, ParcelMachine } from "../data/delivery";
 import { getProduct } from "../data/products";
 import { CustomerDetails, emptyCustomer } from "../orders/checkout";
 import { OrderServices } from "../orders/order";
@@ -10,10 +11,17 @@ import { buildOrder } from "../orders/order";
 
 const noServices: OrderServices = { installation: false, removal: false };
 
+export interface DeliveryChoice {
+  method: DeliveryMethod | null;
+  parcelMachine: ParcelMachine | null;
+}
+const noDelivery: DeliveryChoice = { method: null, parcelMachine: null };
+
 interface CartStore {
   items: CartItem[];
   services: OrderServices;
   customer: CustomerDetails;
+  delivery: DeliveryChoice;
   isOpen: boolean;
   addItem: (productId: string, mode: PurchaseMode, quantity?: number) => void;
   removeItem: (productId: string, mode: PurchaseMode) => void;
@@ -24,6 +32,7 @@ interface CartStore {
   ) => void;
   setService: (service: keyof OrderServices, enabled: boolean) => void;
   setCustomerField: (field: keyof CustomerDetails, value: string) => void;
+  setDelivery: (delivery: Partial<DeliveryChoice>) => void;
   /** After a paid order: empty the cart and forget the checkout details. */
   resetAfterOrder: () => void;
   openCart: () => void;
@@ -39,6 +48,7 @@ export const useCartStore = create<CartStore>()(
       items: [],
       services: noServices,
       customer: emptyCustomer,
+      delivery: noDelivery,
       isOpen: false,
 
       addItem: (productId, mode, quantity = 1) => {
@@ -89,8 +99,15 @@ export const useCartStore = create<CartStore>()(
         })),
       setCustomerField: (field, value) =>
         set((state) => ({ customer: { ...state.customer, [field]: value } })),
+      setDelivery: (delivery) =>
+        set((state) => ({ delivery: { ...state.delivery, ...delivery } })),
       resetAfterOrder: () =>
-        set({ items: [], services: noServices, customer: emptyCustomer }),
+        set({
+          items: [],
+          services: noServices,
+          customer: emptyCustomer,
+          delivery: noDelivery,
+        }),
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
     }),
@@ -100,6 +117,7 @@ export const useCartStore = create<CartStore>()(
         items: state.items,
         services: state.services,
         customer: state.customer,
+        delivery: state.delivery,
       }),
       // Rehydrated on mount by <CartHydration /> so server and client render the same markup.
       skipHydration: true,

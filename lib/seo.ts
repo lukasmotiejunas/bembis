@@ -133,23 +133,12 @@ const merchantReturnPolicy = {
   returnFees: "https://schema.org/ReturnFeesCustomerResponsibility",
 };
 
-// Pristatome tik Vilniaus apskrityje (ISO 3166-2 LT-VL).
-const shippingDetails =
-  pricing.deliveryFee === null
-    ? undefined
-    : {
-        "@type": "OfferShippingDetails",
-        shippingRate: {
-          "@type": "MonetaryAmount",
-          value: pricing.deliveryFee,
-          currency: "EUR",
-        },
-        shippingDestination: {
-          "@type": "DefinedRegion",
-          addressCountry: "LT",
-          addressRegion: "VL",
-        },
-      };
+// Siunčiame visoje Lietuvoje: į Omniva paštomatą arba kurjeriu.
+const shippingDetails = Object.values(pricing.delivery).map((fee) => ({
+  "@type": "OfferShippingDetails",
+  shippingRate: { "@type": "MonetaryAmount", value: fee, currency: "EUR" },
+  shippingDestination: { "@type": "DefinedRegion", addressCountry: "LT" },
+}));
 
 export function productSchema(product: Product) {
   // Pardavimo kainos ir prekių gavimas patvirtinti 2026-10-06.
@@ -176,7 +165,7 @@ export function productSchema(product: Product) {
       availability: "https://schema.org/InStock",
       seller: { "@id": BUSINESS_ID },
       hasMerchantReturnPolicy: merchantReturnPolicy,
-      ...(shippingDetails ? { shippingDetails } : {}),
+      shippingDetails,
     },
   };
 }

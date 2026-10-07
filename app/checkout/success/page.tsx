@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type Stripe from "stripe";
-import { CalendarCheck, Check, Clock, Phone, Truck } from "lucide-react";
+import { CalendarCheck, Check, Clock, MapPin, Package, Phone, Truck } from "lucide-react";
 import ClearCartOnSuccess from "@/components/checkout/ClearCartOnSuccess";
 import { formatPrice } from "@/lib/format";
 import { fromChunks } from "@/lib/orders/checkout";
@@ -81,25 +81,39 @@ function Paid({ session }: { session: Stripe.Checkout.Session }) {
             <span className="font-bold text-pine-900">Apmokėta</span>
             <span className="font-display text-3xl font-semibold text-pine-900">{formatPrice((session.amount_total ?? 0) / 100)}</span>
           </p>
-          {(m.address || m.city) && (
-            <p className="mt-4 text-sm text-stone">
-              Adresas: {[m.address, m.city].filter(Boolean).join(", ")}
-            </p>
+          {m.delivery === "parcel" && m.parcel_machine ? (
+            <p className="mt-4 text-sm text-stone">Paštomatas: {m.parcel_machine}</p>
+          ) : (
+            (m.address || m.city) && (
+              <p className="mt-4 text-sm text-stone">
+                Adresas: {[m.address, m.city].filter(Boolean).join(", ")}
+              </p>
+            )
           )}
         </div>
 
         <div className="rounded-[2rem] bg-cream p-6 sm:p-8">
           <h2 className="text-2xl font-semibold text-pine-900">Kas toliau?</h2>
           <ol className="mt-5 space-y-5">
-            <NextStep icon={Phone} title="Susisieksime" text="Paskambinsime ir suderinsime jums patogų laiką." />
             {installation ? (
-              <NextStep
-                icon={CalendarCheck}
-                title="Sumontuosime"
-                text={m.install_date ? `Pageidaujama data: ${m.install_date}. Lemputes atvešime patys.` : "Atvešime lemputes ir jas sumontuosime."}
-              />
+              <>
+                <NextStep icon={Phone} title="Susisieksime" text="Paskambinsime ir suderinsime jums patogų laiką." />
+                <NextStep
+                  icon={CalendarCheck}
+                  title="Sumontuosime"
+                  text={m.install_date ? `Pageidaujama data: ${m.install_date}. Lemputes atvešime patys.` : "Atvešime lemputes ir jas sumontuosime."}
+                />
+              </>
+            ) : m.delivery === "parcel" ? (
+              <>
+                <NextStep icon={Package} title="Išsiųsime siuntą" text="Supakuosime lemputes ir išsiųsime į jūsų pasirinktą Omniva paštomatą." />
+                <NextStep icon={MapPin} title="Atsiimsite paštomate" text="Kai siunta bus paštomate, Omniva jums praneš." />
+              </>
             ) : (
-              <NextStep icon={Truck} title="Pristatysime" text="Lemputes atvešime nurodytu adresu." />
+              <>
+                <NextStep icon={Package} title="Išsiųsime siuntą" text="Supakuosime lemputes ir perduosime kurjeriui." />
+                <NextStep icon={Truck} title="Kurjeris pristatys" text="Lemputes pristatysime jūsų nurodytu adresu." />
+              </>
             )}
             {removal && <NextStep icon={Clock} title="Po švenčių nuimsime" text="Sausį atvažiuosime ir viską nuimsime." />}
           </ol>

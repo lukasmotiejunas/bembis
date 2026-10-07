@@ -11,6 +11,7 @@ import {
   seriesNames,
 } from "@/lib/data/products";
 import { pricing } from "@/lib/data/pricing";
+import { deliveryPricesText } from "@/lib/data/delivery";
 import { formatMeters, formatPrice } from "@/lib/format";
 import { GuaranteeBadge } from "@/components/Guarantee";
 import { QualityPoints } from "@/components/sections/LightsSection";
@@ -126,8 +127,8 @@ export default async function ProductPage(
                 Turime sandėlyje
               </p>
               <p className="mt-2 text-sm text-stone">
-                Nemokamas prekių pristatymas. Laiką suderiname su jumis.
-                Lemputės lieka jums.
+                Pristatymas: {deliveryPricesText}. Užsakius montavimą, lemputes
+                atvešime nemokamai. Lemputės lieka jums.
               </p>
               <p className="mt-1 text-sm text-stone">
                 Prekes galite grąžinti per {returnPolicy.days} dienų,

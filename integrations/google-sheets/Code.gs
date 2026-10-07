@@ -2,7 +2,7 @@
 const ORDERS_SHEET_ID = '1z86yWePxJUv8GTkpctyzTNbnuZeZd9wY63uzh-OqCOo';
 const ORDERS_SHEET_NAME = 'Užsakymai';
 const ORDER_EMAIL_HEADER = 'Pranešimas išsiųstas';
-const ORDERS_HEADERS = ['Gauta', 'Užsakymo nr.', 'Būsena', 'Vardas', 'Telefonas', 'El. paštas', 'Adresas', 'Miestas', 'Prekės ir paslaugos', 'Montavimas', 'Pageidaujama montavimo data', 'Nuėmimas po švenčių', 'Pastabos', 'Suma, €', 'Stripe ID', ORDER_EMAIL_HEADER];
+const ORDERS_HEADERS = ['Gauta', 'Užsakymo nr.', 'Būsena', 'Vardas', 'Telefonas', 'El. paštas', 'Adresas', 'Miestas', 'Prekės ir paslaugos', 'Montavimas', 'Pageidaujama montavimo data', 'Nuėmimas po švenčių', 'Pastabos', 'Suma, €', 'Stripe ID', ORDER_EMAIL_HEADER, 'Pristatymas'];
 
 const INQUIRIES_SHEET_NAME = 'Užklausos';
 const INQUIRIES_HEADERS = ['Gauta', 'Vardas', 'Telefonas', 'El. paštas', 'Adresas', 'Domina', 'Žinutė', 'Puslapis'];

@@ -5,7 +5,6 @@ export const pricing = {
   /** Montavimas IR nuėmimas po sezono su kliento lemputėmis, €/m. */
   clientLightsPerMeter: 5.99,
   rentalPerMeter: { xp: 3.49, llinks: 4.99 },
-  /** Vartotojo patvirtintas nemokamas prekių pristatymas. null būtų dar nesuderintas tarifas. */
-  deliveryFee: 0 as number | null,
-  deliveryArea: "Vilnius ir Vilniaus apskritis",
+  /** Prekių pristatymas, €. Užsakius montavimą, lemputes atvežame patys nemokamai. */
+  delivery: { parcel: 2.29, courier: 4.99 },
 };

@@ -16,6 +16,11 @@ import { notificationRecipients } from "../lib/notifications";
 import { buildOrderEmail } from "../lib/orders/email";
 import { appendOrderToSheet, sheetFieldsFromSession } from "../lib/orders/sheet";
 import type Stripe from "stripe";
+import {
+  describeParcelMachine,
+  parseParcelMachines,
+  searchParcelMachines,
+} from "../lib/data/delivery";
 
 test("Užklausos ir užsakymai naudoja bendrą, be pasikartojimų gavėjų sąrašą", () => {
   const previous = process.env.INQUIRY_EMAILS;
@@ -103,6 +108,13 @@ const input = {
   items: [{ productId: "61030", mode: "buy" as const, quantity: 2 }],
   services,
   customer,
+  delivery: { method: "courier" as const, parcelMachineId: "" },
+};
+const machine = {
+  id: "12345",
+  name: "Vilniaus Akropolio paštomatas",
+  address: "Ozo g. 25, Vilniaus m.",
+  note: "",
 };
 
 test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąrašu", () => {
@@ -122,11 +134,12 @@ test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąr
       schema.offers.hasMerchantReturnPolicy.returnFees,
       "https://schema.org/ReturnFeesCustomerResponsibility",
     );
-    assert.equal(schema.offers.shippingDetails?.shippingRate.value, 0);
-    assert.equal(
-      schema.offers.shippingDetails?.shippingDestination.addressCountry,
-      "LT",
+    assert.deepEqual(
+      schema.offers.shippingDetails.map((d) => d.shippingRate.value),
+      [2.29, 4.99],
     );
+    for (const d of schema.offers.shippingDetails)
+      assert.equal(d.shippingDestination.addressCountry, "LT");
     assert.equal(getProduct(id, "rent"), undefined);
   }
 });
@@ -227,25 +240,43 @@ test("Serveris nepasitiki naršyklės kaina ir atmeta netinkamas prekes, nuomos 
     assert.equal(validateCheckout({ ...input, items: [item] }).ok, false);
   assert.equal(validateCheckout({ ...input, items: [] }).ok, false);
 });
-test("Patvirtintas pristatymas nemokamas, o individualių darbų sąmata neapmokestinama", () => {
-  assert.equal(pricing.deliveryFee, 0);
-  const simple = buildOrder(input.items, services);
-  assert.equal(simple.requiresQuote, false);
-  assert.equal(simple.deliveryNeedsQuote, false);
-  assert.equal(simple.total, 77.98);
-  assert.equal(simple.extras[0].total, 0);
+test("Pristatymas: paštomatas 2,29 €, kurjeris 4,99 €, montuojant lemputes atvežame nemokamai", () => {
+  assert.deepEqual(pricing.delivery, { parcel: 2.29, courier: 4.99 });
+  const none = buildOrder(input.items, services);
+  assert.equal(none.deliveryMissing, true);
+  assert.equal(none.total, 77.98);
+  assert.equal(none.extras.length, 0);
+  assert.throws(() =>
+    buildSessionParams(input, none, "https://www.kaledudekoras.lt", "TEST"),
+  );
+  const courier = buildOrder(input.items, services, { method: "courier" });
+  assert.equal(courier.deliveryMissing, false);
+  assert.equal(courier.extras[0].name, "Pristatymas kurjeriu");
+  assert.equal(courier.total, 82.97);
+  const noMachine = buildOrder(input.items, services, { method: "parcel" });
+  assert.equal(noMachine.deliveryMissing, true);
+  const parcel = buildOrder(input.items, services, {
+    method: "parcel",
+    parcelMachine: machine,
+  });
+  assert.equal(parcel.deliveryMissing, false);
+  assert.equal(parcel.extras[0].name, "Pristatymas į Omniva paštomatą");
+  assert.equal(parcel.extras[0].detail, "Vilniaus Akropolio paštomatas, Ozo g. 25, Vilniaus m.");
+  assert.equal(parcel.total, 80.27);
+  assert.equal(parcel.productsTotal, 77.98);
   for (const selection of [
     { installation: true, removal: true },
     { installation: false, removal: true },
   ]) {
-    const order = buildOrder(input.items, selection);
+    const order = buildOrder(input.items, selection, { method: "courier" });
     assert.equal(order.requiresQuote, true);
+    assert.equal(order.deliveryMissing, false);
     assert.equal(order.total, 77.98);
     assert.equal(order.extras.length, 0);
     assert.throws(
       () =>
         buildSessionParams(
-          { ...input, services: selection },
+          { ...input, services: selection, delivery: null },
           order,
           "https://www.kaledudekoras.lt",
           "TEST",
@@ -258,6 +289,45 @@ test("Patvirtintas pristatymas nemokamas, o individualių darbų sąmata neapmok
     removal: true,
   });
   assert.equal(withWork.installationEstimate, 59.85);
+});
+test("Serveris reikalauja pristatymo būdo, paštomato kodo ir adreso tik kai jo reikia", () => {
+  const withoutDelivery = { items: input.items, services, customer };
+  const missing = validateCheckout(withoutDelivery);
+  assert.deepEqual(missing, { ok: false, error: "Pasirinkite pristatymo būdą." });
+  assert.equal(validateCheckout({ ...input, delivery: { method: "post" } }).ok, false);
+  for (const parcelMachineId of ["", "abc", "1; DROP", "12345678901"])
+    assert.deepEqual(
+      validateCheckout({ ...input, delivery: { method: "parcel", parcelMachineId } }),
+      { ok: false, error: "Pasirinkite Omniva paštomatą." },
+    );
+  const noAddress = { ...customer, address: "", city: "" };
+  const parcel = validateCheckout({
+    ...input,
+    customer: noAddress,
+    delivery: { method: "parcel", parcelMachineId: "12345", price: 0 },
+  });
+  assert.equal(parcel.ok, true);
+  if (parcel.ok)
+    assert.deepEqual(parcel.value.delivery, { method: "parcel", parcelMachineId: "12345" });
+  assert.deepEqual(validateCheckout({ ...input, customer: noAddress }), {
+    ok: false,
+    error: "Įrašykite adresą.",
+  });
+  // Montuojant pristatymo nereikia, bet adresas būtinas.
+  const installing = validateCheckout({
+    ...withoutDelivery,
+    services: { installation: true, removal: true },
+  });
+  assert.equal(installing.ok, true);
+  if (installing.ok) assert.equal(installing.value.delivery, null);
+  assert.equal(
+    validateCheckout({
+      ...withoutDelivery,
+      customer: noAddress,
+      services: { installation: true, removal: true },
+    }).ok,
+    false,
+  );
 });
 test("Užsakymo užklausa perskaičiuojama iš katalogo ir suderinama su esamos integracijos validatoriumi", () => {
   const prepared = prepareOrderInquiry({
@@ -288,48 +358,78 @@ test("Užsakymo užklausa perskaičiuojama iš katalogo ir suderinama su esamos 
   assert.match(String(installed.formData.get("message")), /59,85/);
 });
 
-test("Patvirtinto pristatymo atveju tikslus užsakymas išlaiko Stripe kainas ir metaduomenis", () => {
-  const originalFee = pricing.deliveryFee;
-  // Tik testo fikstūra; svetainės konfigūracija ir Stripe režimas nekeičiami.
-  pricing.deliveryFee = null;
-  const missing = buildOrder(input.items, services);
-  assert.equal(missing.requiresQuote, true);
-  assert.equal(missing.total, 77.98);
-  assert.throws(() =>
-    buildSessionParams(input, missing, "https://www.kaledudekoras.lt", "TEST"),
+test("Stripe gauna pristatymo eilutę, paštomatą ir pristatymo būdą lentelei", () => {
+  const order = buildOrder(input.items, services, {
+    method: "parcel",
+    parcelMachine: machine,
+  });
+  const session = buildSessionParams(
+    { ...input, delivery: { method: "parcel", parcelMachineId: machine.id } },
+    order,
+    "https://www.kaledudekoras.lt",
+    "TEST-ONLY",
   );
-  pricing.deliveryFee = 0;
-  try {
-    const order = buildOrder(input.items, services);
-    assert.equal(order.requiresQuote, false);
-    assert.equal(order.total, 77.98);
-    const session = buildSessionParams(
-      input,
-      order,
-      "https://www.kaledudekoras.lt",
-      "TEST-ONLY",
-    );
-    assert.equal(session.line_items?.[0].price_data?.unit_amount, 3899);
-    assert.equal(session.line_items?.[0].quantity, 2);
-    assert.equal(session.line_items?.[1].price_data?.unit_amount, 0);
-    assert.equal(session.metadata?.order_number, "TEST-ONLY");
-    assert.equal(session.metadata?.meters, "15");
-    const withWork = buildOrder(input.items, {
-      installation: true,
-      removal: true,
-    });
-    assert.equal(withWork.requiresQuote, true);
-    assert.throws(() =>
-      buildSessionParams(
-        { ...input, services: { installation: true, removal: true } },
-        withWork,
-        "https://www.kaledudekoras.lt",
-        "TEST",
-      ),
-    );
-  } finally {
-    pricing.deliveryFee = originalFee;
-  }
+  assert.equal(session.line_items?.[0].price_data?.unit_amount, 3899);
+  assert.equal(session.line_items?.[0].quantity, 2);
+  const delivery = session.line_items?.[1].price_data;
+  assert.equal(delivery?.unit_amount, 229);
+  assert.equal(delivery?.product_data?.name, "Pristatymas į Omniva paštomatą");
+  assert.match(String(delivery?.product_data?.description), /Akropolio/);
+  assert.equal(session.metadata?.order_number, "TEST-ONLY");
+  assert.equal(session.metadata?.meters, "15");
+  assert.equal(session.metadata?.delivery, "parcel");
+  assert.equal(session.metadata?.parcel_machine, describeParcelMachine(machine));
+  assert.match(JSON.stringify(session.custom_text), /paštomatą/);
+
+  const courier = buildSessionParams(
+    input,
+    buildOrder(input.items, services, { method: "courier" }),
+    "https://www.kaledudekoras.lt",
+    "TEST-ONLY",
+  );
+  assert.equal(courier.line_items?.[1].price_data?.unit_amount, 499);
+  assert.equal(courier.metadata?.delivery, "courier");
+  assert.equal(courier.metadata?.parcel_machine, undefined);
+
+  const row = (metadata: Record<string, string>) =>
+    sheetFieldsFromSession({
+      id: "cs_test_delivery",
+      created: 1791357300,
+      amount_total: 8027,
+      metadata,
+    } as unknown as Stripe.Checkout.Session).Pristatymas;
+  assert.equal(
+    row({ delivery: "parcel", parcel_machine: describeParcelMachine(machine) }),
+    "Omniva paštomatas: Vilniaus Akropolio paštomatas, Ozo g. 25, Vilniaus m. (kodas 12345)",
+  );
+  assert.equal(
+    row({ delivery: "courier", address: "Testo gatvė 1", city: "Vilnius" }),
+    "Kurjeris: Testo gatvė 1, Vilnius",
+  );
+  assert.equal(row({ installation: "yes" }), "Atvešime montavimo metu");
+});
+
+test("Omniva sąrašas: tik Lietuvos paštomatai, paieška be lietuviškų raidžių", () => {
+  const raw = [
+    { ZIP: "99001", NAME: "Šiaulių Akropolio paštomatas", TYPE: "0", A0_NAME: "LT", A2_NAME: "Šiaulių m. sav.", A3_NAME: "Šiaulių m.", A5_NAME: "Aido g.", A7_NAME: "8", comment_lit: "Prie įėjimo" },
+    { ZIP: "99002", NAME: "Alytaus paštomatas", TYPE: "0", A0_NAME: "LT", A2_NAME: "Alytaus m. sav.", A3_NAME: "", A5_NAME: "Naujoji g.", A7_NAME: "2C" },
+    { ZIP: "99003", NAME: "Paštas", TYPE: "1", A0_NAME: "LT" },
+    { ZIP: "96331", NAME: "Tallinna pakiautomaat", TYPE: "0", A0_NAME: "EE" },
+    { ZIP: "bad", NAME: "Be kodo", TYPE: "0", A0_NAME: "LT" },
+    null,
+  ];
+  const list = parseParcelMachines(raw);
+  assert.deepEqual(list, [
+    { id: "99002", name: "Alytaus paštomatas", address: "Naujoji g. 2C, Alytaus m. sav.", note: "" },
+    { id: "99001", name: "Šiaulių Akropolio paštomatas", address: "Aido g. 8, Šiaulių m.", note: "Prie įėjimo" },
+  ]);
+  assert.deepEqual(parseParcelMachines({ error: true }), []);
+  assert.deepEqual(searchParcelMachines(list, "siauliu aido").map((m) => m.id), ["99001"]);
+  // Vardininkas randa kilmininką: „Šiauliai“ → „Šiaulių m.“, „Alytus“ → „Alytaus“.
+  assert.deepEqual(searchParcelMachines(list, "Šiauliai").map((m) => m.id), ["99001"]);
+  assert.deepEqual(searchParcelMachines(list, "alytus naujoji").map((m) => m.id), ["99002"]);
+  assert.deepEqual(searchParcelMachines(list, "  ").map((m) => m.id), ["99002", "99001"]);
+  assert.deepEqual(searchParcelMachines(list, "kaunas"), []);
 });
 
 test("Rinkinys: viena motininė ir reikiamas papildomų sekcijų kiekis, komplektas tik kai pigiau", () => {

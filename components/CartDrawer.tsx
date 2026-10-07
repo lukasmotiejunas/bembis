@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
 import { productFor, productHref } from "@/lib/data/products";
+import { deliveryPricesText } from "@/lib/data/delivery";
 import { formatPrice } from "@/lib/format";
 import { modeLabel } from "@/lib/orders/order";
 
@@ -167,14 +168,14 @@ export default function CartDrawer() {
 
             <div className="border-t border-sand bg-white px-6 py-5">
               <div className="flex items-baseline justify-between">
-                <span className="font-semibold text-stone">Iš viso</span>
+                <span className="font-semibold text-stone">Prekių suma</span>
                 <span className="font-display text-3xl font-semibold text-pine-900">
                   {formatPrice(total)}
                 </span>
               </div>
               <p className="mt-2 text-sm text-stone">
-                Prekių pristatymas nemokamas. Individualiems montavimo darbams
-                pateikiame pasiūlymą.
+                Pristatymą pasirinksite kitame žingsnyje: {deliveryPricesText}.
+                Užsakius montavimą, lemputes atvešime nemokamai.
               </p>
               <Link
                 href="/checkout"

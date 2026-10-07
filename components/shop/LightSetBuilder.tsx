@@ -11,7 +11,7 @@ import {
   SECTION_METERS,
   sectionsFor,
 } from "@/lib/data/lightSet";
-import { pricing } from "@/lib/data/pricing";
+import { cheapestDelivery } from "@/lib/data/delivery";
 import { guarantee, seriesNames } from "@/lib/data/products";
 import { formatMeters, formatPrice, money, plural } from "@/lib/format";
 import { useCartStore } from "@/lib/store/cartStore";
@@ -204,9 +204,7 @@ export default function LightSetBuilder() {
             </div>
           )}
           <p className="mt-4 text-sm text-stone">
-            {pricing.deliveryFee === 0 &&
-              `Nemokamas pristatymas (${pricing.deliveryArea}) · `}
-            {guarantee.label}
+            Pristatymas nuo {formatPrice(cheapestDelivery)} · {guarantee.label}
           </p>
         </div>
       </div>

@@ -21,8 +21,8 @@ const small = [
   {
     href: "/kaledines-lemputes",
     image: productFor("buy").image,
-    title: "Dekoracijų pirkimas",
-    text: "Aukščiausios kokybės šiltos baltos lemputės su 2 metų garantija.",
+    title: "Prekyba dekoracijom",
+    text: "Aukščiausios kokybės lemputės ir dekoracijos pagamintos Europos sąjungoje.",
     cta: "Žiūrėti lemputes",
   },
 ];

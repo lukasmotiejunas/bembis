@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { productHref } from "@/lib/data/products";
+import { cheapestDelivery } from "@/lib/data/delivery";
 import { formatMeters, formatPrice } from "@/lib/format";
 import { Product } from "@/lib/types";
 import AddToCartButton from "./AddToCartButton";
@@ -72,7 +73,7 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
           </div>
         </div>
         <p className="mt-4 text-sm font-semibold text-pine-700">
-          Nemokamas pristatymas
+          Pristatymas nuo {formatPrice(cheapestDelivery)}
         </p>
       </div>
     </article>
