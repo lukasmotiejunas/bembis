@@ -35,7 +35,7 @@ try {
     process.exitCode =
       spawnSync(
         process.execPath,
-        ["--test", path.join(out, "tests/commerce.test.js")],
+        ["--test", path.join(out, "tests/commerce.test.js"), path.join(root, "tests/google-sheets.test.mjs")],
         { stdio: "inherit" },
       ).status ?? 1;
 } finally {

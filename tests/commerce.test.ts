@@ -12,6 +12,72 @@ import { productSchema } from "../lib/seo";
 import { validateInquiry } from "../lib/inquiry";
 import { buildLightSet, lightSetItems } from "../lib/data/lightSet";
 import { plural } from "../lib/format";
+import { notificationRecipients } from "../lib/notifications";
+import { buildOrderEmail } from "../lib/orders/email";
+import { appendOrderToSheet, sheetFieldsFromSession } from "../lib/orders/sheet";
+import type Stripe from "stripe";
+
+test("Užklausos ir užsakymai naudoja bendrą, be pasikartojimų gavėjų sąrašą", () => {
+  const previous = process.env.INQUIRY_EMAILS;
+  try {
+    process.env.INQUIRY_EMAILS = " office@example.invalid, owner@example.invalid, partner@example.invalid, owner@example.invalid ";
+    assert.deepEqual(notificationRecipients(), ["office@example.invalid", "owner@example.invalid", "partner@example.invalid"]);
+    process.env.INQUIRY_EMAILS = " , ";
+    assert.deepEqual(notificationRecipients(), ["info@kaledudekoras.lt"]);
+  } finally {
+    if (previous === undefined) delete process.env.INQUIRY_EMAILS;
+    else process.env.INQUIRY_EMAILS = previous;
+  }
+});
+
+test("Apmokėto užsakymo laiške pateikiami visi lentelės duomenys ir saugus HTML", () => {
+  const fields = sheetFieldsFromSession({
+    id: "cs_test_notification", created: 1791357300, amount_total: 7896,
+    metadata: { order_number: "TEST-ORDER", name: "<script>alert(1)</script>",
+      email: "customer@example.invalid", phone: "+37060000000", address: "Testo gatvė 1", city: "Vilnius",
+      items: "XP motininė × 1\nXP papildoma × 3", installation: "no", removal: "no", notes: "<b>Pastaba</b>" },
+  } as unknown as Stripe.Checkout.Session);
+  const email = buildOrderEmail(fields);
+  assert.equal(email.subject, "Naujas apmokėtas užsakymas — TEST-ORDER");
+  assert.equal(email.replyTo, "customer@example.invalid");
+  for (const [label, value] of Object.entries(fields)) {
+    assert.ok(email.text.includes(`${label}: ${label === "Suma, €" ? formatPrice(Number(value)) : String(value || "—")}`));
+  }
+  assert.match(email.html, /&lt;script&gt;/);
+  assert.ok(!email.html.includes("<script>"));
+  assert.match(email.text, /78,96/);
+});
+
+test("Užsakymo perdavimas reikalauja laiško patvirtinimo ir perduoda verslo gavėjus", async () => {
+  const originalFetch = global.fetch;
+  const originalEnv = { url: process.env.GOOGLE_SHEETS_WEBHOOK_URL, secret: process.env.GOOGLE_SHEETS_SECRET, to: process.env.INQUIRY_EMAILS };
+  let result: Record<string, unknown> = { ok: true, recorded: true, emailed: true };
+  let sent: Record<string, unknown> = {};
+  try {
+    process.env.GOOGLE_SHEETS_WEBHOOK_URL = "https://example.invalid/webhook";
+    process.env.GOOGLE_SHEETS_SECRET = "test-only";
+    process.env.INQUIRY_EMAILS = "owner@example.invalid,partner@example.invalid";
+    global.fetch = async (_url, options) => {
+      sent = JSON.parse(String(options?.body));
+      return Response.json(result);
+    };
+    const fields = { "Stripe ID": "cs_test", "Užsakymo nr.": "TEST", "Suma, €": 78.96, "El. paštas": "customer@example.invalid" };
+    await appendOrderToSheet(fields);
+    assert.equal(sent.type, "order");
+    assert.deepEqual(sent.fields, fields);
+    assert.deepEqual((sent.email as { to: string[] }).to, ["owner@example.invalid", "partner@example.invalid"]);
+    result = { ok: true };
+    await assert.rejects(appendOrderToSheet(fields), /notification was not confirmed/);
+    result = { ok: false, recorded: true, emailed: false };
+    await assert.rejects(appendOrderToSheet(fields), /Google Sheets responded/);
+  } finally {
+    global.fetch = originalFetch;
+    for (const [key, value] of [["GOOGLE_SHEETS_WEBHOOK_URL", originalEnv.url], ["GOOGLE_SHEETS_SECRET", originalEnv.secret], ["INQUIRY_EMAILS", originalEnv.to]]) {
+      if (value === undefined) delete process.env[key!];
+      else process.env[key!] = value;
+    }
+  }
+});
 
 const expected = [
   ["61030", 7.5, 38.99],

@@ -1,5 +1,7 @@
 import type Stripe from "stripe";
 import { fromChunks } from "./checkout";
+import { buildOrderEmail } from "./email";
+import { notificationRecipients } from "../notifications";
 
 const yesNo = (v?: string) => (v === "yes" ? "Taip" : "Ne");
 
@@ -48,6 +50,13 @@ export async function postToAppsScript(payload: Record<string, unknown>) {
   if (!res.ok || typeof data !== "object" || data === null || (data as { ok?: unknown }).ok !== true) {
     throw new Error(`Google Sheets responded ${res.status}: ${JSON.stringify(data)}`);
   }
+  return data as { ok: true; recorded?: boolean; emailed?: boolean; duplicate?: boolean };
 }
 
-export const appendOrderToSheet = (fields: Record<string, string | number>) => postToAppsScript({ type: "order", fields });
+export async function appendOrderToSheet(fields: Record<string, string | number>) {
+  const email = buildOrderEmail(fields);
+  const result = await postToAppsScript({
+    type: "order", fields, email: { ...email, to: notificationRecipients() },
+  });
+  if (result.emailed !== true) throw new Error("Order notification was not confirmed by Apps Script");
+}

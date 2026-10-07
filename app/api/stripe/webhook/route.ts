@@ -5,7 +5,8 @@ import { getStripe } from "@/lib/stripe";
 /**
  * Stripe calls this after checkout. An order is written to Google Sheets only once the
  * payment is confirmed as paid. Any failure returns 5xx so Stripe retries (for up to 3 days);
- * the Apps Script skips rows it has already written, so retries never create duplicates.
+ * the Apps Script reuses an existing row and retries an unsent notification. Orders
+ * already notified never create another row or send another email on retries.
  */
 export async function POST(request: Request) {
   const secret = process.env.STRIPE_WEBHOOK_SECRET;
@@ -28,8 +29,8 @@ export async function POST(request: Request) {
       try {
         await appendOrderToSheet(sheetFieldsFromSession(session));
       } catch (err) {
-        console.error(`[stripe-webhook] Could not write order ${session.id} to Google Sheets:`, err);
-        return new Response("Could not record order", { status: 500 });
+        console.error(`[stripe-webhook] Could not record or notify order ${session.id}:`, err);
+        return new Response("Could not record or notify order", { status: 500 });
       }
     }
   }

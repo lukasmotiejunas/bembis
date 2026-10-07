@@ -3,17 +3,9 @@ import { headers } from "next/headers";
 import { buildInquiryEmail, validateInquiry } from "@/lib/inquiry";
 import { postToAppsScript } from "@/lib/orders/sheet";
 import { site } from "@/lib/site";
+import { notificationRecipients } from "@/lib/notifications";
 
 export type SendInquiryResult = { ok: true } | { ok: false; error: string };
-
-/** Who gets the request emails. Kept in an env variable so private addresses never end up in the code. */
-function recipients() {
-  const list = (process.env.INQUIRY_EMAILS ?? "")
-    .split(",")
-    .map((s) => s.trim())
-    .filter(Boolean);
-  return list.length > 0 ? list : [site.email];
-}
 
 export async function sendInquiry(formData: FormData): Promise<SendInquiryResult> {
   // Hidden "website" field: people never see it, spam bots fill it in. Pretend it worked.
@@ -38,7 +30,7 @@ export async function sendInquiry(formData: FormData): Promise<SendInquiryResult
     await postToAppsScript({
       type: "inquiry",
       fields: email.sheetFields,
-      email: { to: recipients(), subject: email.subject, text: email.text, html: email.html, replyTo: email.replyTo },
+      email: { to: notificationRecipients(), subject: email.subject, text: email.text, html: email.html, replyTo: email.replyTo },
     });
     return { ok: true };
   } catch (err) {
