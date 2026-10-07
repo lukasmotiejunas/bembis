@@ -44,7 +44,9 @@ export default function SeasonSteps() {
                     {i + 1}. {step.when}
                   </p>
                   <h3 className="mt-2 text-2xl font-semibold text-pine-900">{step.title}</h3>
-                  <p className="mt-2 leading-relaxed text-stone lg:mx-auto lg:max-w-[16rem]">{step.text}</p>
+                  {step.text && (
+                    <p className="mt-2 leading-relaxed text-stone lg:mx-auto lg:max-w-[16rem]">{step.text}</p>
+                  )}
                 </div>
               </li>
             ))}

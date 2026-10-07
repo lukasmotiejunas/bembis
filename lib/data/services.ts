@@ -9,7 +9,7 @@ const exampleLights =
   example.choice === "client"
     ? "jūsų lemputėmis"
     : `${seriesNames[example.choice]} nuoma`;
-export const seasonSteps = [
+export const seasonSteps: { when: string; title: string; text?: string }[] = [
   {
     when: "Prieš sezoną",
     title: "Susisiekiate",
