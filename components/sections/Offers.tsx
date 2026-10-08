@@ -65,7 +65,7 @@ export default function Offers() {
             </ul>
           </div>
 
-          <div className="relative min-h-60 flex-1">
+          <div className="relative min-h-60 flex-1 overflow-hidden">
             <Image
               src="/work/lithuanian-house-xp-modern-gable.png"
               alt="Modernus namas, kurio frontoną ir karnizą puošia šiltai baltos LED girliandos"
