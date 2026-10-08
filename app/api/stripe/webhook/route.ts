@@ -1,6 +1,7 @@
 import type Stripe from "stripe";
 import { appendOrderToSheet, sheetFieldsFromSession } from "@/lib/orders/sheet";
 import { getStripe } from "@/lib/stripe";
+import { stripePaymentMode } from "@/lib/stripe-config";
 
 /**
  * Stripe calls this after checkout. An order is written to Google Sheets only once the
@@ -21,6 +22,10 @@ export async function POST(request: Request) {
     event = getStripe().webhooks.constructEvent(payload, signature, secret);
   } catch (err) {
     return new Response(`Webhook error: ${(err as Error).message}`, { status: 400 });
+  }
+
+  if (event.livemode !== (stripePaymentMode() === "live")) {
+    return new Response("Webhook payment mode mismatch", { status: 400 });
   }
 
   if (event.type === "checkout.session.completed" || event.type === "checkout.session.async_payment_succeeded") {

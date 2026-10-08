@@ -14,6 +14,7 @@ const vilniusTime = new Intl.DateTimeFormat("lt-LT", {
 export const formatVilnius = (date: Date) => vilniusTime.format(date);
 
 function deliveryText(m: Record<string, string>) {
+  if (m.payment_test === "yes") return "Netaikoma — mokėjimo patikra";
   if (m.installation === "yes") return "Atvešime montavimo metu";
   if (m.delivery === "parcel") return `Omniva paštomatas: ${m.parcel_machine ?? ""}`;
   if (m.delivery === "courier")
@@ -27,7 +28,7 @@ export function sheetFieldsFromSession(session: Stripe.Checkout.Session): Record
   return {
     Gauta: formatVilnius(new Date(session.created * 1000)),
     "Užsakymo nr.": m.order_number ?? session.client_reference_id ?? "",
-    Būsena: "Naujas",
+    Būsena: m.payment_test === "yes" ? "Mokėjimo patikra" : "Naujas",
     Vardas: m.name ?? session.customer_details?.name ?? "",
     Telefonas: m.phone ?? session.customer_details?.phone ?? "",
     "El. paštas": m.email ?? session.customer_details?.email ?? "",

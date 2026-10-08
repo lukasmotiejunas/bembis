@@ -42,10 +42,11 @@ function Paid({ session }: { session: Stripe.Checkout.Session }) {
   const lines = fromChunks(m, "items").split("\n").filter(Boolean);
   const installation = m.installation === "yes";
   const removal = m.removal === "yes";
+  const paymentTest = m.payment_test === "yes";
 
   return (
     <>
-      <ClearCartOnSuccess />
+      {!paymentTest && <ClearCartOnSuccess />}
       <div className="text-center">
         <span className="mx-auto flex size-20 items-center justify-center rounded-full bg-glow shadow-[0_0_60px_rgb(244_176_62/0.55)]">
           <Check className="size-10 text-pine-950" strokeWidth={3} aria-hidden="true" />
@@ -53,7 +54,9 @@ function Paid({ session }: { session: Stripe.Checkout.Session }) {
         <p className="eyebrow mt-8">Užsakymas apmokėtas</p>
         <h1 className="mt-3 text-4xl font-semibold text-pine-900 sm:text-5xl">Ačiū, {m.name?.split(" ")[0] ?? "jūsų užsakymas priimtas"}!</h1>
         <p className="mx-auto mt-4 max-w-lg text-lg text-stone">
-          Gavome jūsų užsakymą ir apmokėjimą. Netrukus susisieksime telefonu{m.phone ? ` ${m.phone}` : ""}.
+          {paymentTest
+            ? "1 € mokėjimo patikra sėkminga. Fizinių prekių ir pristatymo nėra."
+            : <>Gavome jūsų užsakymą ir apmokėjimą. Netrukus susisieksime telefonu{m.phone ? ` ${m.phone}` : ""}.</>}
         </p>
         {m.order_number && (
           <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-cream px-4 py-2 font-bold text-pine-900">
@@ -95,7 +98,9 @@ function Paid({ session }: { session: Stripe.Checkout.Session }) {
         <div className="rounded-[2rem] bg-cream p-6 sm:p-8">
           <h2 className="text-2xl font-semibold text-pine-900">Kas toliau?</h2>
           <ol className="mt-5 space-y-5">
-            {installation ? (
+            {paymentTest ? (
+              <NextStep icon={Check} title="Mokėjimas patvirtintas" text="Patikrinkite mokėjimą Stripe ir pranešimą apie apmokėjimą. Prekės nebus siunčiamos." />
+            ) : installation ? (
               <>
                 <NextStep icon={Phone} title="Susisieksime" text="Paskambinsime ir suderinsime jums patogų laiką." />
                 <NextStep

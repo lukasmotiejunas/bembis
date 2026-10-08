@@ -106,3 +106,22 @@ Komanda parodys `whsec_...` — įrašykite jį į `.env.local` kaip `STRIPE_WEB
 Stripe aktyvuokite paskyrą (įmonės ir banko duomenys), išjunkite *Test mode*, Vercel pakeiskite `STRIPE_SECRET_KEY`
 į `sk_live_...` ir sukurkite tokį patį webhook'ą *live* režime (jo `whsec_...` bus kitas). Testinis pranešimas
 apmokėjimo puslapyje dings automatiškai.
+
+Vercel **Production** aplinkoje nustatykite `STRIPE_PAYMENT_MODE=live`. Production diegimas atmeta testinius
+raktus, o live režimas reikalauja webhook parašo rakto. Abu raktai turi priklausyti **Bembis** live paskyrai;
+Lumo paskyros ir kaledudekoras sandbox raktai tam netinka. Preview ir vietiniams bandymams naudokite
+`STRIPE_PAYMENT_MODE=test` su sandbox raktais. Šie kintamieji yra serverio paslaptys, be `NEXT_PUBLIC_`.
+Po pakeitimo perkurkite Production diegimą. Payout bankas konfigūruojamas tik Stripe, jo IBAN kode nelaikomas.
+
+### Laikinas 1 € produktas
+
+`PAYMENT_TEST_ENABLED=true` įjungia atskirą produkto kortelę kataloge ir `/mokejimo-patikra` puslapį.
+Jis sukuria vienkartinį 1,00 € Stripe Checkout mokėjimą per tą pačią Stripe paskyrą ir tą patį
+apmokėtų užsakymų webhook'ą. Pristatymo ir fizinių prekių nėra; įrašas lentelėje pažymimas
+„Mokėjimo patikra“, laiške nurodoma „Prekių nepristatyti“. Mokėjimas nekeičia esamo pirkinių krepšelio.
+Patikros puslapyje aiškiai nurodoma, ar naudojamas live, ar sandbox režimas.
+
+Po sėkmingos realios patikros nustatykite `PAYMENT_TEST_ENABLED=false` ir perkurkite diegimą.
+Puslapis tada grąžina 404, produkto kortelė dingsta, serverio veiksmas taip pat nebeleidžia naujų patikrų.
+Ankstesni apmokėjimai ir jų pranešimai išlieka. Galutinę patikrą atlikite savo tikra kortele;
+patvirtinkite, kad Stripe mokėjimas yra live ir užsakymas su laišku pasiekė integraciją.
