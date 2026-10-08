@@ -13,7 +13,7 @@ const installation = [
 const small = [
   {
     href: "/nuoma",
-    image: "/work/warm-cabin.jpg",
+    image: "/work/lithuanian-house-xp-single-storey.png",
     title: "Dekoracijų nuoma",
     text: "Šiltai baltos XP ir LLinks lauko LED nuomai sezonui, su montavimo ir nuėmimo pasiūlymu.",
     cta: "Žiūrėti nuomą",
@@ -67,8 +67,8 @@ export default function Offers() {
 
           <div className="relative min-h-60 flex-1">
             <Image
-              src="/work/modern-pool.jpg"
-              alt="Namas, visiškai papuoštas kalėdinėmis lemputėmis"
+              src="/work/lithuanian-house-xp-modern-gable.png"
+              alt="Modernus namas, kurio frontoną ir karnizą puošia šiltai baltos LED girliandos"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover object-[center_35%] transition-transform duration-700 group-hover:scale-105"

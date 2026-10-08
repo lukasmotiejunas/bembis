@@ -13,7 +13,7 @@ export default function Showcase() {
           light
           eyebrow="Įkvėpimui"
           title="Taip gali atrodyti jūsų namai"
-          text="Stogo kraštai, veranda, langai ir medžiai — apšvietimą pritaikome jūsų objektui. Nuotraukose pateikiamos dekoravimo idėjos."
+          text="Stogo kraštai, karnizai, prieangiai ir balkonai — apšvietimą pritaikome jūsų objektui. Nuotraukose pateikiamos dekoravimo idėjos."
         />
 
         <div className="mt-12 grid auto-rows-[14rem] gap-4 sm:grid-cols-2 lg:auto-rows-[16rem] lg:grid-cols-4">

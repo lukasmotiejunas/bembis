@@ -95,8 +95,8 @@ export default function InstallationPage() {
       <section className="container-page grid items-center gap-12 py-20 sm:py-28 lg:grid-cols-2 lg:gap-16">
         <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] lg:aspect-[4/5]">
           <Image
-            src="/work/warm-cabin.jpg"
-            alt="Namas su kalėdinėmis lemputėmis ant stogo ir medžių"
+            src="/work/lithuanian-house-xp-red-brick.png"
+            alt="Mūrinis namas su šiltai baltomis LED girliandomis palei stogo kraštus ir balkoną"
             fill
             sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"

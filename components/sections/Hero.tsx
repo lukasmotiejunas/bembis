@@ -63,8 +63,8 @@ export default function Hero() {
         <div className="relative">
           <div className="relative aspect-[5/4] overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgb(12_27_20/0.6)]">
             <Image
-              src="/work/porch-house.jpg"
-              alt="Namas, papuoštas šiltomis kalėdinėmis lemputėmis"
+              src="/work/lithuanian-house-xp-v2.png"
+              alt="Namas, kurio stogo kraštus puošia šiltai baltos LED girliandos"
               fill
               preload
               sizes="(max-width: 1024px) 100vw, 50vw"

@@ -80,24 +80,29 @@ export const faqs = [
 ];
 export const showcase = [
   {
-    src: "/work/porch-house.jpg",
-    alt: "Namo stogo ir verandos dekoravimo pavyzdys",
-    label: "Stogas ir veranda",
+    src: "/work/lithuanian-house-xp-timber-cottage.png",
+    alt: "Medinis kaimo namas su LED girliandomis palei stogo kraštus ir prieangį",
+    label: "Stogas ir prieangis",
   },
   {
-    src: "/work/modern-villa.jpg",
-    alt: "Modernaus namo apšvietimo pavyzdys",
+    src: "/work/lithuanian-house-xp-red-brick.png",
+    alt: "Mūrinis namas su LED girliandomis palei stogo kraštus ir balkono turėklą",
+    label: "Stogas ir balkonas",
+  },
+  {
+    src: "/work/lithuanian-house-xp-modern-gable.png",
+    alt: "Modernus namas su LED girliandomis palei frontoną ir karnizą",
     label: "Modernaus namo kontūrai",
   },
   {
-    src: "/work/warm-cabin.jpg",
-    alt: "Namo stogo ir medžių dekoravimo pavyzdys",
-    label: "Stogas ir medžiai",
+    src: "/work/lithuanian-house-xp-single-storey.png",
+    alt: "Vienaaukštis namas su LED girliandomis palei visą stogo karnizą",
+    label: "Stogo karnizas",
   },
   {
-    src: "/work/modern-pool.jpg",
-    alt: "Stogo kraštų ir langų apšvietimo pavyzdys",
-    label: "Stogas ir langai",
+    src: "/work/lithuanian-house-xp-v2.png",
+    alt: "Namas su LED girliandomis palei abu frontonus ir karnizą",
+    label: "Frontonai ir karnizai",
   },
 ];
 export const decorAreas = [
