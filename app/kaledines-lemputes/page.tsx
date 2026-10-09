@@ -7,7 +7,6 @@ import LightSetBuilder from "@/components/shop/LightSetBuilder";
 import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { breadcrumbSchema, catalogSchema, pageMetadata } from "@/lib/seo";
-import { paymentTestEnabled, paymentTestProduct } from "@/lib/orders/payment-test";
 
 export const metadata = pageMetadata({
   title: "XP ir LLinks lauko LED girliandos ir komplektai",
@@ -47,17 +46,6 @@ export default function ShopPage() {
         />
       </section>
       <LightsSection withHeading={false} />
-
-      {paymentTestEnabled() && (
-        <section className="container-page pb-12">
-          <div className="rounded-[2rem] border border-sand bg-cream p-6 sm:p-8">
-            <p className="eyebrow">Laikinas produktas · 1,00 €</p>
-            <h2 className="mt-2 text-2xl font-semibold text-pine-900">{paymentTestProduct.name}</h2>
-            <p className="mt-3 text-stone">{paymentTestProduct.description}</p>
-            <Link href="/mokejimo-patikra" className="btn btn-dark mt-5">Patikrinti mokėjimą už 1,00 €</Link>
-          </div>
-        </section>
-      )}
 
       <section className="container-page pb-20 sm:pb-28">
         <Link

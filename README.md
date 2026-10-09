@@ -113,15 +113,6 @@ Lumo paskyros ir kaledudekoras sandbox raktai tam netinka. Preview ir vietiniams
 `STRIPE_PAYMENT_MODE=test` su sandbox raktais. Šie kintamieji yra serverio paslaptys, be `NEXT_PUBLIC_`.
 Po pakeitimo perkurkite Production diegimą. Payout bankas konfigūruojamas tik Stripe, jo IBAN kode nelaikomas.
 
-### Laikinas 1 € produktas
-
-`PAYMENT_TEST_ENABLED=true` įjungia atskirą produkto kortelę kataloge ir `/mokejimo-patikra` puslapį.
-Jis sukuria vienkartinį 1,00 € Stripe Checkout mokėjimą per tą pačią Stripe paskyrą ir tą patį
-apmokėtų užsakymų webhook'ą. Pristatymo ir fizinių prekių nėra; įrašas lentelėje pažymimas
-„Mokėjimo patikra“, laiške nurodoma „Prekių nepristatyti“. Mokėjimas nekeičia esamo pirkinių krepšelio.
-Patikros puslapyje aiškiai nurodoma, ar naudojamas live, ar sandbox režimas.
-
-Po sėkmingos realios patikros nustatykite `PAYMENT_TEST_ENABLED=false` ir perkurkite diegimą.
-Puslapis tada grąžina 404, produkto kortelė dingsta, serverio veiksmas taip pat nebeleidžia naujų patikrų.
-Ankstesni apmokėjimai ir jų pranešimai išlieka. Galutinę patikrą atlikite savo tikra kortele;
-patvirtinkite, kad Stripe mokėjimas yra live ir užsakymas su laišku pasiekė integraciją.
+Laikinas 1 € patikros produktas pašalintas po sėkmingo realaus mokėjimo. Ankstesnių patikros
+apmokėjimų atpažinimas paliktas, kad jų patvirtinimo puslapiai ir pakartotiniai webhook pranešimai
+nesukurtų prekių pristatymo pažadų. Vercel likęs `PAYMENT_TEST_ENABLED` kintamasis nebenaudojamas.

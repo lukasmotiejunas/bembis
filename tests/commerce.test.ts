@@ -16,7 +16,6 @@ import { notificationRecipients } from "../lib/notifications";
 import { buildOrderEmail } from "../lib/orders/email";
 import { appendOrderToSheet, sheetFieldsFromSession } from "../lib/orders/sheet";
 import type Stripe from "stripe";
-import { buildPaymentTestParams, paymentTestEnabled, validatePaymentTestCustomer } from "../lib/orders/payment-test";
 import { stripeConfigurationError, stripePaymentMode } from "../lib/stripe-config";
 import {
   describeParcelMachine,
@@ -47,39 +46,18 @@ test("Production rejects sandbox keys; live payments require an explicit matchin
   assert.equal(stripeConfigurationError({ STRIPE_SECRET_KEY: "sk_test_example", STRIPE_PAYMENT_MODE: "test" }), null);
 });
 
-test("Temporary payment product charges exactly 1 EUR, needs no delivery and is labelled in paid-order notifications", () => {
-  const customer = validatePaymentTestCustomer({ name: " Payment check ", email: "check@example.invalid", price: 0, quantity: 99 });
-  assert.deepEqual(customer, { name: "Payment check", email: "check@example.invalid" });
-  assert.equal(validatePaymentTestCustomer({ name: "A", email: "invalid" }), null);
-  assert.ok(customer);
-  const params = buildPaymentTestParams(customer, "https://www.kaledudekoras.lt", "TEST-KD-1");
-  assert.deepEqual(params.allowed_payment_method_types, ["card"]);
-  assert.equal(params.line_items?.length, 1);
-  assert.equal(params.line_items?.[0].quantity, 1);
-  assert.equal(params.line_items?.[0].price_data?.unit_amount, 100);
-  assert.equal(params.line_items?.[0].price_data?.currency, "eur");
-  assert.equal(params.shipping_options, undefined);
-  assert.equal(params.shipping_address_collection, undefined);
-  assert.equal(params.metadata?.payment_test, "yes");
-  assert.equal(params.cancel_url, "https://www.kaledudekoras.lt/mokejimo-patikra?atsaukta=1");
-  const fields = sheetFieldsFromSession({ id: "cs_live_check", created: 1791357300, amount_total: 100, metadata: params.metadata } as unknown as Stripe.Checkout.Session);
+test("Historical payment checks remain labelled without physical delivery in order notifications", () => {
+  const fields = sheetFieldsFromSession({
+    id: "cs_live_check", created: 1791357300, amount_total: 100,
+    metadata: { payment_test: "yes", order_number: "TEST-KD-1", name: "Payment check",
+      email: "check@example.invalid", delivery: "none", items_0: "Mokėjimo patikra — 1,00 €",
+      notes: "Mokėjimo patikra. Prekių nepristatyti." },
+  } as unknown as Stripe.Checkout.Session);
   assert.equal(fields.Būsena, "Mokėjimo patikra");
   assert.equal(fields.Pristatymas, "Netaikoma — mokėjimo patikra");
   assert.equal(fields["Suma, €"], 1);
   assert.match(String(fields.Pastabos), /Prekių nepristatyti/);
   assert.match(buildOrderEmail(fields).text, /Mokėjimo patikra/);
-  const previous = process.env.PAYMENT_TEST_ENABLED;
-  try {
-    delete process.env.PAYMENT_TEST_ENABLED;
-    assert.equal(paymentTestEnabled(), false);
-    process.env.PAYMENT_TEST_ENABLED = "true";
-    assert.equal(paymentTestEnabled(), true);
-    process.env.PAYMENT_TEST_ENABLED = "false";
-    assert.equal(paymentTestEnabled(), false);
-  } finally {
-    if (previous === undefined) delete process.env.PAYMENT_TEST_ENABLED;
-    else process.env.PAYMENT_TEST_ENABLED = previous;
-  }
 });
 
 test("Apmokėto užsakymo laiške pateikiami visi lentelės duomenys ir saugus HTML", () => {
