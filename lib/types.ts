@@ -14,6 +14,8 @@ export interface Product {
   /** Pirkimo kaina arba nuomos kaina visam sezonui, € */
   price: number;
   image: string;
+  /** Tikros prekės nuotraukos; pirmoji yra ir `image`. Be jų rodoma apšvietimo schema. */
+  photos?: string[];
   color: string;
   /** Girliandos ilgis metrais — pagal jį skaičiuojamas montavimas ir nuėmimas */
   meters: number;

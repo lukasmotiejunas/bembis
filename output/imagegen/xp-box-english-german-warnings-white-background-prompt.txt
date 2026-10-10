@@ -1,0 +1,23 @@
+Tool: built-in image_gen image editing
+Source: /Users/lukasmotiejunas/Downloads/image1.jpeg
+
+Edit ORIGINAL image1.jpeg: remove the surrounding grey tabletop to pure white #FFFFFF and rotate the complete actual box 90 degrees counterclockwise. English warning upright on upper flap, original German warning inverted on lower flap, preserving authentic opposite printed orientation. No mirroring. Complete blue-edged folded white cardboard box centred in square canvas, white margins. Preserve triangular fold seams, cardboard texture, blue edge artwork and photographed packaging. Do not invent or paraphrase any safety warning. Exact English wording:
+UK: ATTENTION
+If this set is fitted with a 3 pin, 13 amp BS1363 plug, it must contain a 3 amp fuse. Avoid damage to
+the insulation when installing the set and check before use for damage to lamp holders and wiring.
+If the insulation of the leadwire has been damaged, it must be replaced. If the insulation of the
+illuminated cable has been damaged, it has to be destroyed. Do not illuminate in the packaging.
+This set is fitted with non replaceable LEDs. If they fail, do not attempt to replace them.
+This set is designed for in- outdoor use.
+Exact German wording, retain original inverted orientation and do NOT rewrite:
+D: ACHTUNG
+Wenn dieses Set mit einem 3-poligen 13-A-BS1363-Stecker ausgestattet ist, muss es eine 3-A-Sicherung enthalten.
+Vermeiden Sie Beschädigungen der Isolierung bei der Installation des Geräts und prüfen Sie vor dem Gebrauch,
+ob die Lampenfassungen und die Verkabelung beschädigt sind. Wenn die Isolierung des Anschlusskabels
+beschädigt wurde, muss sie ersetzt werden. Wenn die Isolierung des beleuchteten Kabels
+beschädigt wurde, muss es zerstört werden. In der Verpackung nicht beleuchten.
+Dieses Set ist mit nicht austauschbaren LEDs ausgestattet. Wenn sie fehlschlagen,
+versuchen Sie nicht, sie zu ersetzen. Dieses Set ist für den Einsatz im
+Freien konzipiert. Producer : FDL - Televisieweg 155 - 1322BH - Almere -
+the Netherlands
+Use these exact printed texts and the original photograph; no redesign. No additions, props, watermark or tabletop shadows.

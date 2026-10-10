@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
-import { productFor } from "@/lib/data/products";
 import SectionHeading from "../ui/SectionHeading";
 
 const installation = [
@@ -20,7 +19,7 @@ const small = [
   },
   {
     href: "/kaledines-lemputes",
-    image: productFor("buy").image,
+    image: "/products/llinks.svg",
     title: "Prekyba dekoracijom",
     text: "Aukščiausios kokybės lemputės ir dekoracijos pagamintos Europos sąjungoje.",
     cta: "Žiūrėti lemputes",

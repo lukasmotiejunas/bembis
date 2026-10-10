@@ -15,6 +15,7 @@ function light(
   sections: number,
   price: number,
   sku: string,
+  photos?: string[],
 ): Product {
   const family = seriesNames[series];
   const meters = 7.5 * sections;
@@ -42,7 +43,8 @@ function light(
     kind,
     sections,
     price,
-    image: `/products/${series}.svg`,
+    image: photos?.[0] ?? `/products/${series}.svg`,
+    photos,
     color: "Šilta balta",
     meters,
     description,
@@ -79,14 +81,34 @@ function light(
 
 // Tik viešos pardavimo kainos. Vidinių kiekių ir savikainų nėra.
 export const products: Product[] = [
-  light("llinks", "starter", 1, 38.99, "61030"),
-  light("llinks", "extension", 1, 31.99, "61040"),
-  light("xp", "starter", 1, 24.99, "63100"),
-  light("xp", "extension", 1, 17.99, "63110"),
-  light("llinks", "bundle", 6, 168.99, "llinks-45"),
-  light("llinks", "bundle", 8, 209.99, "llinks-60"),
-  light("xp", "bundle", 6, 97.99, "xp-45"),
-  light("xp", "bundle", 8, 120.99, "xp-60"),
+  light("llinks", "starter", 1, 38.99, "61030", [
+    "/products/llinks-motinine-1.png",
+    "/products/motinine-girlianda.png",
+  ]),
+  light("llinks", "extension", 1, 31.99, "61040", [
+    "/products/llinks-papildoma-1.png",
+    "/products/llinks-papildoma-2.png",
+  ]),
+  light("xp", "starter", 1, 24.99, "63100", [
+    "/products/xp-motinine-1.png",
+    "/products/motinine-girlianda.png",
+  ]),
+  light("xp", "extension", 1, 17.99, "63110", [
+    "/products/xp-papildoma-1.png",
+    "/products/xp-papildoma-2.png",
+  ]),
+  light("llinks", "bundle", 6, 168.99, "llinks-45", [
+    "/products/llinks-komplektas-45.png",
+  ]),
+  light("llinks", "bundle", 8, 209.99, "llinks-60", [
+    "/products/llinks-komplektas-60.png",
+  ]),
+  light("xp", "bundle", 6, 97.99, "xp-45", [
+    "/products/xp-komplektas-45.png",
+  ]),
+  light("xp", "bundle", 8, 120.99, "xp-60", [
+    "/products/xp-komplektas-60.png",
+  ]),
 ];
 export const getProductBySlug = (slug: string) =>
   products.find((p) => p.slug === slug);

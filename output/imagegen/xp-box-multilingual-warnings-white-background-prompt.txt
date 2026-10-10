@@ -1,0 +1,29 @@
+Tool: built-in image_gen image editing
+Source: /Users/lukasmotiejunas/Downloads/image0 (1).jpeg
+
+Use case: precise-object-edit. Edit target: image0 (1).jpeg, original photograph of the folded white underside of a blue-edged XP Christmas light box with four short warning paragraphs and language flags. Rotate the actual complete box exactly 90 degrees counterclockwise so the English and Dutch paragraphs on the top flap are upright and horizontal. Preserve the original opposite printed orientation of German and French on the bottom flap. Do NOT mirror. Replace ONLY the surrounding dirty grey tabletop with uniform pure white #FFFFFF. The full horizontal box is centred in a square catalogue image with clean white margins and every corner visible. Preserve cardboard texture, triangular flap seams, blue border artwork, creases, exact printed text and four flags. Do not summarize, translate, invent or change safety warnings, article numbers or spelling. Exact original texts follow; retain these verbatim on their respective original flaps.
+English:
+Avoid damage to the insulation when installing the set. Check before use any damage to lamp holders &
+wiring. If found please dispose of the set accordingly. Do not illuminate in the packaging. This set is fitted
+with non-replaceable LEDs. If they fail do not attempt to replace them. This set is designed for in & outdoor
+use when fitted with a XP Power lead. (FDL item codes 63419/63420).
+Dutch:
+Voorkom schade aan de isolatie bij het installeren van deze set. Controleer voor gebruik eventuele schade
+aan lamphouders en bedrading. Indien gevonden, gooi de set dienovereenkomstig weg. Verlicht niet
+in de verpakking. Deze set is voorzien van niet-vervangbare leds. Als ze niet werken, probeer ze dan
+niet te vervangen. Deze set is ontworpen voor gebruik binnen en buiten, indien uitgerust met een XP-
+voedingskabel. (FDL-artikelcodes 63419/63420).
+German:
+Vermeiden Sie Schäden an der Isolierung, wenn Sie dieses Set installieren. Überprüfen Sie vor dem
+Gebrauch, ob Beschädigungen an Lampenfassungen und Kabeln vorhanden sind. Entsorgen Sie das
+Gerät entsprechend. In der Verpackung nicht beleuchten. Dieses Set ist mit nicht austauschbaren LEDs
+ausgestattet. Wenn sie fehlschlagen, versuchen Sie nicht, sie zu ersetzen. Dieses Set ist für den Einsatz im
+Innen- und Außenbereich konzipiert, wenn es mit einem XP Power-Kabel ausgestattet ist.
+(FDL-Artikelcodes 63419/63420).
+French:
+Évitez d’endommager l’isolation lors de l’installation de cet ensemble. Vérifiez avant utilisation tout
+dommage aux supports de lampe et au câblage. S’il est trouvé, veuillez jeter l’ensemble en conséquence.
+Ne pas éclairer dans l’emballage. Cet ensemble est équipé de LED non remplaçables. S’ils échouent,
+n’essayez pas de les remplacer. Cet ensemble est conçu pour une utilisation intérieure et extérieure
+lorsqu’il est équipé d’un cordon d’alimentation XP. (Codes article FDL 63419/63420).
+Photographic background replacement and overall rotation, not packaging recreation. No extra writing, graphics, props, watermark or tabletop shadows.

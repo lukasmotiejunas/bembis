@@ -17,6 +17,7 @@ import { GuaranteeBadge } from "@/components/Guarantee";
 import { QualityPoints } from "@/components/sections/LightsSection";
 import ProductPurchase from "@/components/shop/ProductPurchase";
 import ProductFeatureCard from "@/components/shop/ProductFeatureCard";
+import ProductGallery from "@/components/shop/ProductGallery";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
@@ -78,20 +79,26 @@ export default async function ProductPage(
           <span className="font-semibold text-pine-900">{product.name}</span>
         </nav>
         <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-sand bg-cream lg:sticky lg:top-28 lg:self-start">
-            <Image
-              src={product.image}
-              alt={`${seriesNames[product.series]} LED apšvietimo schema`}
-              fill
-              preload
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-contain p-8"
-            />
-            <GuaranteeBadge className="absolute top-5 left-5" />
-            <p className="absolute right-6 bottom-6 text-sm text-stone">
-              Apšvietimo schema
-            </p>
-          </div>
+          {product.photos ? (
+            <ProductGallery photos={product.photos} alt={product.name}>
+              <GuaranteeBadge className="absolute top-5 left-5" />
+            </ProductGallery>
+          ) : (
+            <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-sand bg-cream lg:sticky lg:top-28 lg:self-start">
+              <Image
+                src={product.image}
+                alt={`${seriesNames[product.series]} LED apšvietimo schema`}
+                fill
+                preload
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-contain p-8"
+              />
+              <GuaranteeBadge className="absolute top-5 left-5" />
+              <p className="absolute right-6 bottom-6 text-sm text-stone">
+                Apšvietimo schema
+              </p>
+            </div>
+          )}
           <div>
             <p className="text-sm font-bold text-glow-deep">
               {product.kind === "bundle"

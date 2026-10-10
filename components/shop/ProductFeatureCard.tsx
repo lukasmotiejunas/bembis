@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 import { Check } from "lucide-react";
 import { productHref } from "@/lib/data/products";
 import { cheapestDelivery } from "@/lib/data/delivery";
@@ -12,15 +13,25 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
     <article className="group flex flex-col overflow-hidden rounded-[2rem] border border-sand bg-white transition hover:border-pine-900/20 hover:shadow-[0_32px_64px_-36px_rgb(18_42_31/0.45)]">
       <Link
         href={productHref(product)}
-        className="relative block aspect-[4/3] bg-cream"
+        className={clsx(
+          "relative block aspect-[4/3]",
+          product.photos ? "bg-white" : "bg-cream",
+        )}
         aria-label={product.name}
       >
         <Image
           src={product.image}
-          alt={`${product.series === "xp" ? "XP" : "LLinks"} LED girliandos schema`}
+          alt={
+            product.photos
+              ? product.name
+              : `${product.series === "xp" ? "XP" : "LLinks"} LED girliandos schema`
+          }
           fill
           sizes="(max-width: 1024px) 100vw, 50vw"
-          className="object-contain p-8"
+          className={clsx(
+            "object-contain",
+            product.photos ? "p-4" : "p-8",
+          )}
         />
         <span className="absolute top-5 left-5 rounded-full bg-pine-900 px-3 py-1 text-xs font-extrabold text-snow">
           {product.kind === "bundle"
@@ -29,9 +40,11 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
               ? "Motininė girlianda"
               : "Papildoma sekcija"}
         </span>
-        <span className="absolute right-5 bottom-4 text-xs text-stone">
-          Apšvietimo schema
-        </span>
+        {!product.photos && (
+          <span className="absolute right-5 bottom-4 text-xs text-stone">
+            Apšvietimo schema
+          </span>
+        )}
       </Link>
       <div className="flex flex-1 flex-col border-t border-sand p-7 sm:p-9">
         <p className="text-sm text-stone">

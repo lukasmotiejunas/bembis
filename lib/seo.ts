@@ -149,7 +149,10 @@ export function productSchema(product: Product) {
     url: absoluteUrl(productHref(product)),
     name: product.name,
     description: product.description,
-    // Apšvietimo schemos neteikiame kaip produkto nuotraukos paieškai.
+    // Apšvietimo schemos neteikiame kaip produkto nuotraukos paieškai — tik tikras nuotraukas.
+    ...(product.photos
+      ? { image: product.photos.map((p) => absoluteUrl(p)) }
+      : {}),
     ...(product.kind !== "bundle" ? { sku: product.id } : {}),
     color: product.color,
     additionalProperty: product.specs.map((s) => ({

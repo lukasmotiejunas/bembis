@@ -1,0 +1,23 @@
+Tool: built-in image_gen image editing
+Source: /Users/lukasmotiejunas/Downloads/image3.jpeg
+
+Edit image3.jpeg ORIGINAL photograph only. Rotate 90 degrees counterclockwise so this long thin purple box side panel lies horizontally with English at left, French at right, all letters upright. Replace only the outside tabletop with pure white. Preserve the photograph of the printed panel and its scuffs, flags, type, line breaks and existing wording. This is a safety warning label: do not summarize, invent or alter any instruction. Use a wide landscape crop with the entire panel and white margins. The previous attempt wrongly invented text. Do NOT use it.
+The English text on the original must read EXACTLY:
+WARNING
+If this set is fitted with a 3 pin, 13 amp BS1363 plug, it must contain a 3 amp fuse. Avoid damage
+to the insulation when installing the set and check before use for damage to lamp holders and
+wiring. If the insulation of the lead wire has been damaged, it must be replaced. If the insulation
+of the illuminated cable has been damaged, it has to be destroyed. Do not illuminate in the
+packaging. This set is fitted with non replaceable LEDs. These have a very high life expectation.
+If they fail, Do not attempt to replace them. This set is designed for in- & outdoor use. Never
+connect more than a total of 690Watt/ 3Amp
+The French text must remain EXACTLY as photographed, without correcting its grammar:
+NOTICE
+Évitez d’endommager l’isolation en installant l’ensemble et le contrôle avant l’emploi pour
+des dommages aux douilles de lampe et au câble lumineux a été endommagée, elle doit être
+remplacée. Si l’isolation du câble lumineux a été endommagée, elle doit être détruite. N’illuminez
+pas dans l’empaquetage. Cet ensemble est équipé des LED non remplaçables. Celles-ci ont une
+espérance de vie très élevée. Si elles échouent, n’essayez pas de les remplacer. Cet ensemble
+est conçu pour dedans et extérieur l’usage. Ne reliez jamais plus qu’un total de 690Watt/3
+ampères.
+Keep precisely this original text on the original photographed box; do not add other sentences. Background pure #FFFFFF, no extra shadow, props, new labels or watermark.
