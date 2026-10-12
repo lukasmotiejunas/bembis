@@ -10,12 +10,12 @@ import AddToCartButton from "./AddToCartButton";
 
 export default function ProductFeatureCard({ product }: { product: Product }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-[2rem] border border-sand bg-white transition hover:border-pine-900/20 hover:shadow-[0_32px_64px_-36px_rgb(18_42_31/0.45)]">
+    <article className="hw-web group flex flex-col overflow-hidden rounded-[2rem] border border-sand bg-white transition hover:border-pine-900/20 hover:shadow-[0_32px_64px_-36px_rgb(18_42_31/0.45)]">
       <Link
         href={productHref(product)}
         className={clsx(
           "relative block aspect-[4/3]",
-          product.photos ? "bg-white" : "bg-cream",
+          product.photos ? "hw-photo bg-white" : "bg-cream",
         )}
         aria-label={product.name}
       >

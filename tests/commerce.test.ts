@@ -18,6 +18,14 @@ import { appendOrderToSheet, sheetFieldsFromSession } from "../lib/orders/sheet"
 import type Stripe from "stripe";
 import { stripeConfigurationError, stripePaymentMode } from "../lib/stripe-config";
 import {
+  adminPassword,
+  createSessionToken,
+  passwordMatches,
+  SESSION_DAYS,
+  verifySessionToken,
+} from "../lib/admin";
+import { isSiteTheme } from "../lib/theme";
+import {
   describeParcelMachine,
   parseParcelMachines,
   searchParcelMachines,
@@ -497,4 +505,43 @@ test("Rinkinys: viena motininė ir reikiamas papildomų sekcijų kiekis, komplek
     [1, 2, 5, 10, 11, 12, 21, 22, 99].map((n) => plural(n, "a", "b", "c")).join(""),
     "abbcccabb",
   );
+});
+
+test("Administravimas: sesija galioja tik su tuo pačiu slaptažodžiu ir iki galiojimo pabaigos", () => {
+  const password = "slaptas-žodis-2026";
+  const now = Date.UTC(2026, 9, 12);
+  const day = 24 * 60 * 60 * 1000;
+  const token = createSessionToken(password, now);
+  assert.equal(verifySessionToken(token, password, now + day), true);
+  assert.equal(verifySessionToken(token, "kitas-slaptažodis", now + day), false);
+  assert.equal(verifySessionToken(token, password, now + SESSION_DAYS * day + 1), false);
+  // Galiojimo pratęsti negalima: pakeitus datą, parašas nebetinka.
+  const [expires, signature] = token.split(".");
+  assert.equal(verifySessionToken(`${Number(expires) + day}.${signature}`, password, now), false);
+  for (const bad of [undefined, "", "abc", `${token}.x`, `${expires}.`])
+    assert.equal(verifySessionToken(bad, password, now), false);
+  assert.equal(passwordMatches(password, password), true);
+  assert.equal(passwordMatches("slaptas", password), false);
+});
+
+test("Administravimas išjungtas, kol slaptažodis nenustatytas arba per trumpas", () => {
+  const previous = process.env.ADMIN_PASSWORD;
+  try {
+    delete process.env.ADMIN_PASSWORD;
+    assert.equal(adminPassword(), null);
+    process.env.ADMIN_PASSWORD = "trumpas";
+    assert.equal(adminPassword(), null);
+    process.env.ADMIN_PASSWORD = "pakankamai-ilgas";
+    assert.equal(adminPassword(), "pakankamai-ilgas");
+  } finally {
+    if (previous === undefined) delete process.env.ADMIN_PASSWORD;
+    else process.env.ADMIN_PASSWORD = previous;
+  }
+});
+
+test("Dizainas: priimami tik žinomi pavadinimai", () => {
+  assert.equal(isSiteTheme("christmas"), true);
+  assert.equal(isSiteTheme("halloween"), true);
+  for (const value of ["", "Halloween", "admin", null, undefined, 1])
+    assert.equal(isSiteTheme(value), false);
 });

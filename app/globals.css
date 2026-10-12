@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./halloween.css";
 
 @theme {
   /* Surfaces */

@@ -7,7 +7,7 @@ const palettes = {
 
 type Palette = keyof typeof palettes;
 
-const BULB_PATH =
+export const BULB_PATH =
   "M-3.5 7 C -7 10, -7.5 18, -3 25 C -1.5 27.5, -0.5 29.5, 0 30 C 0.5 29.5, 1.5 27.5, 3 25 C 7.5 18, 7 10, 3.5 7 Z";
 
 function BulbShape({ color, glowId, delay = 0 }: { color: string; glowId: string; delay?: number }) {
@@ -66,6 +66,31 @@ const WIRE_Y = 6;
 const SAG = 18;
 const BULB_T = [0.125, 0.375, 0.625, 0.875];
 
+/** The sagging wire and where each bulb hangs on it (n counts bulbs from the left). */
+export function garlandLayout() {
+  const width = SEGMENT * SEGMENTS;
+  const cy = WIRE_Y + 2 * SAG;
+
+  let wire = `M0 ${WIRE_Y}`;
+  const points: { x: number; y: number; angle: number; n: number }[] = [];
+
+  for (let s = 0; s < SEGMENTS; s++) {
+    const x0 = s * SEGMENT;
+    const x2 = x0 + SEGMENT;
+    const x1 = x0 + SEGMENT / 2;
+    wire += ` Q ${x1} ${cy} ${x2} ${WIRE_Y}`;
+
+    BULB_T.forEach((t, i) => {
+      const x = (1 - t) ** 2 * x0 + 2 * (1 - t) * t * x1 + t ** 2 * x2;
+      const y = (1 - t) ** 2 * WIRE_Y + 2 * (1 - t) * t * cy + t ** 2 * WIRE_Y;
+      const dy = 2 * (1 - t) * (cy - WIRE_Y) + 2 * t * (WIRE_Y - cy);
+      const angle = (Math.atan2(dy, SEGMENT) * 180) / Math.PI;
+      points.push({ x, y, angle: angle * 0.5, n: s * BULB_T.length + i });
+    });
+  }
+  return { width, wire, points };
+}
+
 /**
  * A string of lights draped across the full width of its container.
  * Drawn at a fixed pixel size and cropped, so bulbs stay the same size on every screen.
@@ -80,27 +105,8 @@ export function Garland({
   className?: string;
 }) {
   const colors = palettes[palette];
-  const width = SEGMENT * SEGMENTS;
-  const cy = WIRE_Y + 2 * SAG;
-
-  let wire = `M0 ${WIRE_Y}`;
-  const bulbs: { x: number; y: number; angle: number; color: number; delay: number }[] = [];
-
-  for (let s = 0; s < SEGMENTS; s++) {
-    const x0 = s * SEGMENT;
-    const x2 = x0 + SEGMENT;
-    const x1 = x0 + SEGMENT / 2;
-    wire += ` Q ${x1} ${cy} ${x2} ${WIRE_Y}`;
-
-    BULB_T.forEach((t, i) => {
-      const x = (1 - t) ** 2 * x0 + 2 * (1 - t) * t * x1 + t ** 2 * x2;
-      const y = (1 - t) ** 2 * WIRE_Y + 2 * (1 - t) * t * cy + t ** 2 * WIRE_Y;
-      const dy = 2 * (1 - t) * (cy - WIRE_Y) + 2 * t * (WIRE_Y - cy);
-      const angle = (Math.atan2(dy, SEGMENT) * 180) / Math.PI;
-      const n = s * BULB_T.length + i;
-      bulbs.push({ x, y, angle: angle * 0.5, color: n % colors.length, delay: (n * 0.73) % 3.2 });
-    });
-  }
+  const { width, wire, points } = garlandLayout();
+  const bulbs = points.map(({ n, ...p }) => ({ ...p, color: n % colors.length, delay: (n * 0.73) % 3.2 }));
 
   return (
     <div className={clsx("pointer-events-none relative overflow-hidden", className)} style={{ height: HEIGHT }} aria-hidden="true">

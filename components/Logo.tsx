@@ -1,6 +1,8 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { site } from "@/lib/site";
+import type { SiteTheme } from "@/lib/theme";
+import { BAT_PATH } from "./halloween/Decor";
 
 const AMBER = "#f4b03e";
 const STAR =
@@ -49,6 +51,47 @@ export function LogoMark({ id, light = false, className }: { id: string; light?:
   );
 }
 
+const HALLOWEEN_LIGHTS = ["#ff8a1f", "#b46cff", "#8be35b", "#8be35b", "#b46cff", "#ff8a1f"];
+
+/** Halloween version of the mark: a crescent moon instead of the star, spooky roof lights and a bat. */
+export function HalloweenLogoMark({ id, className }: { id: string; className?: string }) {
+  const line = "#f6ecdf";
+  return (
+    <svg viewBox="2 0 44 44" className={className} aria-hidden="true">
+      <defs>
+        <radialGradient id={`${id}-glow`}>
+          <stop offset="0%" stopColor="#ff8a1f" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#ff8a1f" stopOpacity="0" />
+        </radialGradient>
+        <mask id={`${id}-moon`}>
+          <circle cx="24" cy="6.4" r="4.6" fill="white" />
+          <circle cx="26.2" cy="5" r="3.9" fill="black" />
+        </mask>
+      </defs>
+      <path d="M11 21.5 V41 H37 V21.5" fill="none" stroke={line} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="24" cy="35" r="9" fill={`url(#${id}-glow)`} className="hw-flicker" />
+      <path d="M20.5 41 V34 A3.5 3.5 0 0 1 27.5 34 V41 Z" fill="#ff8a1f" />
+      {ROOF_LIGHTS.map(([x, y], i) => (
+        <circle
+          key={i}
+          cx={x}
+          cy={y}
+          r="5.5"
+          fill={`url(#${id}-glow)`}
+          className="animate-twinkle"
+          style={{ animationDelay: `${(i * 0.55).toFixed(2)}s` }}
+        />
+      ))}
+      <path d="M6 25 L24 9 L42 25" fill="none" stroke={line} strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round" />
+      {ROOF_LIGHTS.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r="2.3" fill={HALLOWEEN_LIGHTS[i]} />
+      ))}
+      <rect x="18" y="0" width="12" height="12" fill="#f3e6c8" mask={`url(#${id}-moon)`} />
+      <path d={BAT_PATH} transform="translate(32 1.2) scale(0.2)" fill={line} />
+    </svg>
+  );
+}
+
 /** "Kalėdų Dekoras" wordmark — the dot over the ė is a little glowing light. */
 export function Wordmark({ light = false, className }: { light?: boolean; className?: string }) {
   return (
@@ -70,10 +113,15 @@ export function Wordmark({ light = false, className }: { light?: boolean; classN
   );
 }
 
-export default function Logo({ id, light = false }: { id: string; light?: boolean }) {
+export default function Logo({ id, light = false, theme = "christmas" }: { id: string; light?: boolean; theme?: SiteTheme }) {
+  const markClass = "size-11 shrink-0 transition-transform duration-300 group-hover:-rotate-3";
   return (
     <Link href="/" className="group inline-flex items-center gap-2.5" aria-label={`${site.name} — pradžia`}>
-      <LogoMark id={id} light={light} className="size-11 shrink-0 transition-transform duration-300 group-hover:-rotate-3" />
+      {theme === "halloween" ? (
+        <HalloweenLogoMark id={id} className={markClass} />
+      ) : (
+        <LogoMark id={id} light={light} className={markClass} />
+      )}
       <Wordmark light={light} />
     </Link>
   );

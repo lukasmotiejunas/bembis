@@ -13,14 +13,46 @@ import { LightSeries } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
 import { breadcrumbSchema, pageMetadata, rentalServiceSchema } from "@/lib/seo";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
+import { getSiteTheme } from "@/lib/themeStore";
 
-export const metadata = pageMetadata({
-  title: "XP ir LLinks lempučių nuoma Vilniuje",
-  description:
-    "Šiltai baltų XP ir komercinės klasės LLinks lauko LED lempučių nuoma. Standartiniai tarifai už metrą, montavimas ir nuėmimas po sezono. Vilnius ir apskritis.",
-  path: "/nuoma",
-});
-export default function RentalPage() {
+const meta = {
+  christmas: {
+    title: "XP ir LLinks lempučių nuoma Vilniuje",
+    description:
+      "Šiltai baltų XP ir komercinės klasės LLinks lauko LED lempučių nuoma. Standartiniai tarifai už metrą, montavimas ir nuėmimas po sezono. Vilnius ir apskritis.",
+  },
+  halloween: {
+    title: "Lempučių nuoma Helovynui ir visam sezonui Vilniuje",
+    description:
+      "Šiltai baltų XP ir komercinės klasės LLinks lauko LED lempučių nuoma Helovynui ir visam sezonui. Standartiniai tarifai už metrą, montavimas ir nuėmimas po sezono. Vilnius ir apskritis.",
+  },
+};
+
+export async function generateMetadata() {
+  return pageMetadata({ ...meta[await getSiteTheme()], path: "/nuoma" });
+}
+
+const copy = {
+  christmas: {
+    title: "Kalėdinis apšvietimas be sandėliavimo rūpesčių",
+    text: "Pasirinkite XP arba komercinės klasės LLinks lauko LED. Atvykstame pas jus, papuošiame ir sumontuojame, o po sezono apšvietimą nuimame bei pasiimame.",
+    seriesText: "Šiltai baltas apšvietimas jūsų pastato ar aplinkos kontūrams.",
+    seasonText: "Nuomos laiką ir darbų datas suderiname su jumis.",
+    faqTitle: "Klausimai apie nuomą",
+    serviceArea: "Kalėdines lemputes nuomojame ir montuojame",
+  },
+  halloween: {
+    title: "Helovyno apšvietimas be sandėliavimo rūpesčių",
+    text: "Pasirinkite XP arba komercinės klasės LLinks lauko LED. Atvykstame pas jus, papuošiame ir sumontuojame, o po sezono apšvietimą nuimame bei pasiimame — dingsta kaip vaiduoklis.",
+    seriesText: "Šiltai baltas apšvietimas, išryškinantis namo kontūrus Helovyno tamsoje.",
+    seasonText: "Nuomos laiką ir darbų datas suderiname su jumis — Helovynui ir visam sezonui.",
+    faqTitle: "Klausimai apie nuomą — be jokių triukų",
+    serviceArea: "Lauko LED lemputes nuomojame ir montuojame",
+  },
+};
+
+export default async function RentalPage() {
+  const t = copy[await getSiteTheme()];
   return (
     <>
       <JsonLd
@@ -34,8 +66,8 @@ export default function RentalPage() {
       />
       <PageHeader
         eyebrow="Nuoma sezonui"
-        title="Kalėdinis apšvietimas be sandėliavimo rūpesčių"
-        text="Pasirinkite XP arba komercinės klasės LLinks lauko LED. Atvykstame pas jus, papuošiame ir sumontuojame, o po sezono apšvietimą nuimame bei pasiimame."
+        title={t.title}
+        text={t.text}
       >
         <Link href="/kiek-kainuoja" className="btn btn-primary">
           Palyginti standartinę sąmatą
@@ -64,7 +96,7 @@ export default function RentalPage() {
                 {seriesNames[series]} lauko girliandos
               </h2>
               <p className="mt-3 text-stone">
-                Šiltai baltas apšvietimas jūsų pastato ar aplinkos kontūrams.
+                {t.seriesText}
               </p>
               <p className="mt-7">
                 <strong className="font-display text-5xl text-pine-900">
@@ -97,7 +129,7 @@ export default function RentalPage() {
             {
               icon: CalendarCheck,
               title: "Visam sezonui",
-              text: "Nuomos laiką ir darbų datas suderiname su jumis.",
+              text: t.seasonText,
             },
             {
               icon: Wrench,
@@ -120,8 +152,8 @@ export default function RentalPage() {
           ))}
         </div>
       </section>
-      <FAQ faqs={rentalFaqs} title="Klausimai apie nuomą" />
-      <ServiceArea what="Kalėdines lemputes nuomojame ir montuojame" />
+      <FAQ faqs={rentalFaqs} title={t.faqTitle} />
+      <ServiceArea what={t.serviceArea} />
       <ContactSection
         defaultServices={["Lempučių nuoma", INSTALLATION_SERVICE]}
       />

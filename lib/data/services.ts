@@ -31,6 +31,13 @@ export const seasonSteps: { when: string; title: string; text?: string }[] = [
     // text: "Montavimo tarifas apima ir nuėmimą po sezono. Nuomotas lemputes pasiimame, jūsų lemputės lieka jums.",
   },
 ];
+// Helovyno dizainui (/admin): tie patys žingsniai, Helovyno žodžiais.
+export const halloweenSeasonSteps: typeof seasonSteps = [
+  { when: "Prieš Helovyną", title: "Iškviečiate mus" },
+  { when: "Pagal jūsų norus", title: "Pasirenkate apšvietimą" },
+  { when: "Suderintu laiku", title: "Atskrendame ir sumontuojame" },
+  { when: "Po sezono", title: "Viską nuimame" },
+];
 // Klausimai, kurie kartojasi keliuose puslapiuose.
 const buyVsRentFaq = {
   q: "Kuo skiriasi pirkimas nuo nuomos?",
@@ -78,6 +85,21 @@ export const faqs = [
   },
   areaFaq,
 ];
+export const halloweenFaqs = [
+  {
+    q: "Ar spėsite papuošti iki Helovyno?",
+    a: "Montavimo datą suderiname su jumis. Kad namai švytėtų jau Helovyno vakarą, susisiekite kuo anksčiau — pasistengsime rasti laiką prieš spalio 31-ąją.",
+  },
+  {
+    q: "Ar apšvietimą galima palikti ir Kalėdoms?",
+    a: "Šiltai baltos girliandos tinka ir Helovynui, ir Kalėdoms. Montavimo ir nuėmimo laiką suderiname su jumis, o nuėmimas po sezono jau įskaičiuotas į darbo tarifą.",
+  },
+  {
+    q: "Ar galite papuošti oranžinėmis ar violetinėmis lemputėmis?",
+    a: `Mūsų XP ir LLinks girliandos yra šiltai baltos. Jei turite savų spalvotų Helovyno lempučių, papuošime ir jomis — standartinis kabinimo ir nuėmimo tarifas su kliento lemputėmis yra ${formatPrice(pricing.clientLightsPerMeter)}/m.`,
+  },
+  ...faqs,
+];
 export const showcase = [
   {
     src: "/work/lithuanian-house-xp-timber-cottage.png",
@@ -104,6 +126,13 @@ export const showcase = [
     alt: "Namas su LED girliandomis palei abu frontonus ir karnizą",
     label: "Frontonai ir karnizai",
   },
+];
+export const halloweenShowcaseLabels = [
+  "Prieangis saldainių medžiotojams",
+  "Balkonas pilnaties šviesoje",
+  "Modernus vaiduoklių namas",
+  "Karnizas, švytintis per rūką",
+  "Frontonai po pilnatimi",
 ];
 export const decorAreas = [
   {
@@ -137,6 +166,14 @@ export const decorAreas = [
     text: "Individualus planas pastatams ir jų aplinkai.",
   },
 ] as const;
+export const halloweenDecorAreas: Record<(typeof decorAreas)[number]["icon"], { title: string; text: string }> = {
+  roof: { title: "Stogo kraštai", text: "Švytintis kontūras, matomas net iš kitos gatvės pusės." },
+  window: { title: "Langai ir durys", text: "Įėjimas, kurį saldainių medžiotojai ras be žibintuvėlio." },
+  terrace: { title: "Terasos ir turėklai", text: "Verandos, balkonai, turėklai ir laiptai — be šešėlių kampuose." },
+  tree: { title: "Medžiai ir krūmai", text: "Kiemo medžių siluetai, išnyrantys iš tamsos." },
+  fence: { title: "Tvoros ir vartai", text: "Apšviestas kelias pro vartus iki pat durų." },
+  estate: { title: "Sodybos ir dideli namai", text: "Individualus planas pastatams ir jų aplinkai — net jei tai tikra pilis." },
+};
 export const rentalFaqs = [
   {
     q: "Kiek kainuoja lempučių nuoma?",

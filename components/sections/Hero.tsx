@@ -2,7 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Check, Phone } from "lucide-react";
 import { phoneHref, site } from "@/lib/site";
+import { getSiteTheme } from "@/lib/themeStore";
 import { Garland } from "../Lights";
+import HalloweenHero from "../halloween/HalloweenHero";
 
 const promises = ["2 metų garantija", "Nemokama apžiūra", "Nuimame po švenčių"];
 
@@ -12,7 +14,8 @@ const season = [
   { month: "Sausis", text: "Viską nuimame", color: "bg-pine-700" },
 ];
 
-export default function Hero() {
+export default async function Hero() {
+  if ((await getSiteTheme()) === "halloween") return <HalloweenHero />;
   return (
     <section className="relative overflow-hidden">
       <div className="absolute inset-x-0 top-0 -z-10 h-[70%] bg-gradient-to-b from-cream to-snow" />

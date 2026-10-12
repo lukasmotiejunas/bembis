@@ -14,6 +14,7 @@ import {
 import { formatMeters, formatPrice, money } from "@/lib/format";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
 import { phoneHref, site } from "@/lib/site";
+import { useSiteTheme } from "../SiteTheme";
 
 /** Quick sizes (length × width) so visitors see a price without measuring first. */
 const presets = [
@@ -379,6 +380,12 @@ function Row({
   );
 }
 
+// Roof, lights, number on the roof, side labels.
+const outlineColors = {
+  christmas: { roof: "#122a1f", light: "#f4b03e", text: "#fbf8f3", label: "#122a1f" },
+  halloween: { roof: "#26173a", light: "#ff7a1a", text: "#f6ecdf", label: "#d9c9f0" },
+};
+
 /** Top-down roof drawn to the entered proportions, with the lit edge around it. */
 function Outline({
   length,
@@ -390,6 +397,7 @@ function Outline({
   perimeter: number | null;
 }) {
   const valid = perimeter !== null;
+  const c = outlineColors[useSiteTheme()];
   const ratio = valid ? Math.min(Math.max(width / length, 0.3), 1.5) : 0.7;
   let w = 250;
   let h = w * ratio;
@@ -419,7 +427,7 @@ function Outline({
             <feGaussianBlur stdDeviation="4" />
           </filter>
         </defs>
-        <rect x={x} y={y} width={w} height={h} rx="6" fill="#122a1f" />
+        <rect x={x} y={y} width={w} height={h} rx="6" fill={c.roof} />
         <rect
           x={x}
           y={y}
@@ -427,7 +435,7 @@ function Outline({
           height={h}
           rx="6"
           fill="none"
-          stroke="#f4b03e"
+          stroke={c.light}
           strokeOpacity="0.55"
           strokeWidth="8"
           filter="url(#calc-glow)"
@@ -439,7 +447,7 @@ function Outline({
           height={h}
           rx="6"
           fill="none"
-          stroke="#f4b03e"
+          stroke={c.light}
           strokeWidth="5"
           strokeDasharray="0.1 11"
           strokeLinecap="round"
@@ -448,7 +456,7 @@ function Outline({
           x={x + w / 2}
           y={y + h / 2 + 9}
           textAnchor="middle"
-          fill="#fbf8f3"
+          fill={c.text}
           fontSize="26"
           fontWeight="600"
           className="font-display"
@@ -459,7 +467,7 @@ function Outline({
           x={x + w / 2}
           y={y - 14}
           textAnchor="middle"
-          fill="#122a1f"
+          fill={c.label}
           fontSize="18"
           fontWeight="700"
         >
@@ -469,7 +477,7 @@ function Outline({
           x={x - 14}
           y={y + h / 2 + 6}
           textAnchor="end"
-          fill="#122a1f"
+          fill={c.label}
           fontSize="18"
           fontWeight="700"
         >

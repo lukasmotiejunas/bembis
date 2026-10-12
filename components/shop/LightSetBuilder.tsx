@@ -16,6 +16,7 @@ import { guarantee, seriesNames } from "@/lib/data/products";
 import { formatMeters, formatPrice, money, plural } from "@/lib/format";
 import { useCartStore } from "@/lib/store/cartStore";
 import { LightSeries, Product } from "@/lib/types";
+import { useSiteTheme } from "../SiteTheme";
 
 const presets = [15, 30, 45, 60];
 const seriesText: Record<LightSeries, string> = {
@@ -30,6 +31,7 @@ const extensionsLabel = (n: number) =>
 
 export default function LightSetBuilder() {
   const [value, setValue] = useState("30");
+  const theme = useSiteTheme();
   const meters = value === "" ? NaN : Number(value);
   const sets = (["xp", "llinks"] as const).map((series) =>
     buildLightSet(series, meters),
@@ -60,7 +62,7 @@ export default function LightSetBuilder() {
         <div>
           <p className="eyebrow">Rinkinio skaičiuoklė</p>
           <h2 className="mt-3 text-3xl leading-tight font-semibold text-pine-900 sm:text-4xl">
-            Kiek metrų apšvietimo reikia?
+            {theme === "halloween" ? "Kiek metrų šviesos atbaidys tamsą?" : "Kiek metrų apšvietimo reikia?"}
           </h2>
           <p className="mt-3 leading-relaxed text-stone">
             Įveskite ilgį — sudarysime rinkinį iš vienos motininės girliandos ir

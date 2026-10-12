@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, ChevronRight, Wrench } from "lucide-react";
+import { ArrowRight, Check, ChevronRight, MoonStar, Wrench } from "lucide-react";
 import {
   getProductBySlug,
   productHref,
@@ -21,6 +21,7 @@ import ProductGallery from "@/components/shop/ProductGallery";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
+import { getSiteTheme } from "@/lib/themeStore";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -43,6 +44,7 @@ export default async function ProductPage(
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) notFound();
+  const halloween = (await getSiteTheme()) === "halloween";
   const related = products
     .filter(
       (p) =>
@@ -111,6 +113,12 @@ export default async function ProductPage(
             <h1 className="mt-3 text-4xl leading-tight font-semibold text-pine-900 sm:text-5xl">
               {product.name}
             </h1>
+            {halloween && (
+              <p className="mt-4 inline-flex items-center gap-2 rounded-full bg-glow-soft px-3.5 py-1.5 text-sm font-bold text-glow-deep">
+                <MoonStar className="size-4" aria-hidden="true" />
+                Švies per Helovyną ir per Kalėdas
+              </p>
+            )}
             <p className="mt-5 text-lg leading-relaxed text-stone">
               {product.description}
             </p>
@@ -159,7 +167,7 @@ export default async function ProductPage(
                 />
                 <span>
                   <strong className="block text-pine-900">
-                    Papuošime už jus
+                    {halloween ? "Papuošime už jus — prieš Helovyną" : "Papuošime už jus"}
                   </strong>
                   <span className="mt-1 block text-sm text-stone">
                     Montavimas ir nuėmimas su mūsų lemputėmis —{" "}

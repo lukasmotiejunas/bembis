@@ -8,6 +8,7 @@ import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
 import { emailHref, phoneHref, site } from "@/lib/site";
 import Logo from "./Logo";
 import CartDrawer from "./CartDrawer";
+import { useSiteTheme } from "./SiteTheme";
 
 const nav = [
   { href: "/montavimas", label: "Montavimas" },
@@ -18,6 +19,7 @@ const nav = [
 
 export default function Header() {
   const pathname = usePathname();
+  const theme = useSiteTheme();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const items = useCartStore((s) => s.items);
@@ -42,7 +44,7 @@ export default function Header() {
         )}
       >
         <div className="container-page flex h-[4.5rem] items-center justify-between gap-6">
-          <Logo id="logo-header" />
+          <Logo id="logo-header" theme={theme} />
 
           <nav className="hidden items-center gap-1 md:flex" aria-label="Pagrindinė navigacija">
             {nav.map((item) => (

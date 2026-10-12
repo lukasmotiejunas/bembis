@@ -1,7 +1,28 @@
 import Link from "next/link";
 import { Bulb } from "@/components/Lights";
+import { Ghost, Pumpkin } from "@/components/halloween/Decor";
+import { getSiteTheme } from "@/lib/themeStore";
 
-export default function NotFound() {
+export default async function NotFound() {
+  if ((await getSiteTheme()) === "halloween")
+    return (
+      <section className="container-page flex flex-col items-center py-28 text-center">
+        <div className="flex items-end gap-2">
+          <Pumpkin id="not-found-pumpkin" lit={false} className="w-20 opacity-80" />
+          <Ghost className="w-16" />
+        </div>
+        <h1 className="mt-6 text-4xl font-semibold text-pine-900 sm:text-5xl">Šis puslapis dingo kaip vaiduoklis</h1>
+        <p className="mt-4 max-w-md text-lg text-stone">Tokio puslapio neradome — gal jį pasiėmė raganos? Grįžkite į pradžią arba peržiūrėkite mūsų lemputes.</p>
+        <div className="mt-8 flex gap-3">
+          <Link href="/" className="btn btn-dark">
+            Į pradžią
+          </Link>
+          <Link href="/kaledines-lemputes" className="btn btn-outline">
+            Lemputės
+          </Link>
+        </div>
+      </section>
+    );
   return (
     <section className="container-page flex flex-col items-center py-28 text-center">
       <Bulb id="not-found-bulb" color="#59665f" className="h-24 w-16 opacity-60" />

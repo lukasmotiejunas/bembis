@@ -1,6 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 import { ArrowRight, Check } from "lucide-react";
+import { getSiteTheme } from "@/lib/themeStore";
+import { Pumpkin } from "../halloween/Decor";
 import SectionHeading from "../ui/SectionHeading";
 
 const installation = [
@@ -9,7 +12,7 @@ const installation = [
   "Demontavimas po švenčių",
 ];
 
-const small = [
+const small: { href: string; image: string; title: string; text: string; cta: string; pumpkin?: boolean }[] = [
   {
     href: "/nuoma",
     image: "/work/lithuanian-house-xp-single-storey.png",
@@ -26,13 +29,51 @@ const small = [
   },
 ];
 
-export default function Offers() {
+const copy = {
+  christmas: {
+    eyebrow: "Ką siūlome",
+    title: "Pasirinkite, kas jums patogiausia",
+    text: "Papuošime jūsų namus, išnuomosime arba parduosime dekoracijas.",
+    badge: "Pagrindinė paslauga",
+    cardTitle: "Montavimas ir demontavimas",
+    cardText: "Išbaigtas namo dekoras, individualiai pritaikytas jūsų pageidavimams.",
+    chips: installation,
+    cards: small,
+  },
+  halloween: {
+    eyebrow: "Ką verdame katile",
+    title: "Pasirinkite savo Helovyno burtą",
+    text: "Papuošime jūsų namus, išnuomosime arba parduosime lemputes — kad Helovyno naktį jie švytėtų iš tolo.",
+    badge: "Pagrindinė paslauga",
+    cardTitle: "Papuošime, kol renkatės kostiumą",
+    cardText: "Išbaigtas, šiurpiai gražus namo apšvietimas, pritaikytas jūsų pageidavimams.",
+    chips: ["Individualus dekoro planas", "Montavimas prieš Helovyną", "Nuėmimas po sezono"],
+    cards: [
+      {
+        ...small[0],
+        title: "Lempučių nuoma sezonui",
+        text: "Išsinuomokite XP ar LLinks girliandas sezonui — po jo pasiimsime jas kaip vaiduokliai, be pėdsakų.",
+      },
+      {
+        ...small[1],
+        title: "Lemputės, kurios lieka jums",
+        text: "Aukščiausios kokybės lauko LED girliandos, pagamintos Europos Sąjungoje — Helovynui, Kalėdoms ir visiems tamsiems vakarams.",
+        pumpkin: true,
+      },
+    ],
+  },
+};
+
+export default async function Offers() {
+  const theme = await getSiteTheme();
+  const halloween = theme === "halloween";
+  const t = copy[theme];
   return (
     <section className="container-page py-20 sm:py-28">
       <SectionHeading
-        eyebrow="Ką siūlome"
-        title="Pasirinkite, kas jums patogiausia"
-        text="Papuošime jūsų namus, išnuomosime arba parduosime dekoracijas."
+        eyebrow={t.eyebrow}
+        title={t.title}
+        text={t.text}
       />
 
       <div className="mt-12 grid gap-5 lg:grid-cols-2">
@@ -42,17 +83,16 @@ export default function Offers() {
         >
           <div className="relative z-10 p-8 sm:p-10">
             <span className="rounded-full bg-glow px-3 py-1 text-xs font-extrabold text-pine-950">
-              Pagrindinė paslauga
+              {t.badge}
             </span>
             <h3 className="mt-6 text-3xl font-semibold sm:text-4xl">
-              Montavimas ir demontavimas
+              {t.cardTitle}
             </h3>
             <p className="mt-3 max-w-md text-lg leading-relaxed text-snow/75">
-              Išbaigtas namo dekoras, individualiai pritaikytas jūsų
-              pageidavimams.
+              {t.cardText}
             </p>
             <ul className="mt-6 flex flex-wrap gap-2">
-              {installation.map((f) => (
+              {t.chips.map((f) => (
                 <li
                   key={f}
                   className="flex items-center gap-1.5 rounded-full border border-snow/15 bg-snow/5 px-3 py-1.5 text-sm font-semibold"
@@ -64,7 +104,7 @@ export default function Offers() {
             </ul>
           </div>
 
-          <div className="relative min-h-60 flex-1 overflow-hidden">
+          <div className={clsx("relative min-h-60 flex-1 overflow-hidden", halloween && "hw-night")}>
             <Image
               src="/work/lithuanian-house-xp-modern-gable.png"
               alt="Modernus namas, kurio frontoną ir karnizą puošia šiltai baltos LED girliandos"
@@ -83,11 +123,14 @@ export default function Offers() {
           </div>
         </Link>
 
-        {small.map((item) => (
+        {t.cards.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            className="group flex items-center gap-4 rounded-[2rem] border border-sand bg-white p-6 transition hover:border-pine-900/25 hover:shadow-[0_24px_48px_-28px_rgb(18_42_31/0.35)] sm:gap-6 sm:p-10"
+            className={clsx(
+              "group flex items-center gap-4 rounded-[2rem] border border-sand bg-white p-6 transition hover:border-pine-900/25 hover:shadow-[0_24px_48px_-28px_rgb(18_42_31/0.35)] sm:gap-6 sm:p-10",
+              halloween && "hw-web",
+            )}
           >
             <div className="min-w-0 flex-1">
               <h3 className="text-2xl font-semibold text-pine-900 sm:text-3xl">
@@ -102,15 +145,30 @@ export default function Offers() {
                 />
               </span>
             </div>
-            <div className="relative size-20 shrink-0 sm:size-36">
-              <Image
-                src={item.image}
-                alt=""
-                fill
-                sizes="144px"
-                className="object-contain transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3"
+            {item.pumpkin ? (
+              <Pumpkin
+                id="offers-pumpkin"
+                className="size-20 shrink-0 transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3 sm:size-36"
               />
-            </div>
+            ) : (
+              <div
+                className={clsx(
+                  "relative size-20 shrink-0 sm:size-36",
+                  halloween && "hw-night overflow-hidden rounded-2xl",
+                )}
+              >
+                <Image
+                  src={item.image}
+                  alt=""
+                  fill
+                  sizes="144px"
+                  className={clsx(
+                    "transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-3",
+                    halloween ? "object-cover" : "object-contain",
+                  )}
+                />
+              </div>
+            )}
           </Link>
         ))}
       </div>

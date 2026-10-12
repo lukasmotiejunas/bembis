@@ -11,12 +11,38 @@ import { pricingFaqs } from "@/lib/data/services";
 import { formatPrice, money } from "@/lib/format";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
 import { breadcrumbSchema, pageMetadata } from "@/lib/seo";
+import { getSiteTheme } from "@/lib/themeStore";
 
-export const metadata = pageMetadata({
-  title: "Kiek kainuoja kalėdinių lempučių montavimas",
-  description: `Apskaičiuokite, kiek kainuos papuošti jūsų namą: įveskite matmenis ir pasirinkite lemputes. XP nuoma ${formatPrice(pricing.rentalPerMeter.xp)}/m, LLinks ${formatPrice(pricing.rentalPerMeter.llinks)}/m, montavimas su nuėmimu nuo ${formatPrice(pricing.installPerMeter)}/m.`,
-  path: "/kiek-kainuoja",
-});
+const rates = `XP nuoma ${formatPrice(pricing.rentalPerMeter.xp)}/m, LLinks ${formatPrice(pricing.rentalPerMeter.llinks)}/m, montavimas su nuėmimu nuo ${formatPrice(pricing.installPerMeter)}/m.`;
+const meta = {
+  christmas: {
+    title: "Kiek kainuoja kalėdinių lempučių montavimas",
+    description: `Apskaičiuokite, kiek kainuos papuošti jūsų namą: įveskite matmenis ir pasirinkite lemputes. ${rates}`,
+  },
+  halloween: {
+    title: "Kiek kainuoja papuošti namą Helovynui",
+    description: `Apskaičiuokite, kiek kainuos apšviesti jūsų namą Helovynui: įveskite matmenis ir pasirinkite lemputes. ${rates}`,
+  },
+};
+
+export async function generateMetadata() {
+  return pageMetadata({ ...meta[await getSiteTheme()], path: "/kiek-kainuoja" });
+}
+
+const copy = {
+  christmas: {
+    title: "Kiek kainuoja papuošti jūsų namą?",
+    text: "Įveskite pastato matmenis ir pasirinkite lemputes — standartinę kainą matysite iš karto.",
+    buyText: "XP ir LLinks girliandas parduodame 7,5 m sekcijomis bei 45 m ir 60 m komplektais. Pirktos lemputės lieka jums.",
+    faqTitle: "Klausimai apie kainą",
+  },
+  halloween: {
+    title: "Kiek kainuoja šiurpiai gražus namas?",
+    text: "Įveskite pastato matmenis ir pasirinkite lemputes — standartinę kainą matysite iš karto, be jokių siaubingų staigmenų.",
+    buyText: "XP ir LLinks girliandas parduodame 7,5 m sekcijomis bei 45 m ir 60 m komplektais. Pirktos lemputės lieka jums — ir Helovynui, ir Kalėdoms.",
+    faqTitle: "Klausimai apie kainą — be siaubingų staigmenų",
+  },
+};
 
 const promises = [
   "Kaina matoma iš karto",
@@ -39,7 +65,8 @@ const measureTips = [
   },
 ];
 
-export default function PricingPage() {
+export default async function PricingPage() {
+  const t = copy[await getSiteTheme()];
   return (
     <>
       <JsonLd
@@ -50,8 +77,8 @@ export default function PricingPage() {
       />
       <PageHeader
         eyebrow="Kainų skaičiuoklė"
-        title="Kiek kainuoja papuošti jūsų namą?"
-        text="Įveskite pastato matmenis ir pasirinkite lemputes — standartinę kainą matysite iš karto."
+        title={t.title}
+        text={t.text}
       >
         <ul className="flex flex-wrap gap-x-6 gap-y-3 text-[0.95rem] font-semibold text-pine-900">
           {promises.map((p) => (
@@ -158,8 +185,7 @@ export default function PricingPage() {
               Norite lemputes įsigyti?
             </h2>
             <p className="mt-3 leading-relaxed text-stone">
-              XP ir LLinks girliandas parduodame 7,5 m sekcijomis bei 45 m ir
-              60 m komplektais. Pirktos lemputės lieka jums.
+              {t.buyText}
             </p>
             <Link href="/kaledines-lemputes" className="btn btn-outline mt-7">
               <ShoppingBag className="size-4" aria-hidden="true" />
@@ -169,7 +195,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <FAQ faqs={pricingFaqs} title="Klausimai apie kainą" />
+      <FAQ faqs={pricingFaqs} title={t.faqTitle} />
     </>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Manrope, Rubik_Wet_Paint } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import TopBar from "@/components/TopBar";
@@ -8,7 +8,9 @@ import Footer from "@/components/Footer";
 import MobileContactBar from "@/components/MobileContactBar";
 import CartHydration from "@/components/CartHydration";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import { SiteThemeProvider } from "@/components/SiteTheme";
 import { site } from "@/lib/site";
+import { getSiteTheme } from "@/lib/themeStore";
 
 // Self-hosted as one file: Google's split version renders "ū" with the macron over the next letter
 // ("Jūs" looked like "Juš"). Fraunces (SIL OFL), Latin + Latin Extended-A, axes opsz/wght/SOFT.
@@ -22,6 +24,14 @@ const fraunces = localFont({
 const manrope = Manrope({
   subsets: ["latin", "latin-ext"],
   variable: "--font-manrope",
+});
+
+// Halloween headings. Not preloaded: the file is fetched only while the Halloween design is on.
+const wetPaint = Rubik_Wet_Paint({
+  weight: "400",
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-wet-paint",
+  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -51,17 +61,21 @@ export const metadata: Metadata = {
   formatDetection: { telephone: true, email: true },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Chosen in /admin. The CSS for the Halloween design is keyed on this attribute (app/halloween.css).
+  const theme = await getSiteTheme();
   return (
-    <html lang="lt" className={`${fraunces.variable} ${manrope.variable}`}>
+    <html lang="lt" data-theme={theme} className={`${fraunces.variable} ${manrope.variable} ${wetPaint.variable}`}>
       <body className="pb-20 md:pb-0">
-        <CartHydration />
-        <TopBar />
-        <Header />
-        <main>{children}</main>
-        <Footer />
-        <MobileContactBar />
-        <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} hostname={new URL(site.url).hostname} />
+        <SiteThemeProvider theme={theme}>
+          <CartHydration />
+          <TopBar />
+          <Header />
+          <main>{children}</main>
+          <Footer />
+          <MobileContactBar />
+          <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} hostname={new URL(site.url).hostname} />
+        </SiteThemeProvider>
       </body>
     </html>
   );

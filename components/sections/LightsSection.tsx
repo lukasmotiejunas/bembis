@@ -1,7 +1,8 @@
 import Link from "next/link";
 import clsx from "clsx";
-import { ShieldCheck, Layers, Lightbulb } from "lucide-react";
+import { ShieldCheck, Layers, Lightbulb, MoonStar } from "lucide-react";
 import { products } from "@/lib/data/products";
+import { getSiteTheme } from "@/lib/themeStore";
 import ProductFeatureCard from "../shop/ProductFeatureCard";
 import SectionHeading from "../ui/SectionHeading";
 
@@ -22,15 +23,29 @@ export const qualityPoints = [
     text: "XP ir komercinės klasės LLinks lauko apšvietimas.",
   },
 ];
-export function QualityPoints({
+const halloweenQualityPoints = [
+  {
+    icon: ShieldCheck,
+    title: "2 metų garantija",
+    text: "Užgeso lemputė? Kreipkitės — jokių prakeiksmų, tik garantija.",
+  },
+  qualityPoints[1],
+  {
+    icon: MoonStar,
+    title: "Šiltai baltas LED",
+    text: "Jaukus švytėjimas tamsiausią rudens naktį: XP ir komercinės klasės LLinks.",
+  },
+];
+export async function QualityPoints({
   onCream = false,
 }: {
   withHeading?: boolean;
   onCream?: boolean;
 }) {
+  const points = (await getSiteTheme()) === "halloween" ? halloweenQualityPoints : qualityPoints;
   return (
     <ul className="grid gap-4 sm:grid-cols-3">
-      {qualityPoints.map(({ icon: Icon, title, text }) => (
+      {points.map(({ icon: Icon, title, text }) => (
         <li
           key={title}
           className={clsx(
@@ -50,11 +65,22 @@ export function QualityPoints({
     </ul>
   );
 }
-export default function LightsSection({
+const copy = {
+  christmas: {
+    title: "Girliandos, kurios lieka jums",
+    text: "Pasirinkite XP arba LLinks. Pradėkite nuo motininės girliandos, papildykite sekcijomis arba įsigykite visą komplektą.",
+  },
+  halloween: {
+    title: "Girliandos, kurios neišnyks kaip vaiduokliai",
+    text: "Pasirinkite XP arba LLinks. Pradėkite nuo motininės girliandos, papildykite sekcijomis arba įsigykite visą komplektą — jos švies ir per Helovyną, ir per Kalėdas.",
+  },
+};
+export default async function LightsSection({
   withHeading = true,
 }: {
   withHeading?: boolean;
 }) {
+  const t = copy[await getSiteTheme()];
   const shown = withHeading
     ? products.filter((p) => p.kind === "bundle" && p.sections === 6)
     : products;
@@ -70,8 +96,8 @@ export default function LightsSection({
         <div className="mb-10">
           <SectionHeading
             eyebrow="Lempučių pardavimas"
-            title="Girliandos, kurios lieka jums"
-            text="Pasirinkite XP arba LLinks. Pradėkite nuo motininės girliandos, papildykite sekcijomis arba įsigykite visą komplektą."
+            title={t.title}
+            text={t.text}
           />
         </div>
       )}

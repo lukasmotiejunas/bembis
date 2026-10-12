@@ -1,8 +1,11 @@
 import Link from "next/link";
+import clsx from "clsx";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { productFor, productHref } from "@/lib/data/products";
 import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
+import { getSiteTheme } from "@/lib/themeStore";
 import Logo from "./Logo";
+import Graveyard from "./halloween/Graveyard";
 import { AnalyticsPreferencesButton } from "./GoogleAnalytics";
 
 const links = [
@@ -13,15 +16,31 @@ const links = [
   { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
   { href: "/kontaktai", label: "Kontaktai" },
 ];
+const halloweenLinks = [
+  { href: "/montavimas", label: "Apšvietimo montavimas" },
+  { href: "/kiek-kainuoja", label: "Kiek kainuoja" },
+  { href: "/nuoma", label: "Lempučių nuoma" },
+  { href: "/kaledines-lemputes", label: "Lauko LED girliandos" },
+  { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
+  { href: "/kontaktai", label: "Kontaktai" },
+];
 
-export default function Footer() {
+const tagline = {
+  christmas: "Kalėdinės lemputės jūsų namams: parduodame, nuomojame, sumontuojame ir po švenčių nuimame.",
+  halloween: "Šiurpiai gražus apšvietimas jūsų namams: parduodame, nuomojame, sumontuojame ir po sezono nuimame.",
+};
+
+export default async function Footer() {
+  const theme = await getSiteTheme();
+  const halloween = theme === "halloween";
   return (
-    <footer className="bg-pine-950 text-snow/75">
+    <footer className={clsx("bg-pine-950 text-snow/75", halloween && "relative mt-30")}>
+      {halloween && <Graveyard className="absolute inset-x-0 bottom-full" />}
       <div className="container-page grid gap-12 py-16 md:grid-cols-12">
         <div className="md:col-span-5">
-          <Logo id="logo-footer" light />
+          <Logo id="logo-footer" light theme={theme} />
           <p className="mt-5 max-w-sm leading-relaxed">
-            Kalėdinės lemputės jūsų namams: parduodame, nuomojame, sumontuojame ir po švenčių nuimame.
+            {tagline[theme]}
           </p>
           <a href={phoneHref} className="mt-8 block font-display text-3xl font-medium text-snow hover:text-glow sm:text-4xl">
             {site.phone}
@@ -34,7 +53,7 @@ export default function Footer() {
         <div className="md:col-span-3">
           <h2 className="font-sans text-sm font-bold tracking-widest text-snow uppercase">Puslapiai</h2>
           <ul className="mt-5 space-y-3">
-            {links.map((l) => (
+            {(halloween ? halloweenLinks : links).map((l) => (
               <li key={l.href}>
                 <Link href={l.href} className="hover:text-glow">
                   {l.label}

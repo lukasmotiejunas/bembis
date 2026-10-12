@@ -275,7 +275,7 @@ export default function CheckoutView({
                 key={line.key}
                 className="flex gap-4 py-4 first:pt-0 last:pb-0"
               >
-                <div className="relative size-20 shrink-0 overflow-hidden rounded-2xl border border-sand bg-cream">
+                <div className="hw-photo relative size-20 shrink-0 overflow-hidden rounded-2xl border border-sand bg-cream">
                   <Image
                     src={line.image!}
                     alt=""

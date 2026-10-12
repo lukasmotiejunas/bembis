@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import clsx from "clsx";
 import {
   ArrowRight,
   Calculator,
@@ -27,13 +28,24 @@ import {
   installationServiceSchema,
   pageMetadata,
 } from "@/lib/seo";
+import { getSiteTheme } from "@/lib/themeStore";
 
-export const metadata = pageMetadata({
-  title: "Kalėdinių lempučių montavimas ir nuėmimas Vilniuje",
-  description:
-    "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite apie nemokamą apžiūrą.",
-  path: "/montavimas",
-});
+const meta = {
+  christmas: {
+    title: "Kalėdinių lempučių montavimas ir nuėmimas Vilniuje",
+    description:
+      "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite apie nemokamą apžiūrą.",
+  },
+  halloween: {
+    title: "Helovyno apšvietimo montavimas ir nuėmimas Vilniuje",
+    description:
+      "Lauko LED lempučių montavimas ant stogo, langų, medžių ir tvorų Helovynui ir visam sezonui, nuėmimas po sezono. Vilnius ir Vilniaus apskritis. Pasiteiraukite apie nemokamą apžiūrą.",
+  },
+};
+
+export async function generateMetadata() {
+  return pageMetadata({ ...meta[await getSiteTheme()], path: "/montavimas" });
+}
 
 const included = [
   {
@@ -63,7 +75,47 @@ const included = [
   },
 ];
 
-export default function InstallationPage() {
+const halloweenIncluded: typeof included = [
+  {
+    ...included[0],
+    text: "Atvažiuojame, išmatuojame ir pasakome tikslią kainą. Jokių įsipareigojimų — ir jokių triukų.",
+  },
+  {
+    ...included[1],
+    text: "Šiltai baltas XP ir LLinks lauko LED girliandas galite pirkti arba išsinuomoti. Galime naudoti ir jūsų turimas lemputes — net spalvotas Helovyno.",
+  },
+  {
+    ...included[2],
+    text: "Specialūs laikikliai — jokių skylių ir žymių ant stogo, latakų ar sienų. Pėdsakų nepaliekame, kaip tikri vaiduokliai.",
+  },
+  included[3],
+  {
+    ...included[4],
+    title: "Nuėmimas po sezono",
+    text: "Po sezono viską nuimame. Nuomotas lemputes išsivežame, pirktas supakuojame jums — iki kito Helovyno ar Kalėdų.",
+  },
+];
+
+const copy = {
+  christmas: {
+    title: "Kalėdinių lempučių montavimas ir nuėmimas",
+    text: "Atvažiuojame ir papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po švenčių viską nuimame. Jums nereikės nei kopėčių, nei laiko, nei vietos joms laikyti.",
+    includedTitle: "Jūs tik pasirenkate — visa kita padarome mes",
+    included,
+    serviceArea: "Kalėdines lemputes montuojame ir nuimame",
+  },
+  halloween: {
+    title: "Helovyno apšvietimo montavimas ir nuėmimas",
+    text: "Atvažiuojame ir papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po sezono viską nuimame. Jums nereikės nei kopėčių tamsoje, nei laiko, nei vietos joms laikyti.",
+    includedTitle: "Jūs renkatės kostiumą — visa kita padarome mes",
+    included: halloweenIncluded,
+    serviceArea: "Helovyno ir šventinį apšvietimą montuojame ir nuimame",
+  },
+};
+
+export default async function InstallationPage() {
+  const theme = await getSiteTheme();
+  const t = copy[theme];
   return (
     <>
       <JsonLd
@@ -77,8 +129,8 @@ export default function InstallationPage() {
       />
       <PageHeader
         eyebrow="Pagrindinė paslauga"
-        title="Kalėdinių lempučių montavimas ir nuėmimas"
-        text="Atvažiuojame ir papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po švenčių viską nuimame. Jums nereikės nei kopėčių, nei laiko, nei vietos joms laikyti."
+        title={t.title}
+        text={t.text}
       >
         <div className="flex flex-col gap-3 sm:flex-row">
           <Link href="#forma" className="btn btn-primary">
@@ -93,7 +145,7 @@ export default function InstallationPage() {
       </PageHeader>
 
       <section className="container-page grid items-center gap-12 py-20 sm:py-28 lg:grid-cols-2 lg:gap-16">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-[2rem] lg:aspect-[4/5]">
+        <div className={clsx("relative aspect-[4/3] overflow-hidden rounded-[2rem] lg:aspect-[4/5]", theme === "halloween" && "hw-night hw-web")}>
           <Image
             src="/work/lithuanian-house-xp-red-brick.png"
             alt="Mūrinis namas su šiltai baltomis LED girliandomis palei stogo kraštus ir balkoną"
@@ -105,10 +157,10 @@ export default function InstallationPage() {
         <div>
           <SectionHeading
             eyebrow="Kas įskaičiuota"
-            title="Jūs tik pasirenkate — visa kita padarome mes"
+            title={t.includedTitle}
           />
           <ul className="mt-10 space-y-7">
-            {included.map(({ icon: Icon, title, text }) => (
+            {t.included.map(({ icon: Icon, title, text }) => (
               <li key={title} className="flex gap-5">
                 <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-glow-soft">
                   <Icon className="size-6 text-glow-deep" aria-hidden="true" />
@@ -162,7 +214,7 @@ export default function InstallationPage() {
       <DecorAreas />
       <SeasonSteps />
       <FAQ />
-      <ServiceArea what="Kalėdines lemputes montuojame ir nuimame" />
+      <ServiceArea what={t.serviceArea} />
       <ContactSection defaultServices={[INSTALLATION_SERVICE]} />
     </>
   );

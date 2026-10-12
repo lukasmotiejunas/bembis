@@ -8,12 +8,14 @@ import { productFor, productHref } from "@/lib/data/products";
 import { deliveryPricesText } from "@/lib/data/delivery";
 import { formatPrice } from "@/lib/format";
 import { modeLabel } from "@/lib/orders/order";
+import { useSiteTheme } from "./SiteTheme";
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem } =
     useCartStore();
   const lines = resolveLines(items);
   const { total } = cartTotals(lines);
+  const theme = useSiteTheme();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -68,7 +70,9 @@ export default function CartDrawer() {
               Krepšelis tuščias
             </p>
             <p className="text-stone">
-              Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui.
+              {theme === "halloween"
+                ? "Tuščias kaip apleista pilis. Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui."
+                : "Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui."}
             </p>
             <div className="mt-2 flex gap-3">
               <Link
@@ -95,7 +99,7 @@ export default function CartDrawer() {
                   key={`${line.productId}-${line.mode}`}
                   className="flex gap-4 py-5"
                 >
-                  <div className="relative size-20 shrink-0 overflow-hidden rounded-2xl border border-sand bg-white">
+                  <div className="hw-photo relative size-20 shrink-0 overflow-hidden rounded-2xl border border-sand bg-white">
                     <Image
                       src={line.product.image}
                       alt=""

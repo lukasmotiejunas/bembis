@@ -1,8 +1,15 @@
 import { MapPin } from "lucide-react";
 import { site } from "@/lib/site";
+import { getSiteTheme } from "@/lib/themeStore";
+
+const elsewhere = {
+  christmas: "Gyvenate kitur? Paskambinkite, pažiūrėsime, ką galime padaryti.",
+  halloween: "Gyvenate kitur? Paskambinkite — mūsų šikšnosparniai skraido toli.",
+};
 
 /** Where we work — a short, readable list of towns (also helps local search). */
-export default function ServiceArea({ what }: { what: string }) {
+export default async function ServiceArea({ what }: { what: string }) {
+  const theme = await getSiteTheme();
   return (
     <section className="container-page pb-20 sm:pb-28">
       <div className="rounded-[2rem] bg-cream p-8 sm:p-10">
@@ -13,7 +20,8 @@ export default function ServiceArea({ what }: { what: string }) {
           <div>
             <h2 className="text-2xl font-semibold text-pine-900 sm:text-3xl">Kur dirbame</h2>
             <p className="mt-2 max-w-2xl leading-relaxed text-stone">
-              {what} — Vilniuje ir visoje Vilniaus apskrityje. Gyvenate kitur? Paskambinkite, pažiūrėsime, ką galime padaryti.
+              {what}
+              {` — Vilniuje ir visoje Vilniaus apskrityje. ${elsewhere[theme]}`}
             </p>
           </div>
         </div>

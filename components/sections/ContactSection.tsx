@@ -1,9 +1,21 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { emailHref, phoneHref, site } from "@/lib/site";
+import { getSiteTheme } from "@/lib/themeStore";
 import InquiryForm from "../InquiryForm";
 import SectionHeading from "../ui/SectionHeading";
 
-export default function ContactSection({
+const copy = {
+  christmas: {
+    title: "Pasikalbėkime apie jūsų namus",
+    text: "Paskambinkite, parašykite arba palikite užklausą. Padėsime išsirinkti lemputes ir pasakysime kainą.",
+  },
+  halloween: {
+    title: "Pasikalbėkime apie jūsų Helovyno namus",
+    text: "Paskambinkite, parašykite arba palikite užklausą. Padėsime išsirinkti lemputes ir pasakysime kainą — jokių triukų, tik skanėstai.",
+  },
+};
+
+export default async function ContactSection({
   titleAs = "h2",
   defaultServices,
   defaultMessage,
@@ -13,6 +25,7 @@ export default function ContactSection({
   defaultMessage?: string;
 }) {
   const isPage = titleAs === "h1";
+  const t = copy[await getSiteTheme()];
   return (
     <section
       id="kontaktai"
@@ -25,8 +38,8 @@ export default function ContactSection({
           <SectionHeading
             as={titleAs}
             eyebrow="Kontaktai"
-            title="Pasikalbėkime apie jūsų namus"
-            text="Paskambinkite, parašykite arba palikite užklausą. Padėsime išsirinkti lemputes ir pasakysime kainą."
+            title={t.title}
+            text={t.text}
           />
 
           <div className="mt-10 space-y-3">

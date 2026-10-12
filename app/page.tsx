@@ -8,14 +8,24 @@ import ContactSection from "@/components/sections/ContactSection";
 import JsonLd from "@/components/JsonLd";
 import { businessSchema, pageMetadata, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
+import { getSiteTheme } from "@/lib/themeStore";
 
-export const metadata = pageMetadata({
-  title: `Kalėdinių lempučių montavimas ir nuoma Vilniuje | ${site.name}`,
-  absoluteTitle: true,
-  description:
-    "Atvykstame, papuošiame ir sumontuojame kalėdines lemputes, po sezono nuimame. XP ir LLinks lauko LED pardavimas bei nuoma. Vilnius ir Vilniaus apskritis.",
-  path: "/",
-});
+const meta = {
+  christmas: {
+    title: `Kalėdinių lempučių montavimas ir nuoma Vilniuje | ${site.name}`,
+    description:
+      "Atvykstame, papuošiame ir sumontuojame kalėdines lemputes, po sezono nuimame. XP ir LLinks lauko LED pardavimas bei nuoma. Vilnius ir Vilniaus apskritis.",
+  },
+  halloween: {
+    title: `Helovyno apšvietimo montavimas ir nuoma Vilniuje | ${site.name}`,
+    description:
+      "Šiurpiai gražus Helovyno apšvietimas: atvykstame, papuošiame ir sumontuojame lauko LED lemputes, po sezono nuimame. XP ir LLinks pardavimas bei nuoma. Vilnius ir Vilniaus apskritis.",
+  },
+};
+
+export async function generateMetadata() {
+  return pageMetadata({ ...meta[await getSiteTheme()], absoluteTitle: true, path: "/" });
+}
 
 export default function HomePage() {
   return (

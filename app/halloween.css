@@ -1,0 +1,307 @@
+/*
+ * Helovyno dizainas. Įjungiamas /admin puslapyje — tada <html data-theme="halloween">.
+ * Kalėdinio dizaino šis failas nekeičia: visos taisyklės galioja tik Helovynui,
+ * išskyrus hw-* piešinių animacijas, kurias naudoja tik Helovyno komponentai.
+ */
+
+/* 1. Night palette under the same token names. pine-900/800 and snow stay text colours (light);
+      the few places that use them as backgrounds are repainted in section 3. */
+html[data-theme="halloween"] {
+  color-scheme: dark;
+  font-synthesis: none;
+  scrollbar-color: #4a3366 #0e0915;
+
+  --color-snow: #f6ecdf;
+  --color-cream: #160f20;
+  --color-sand: #33264a;
+  --color-white: #1d1429;
+  --color-pine-950: #0a0610;
+  --color-pine-900: #f6ecdf;
+  --color-pine-800: #d9c9f0;
+  --color-pine-700: #9be15d;
+  --color-ink: #efe4d6;
+  --color-stone: #b9a8cc;
+  --color-glow: #ff7a1a;
+  --color-glow-deep: #ff9b45;
+  --color-glow-soft: #3a1c10;
+  --color-berry: #ff4d5a;
+  --font-display: var(--font-wet-paint), var(--font-fraunces), Georgia, serif;
+
+  --hw-night: #0e0915;
+  --hw-surface: #26173a;
+  --hw-surface-hover: #33204d;
+  --hw-violet: 166 108 255;
+}
+
+html[data-theme="halloween"] body {
+  background-color: var(--hw-night);
+  background-image:
+    radial-gradient(70rem 40rem at 90% -10%, rgb(124 58 237 / 0.16), transparent 60%),
+    radial-gradient(50rem 30rem at -10% 40rem, rgb(255 122 26 / 0.06), transparent 60%);
+  background-repeat: no-repeat;
+}
+
+/* 2. Type, buttons, fields */
+@layer base {
+  html[data-theme="halloween"] :is(h1, h2, h3) {
+    font-variation-settings: normal;
+    letter-spacing: 0.01em;
+  }
+  html[data-theme="halloween"] h1 {
+    text-shadow: 0 0 28px rgb(255 122 26 / 0.28);
+  }
+  html[data-theme="halloween"] ::selection {
+    background: var(--color-glow);
+    color: #1a0d05;
+  }
+}
+
+@layer components {
+  /* A small bat flies in front of every section label. */
+  html[data-theme="halloween"] .eyebrow::before {
+    content: "";
+    width: 1.9em;
+    height: 0.8em;
+    flex-shrink: 0;
+    background: currentColor;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 26'%3E%3Cpath d='M32 10C30.5 7.5 29.5 6 28.3 3.5L27.6 7.6C23.8 6.3 19.6 3.6 13.6 2.4C15.8 6.2 15 9.4 11 10.6C8 9.6 4 9.6 0 12.6C5 13.4 8 16.4 9 20.6C12 17.6 16 17.4 19 19.6C21 16.6 25 15.6 28 17.6C29.2 19.6 31 21.8 32 24.6C33 21.8 34.8 19.6 36 17.6C39 15.6 43 16.6 45 19.6C48 17.4 52 17.6 55 20.6C56 16.4 59 13.4 64 12.6C60 9.6 56 9.6 53 10.6C49 9.4 48.2 6.2 50.4 2.4C44.4 3.6 40.2 6.3 36.4 7.6L35.7 3.5C34.5 6 33.5 7.5 32 10Z'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+  }
+
+  html[data-theme="halloween"] .btn-primary {
+    background: var(--color-glow);
+    color: #1a0d05;
+    box-shadow:
+      0 8px 28px -8px rgb(255 122 26 / 0.75),
+      inset 0 0 0 1px rgb(255 190 120 / 0.35);
+  }
+  html[data-theme="halloween"] .btn-primary:hover {
+    background: #ff8f3d;
+    box-shadow:
+      0 12px 34px -8px rgb(255 122 26 / 0.95),
+      0 0 26px rgb(255 122 26 / 0.35);
+  }
+  html[data-theme="halloween"] .btn-dark {
+    background: var(--hw-surface);
+    color: var(--color-snow);
+    box-shadow: inset 0 0 0 1.5px rgb(var(--hw-violet) / 0.35);
+  }
+  html[data-theme="halloween"] .btn-dark:hover {
+    background: var(--hw-surface-hover);
+    box-shadow:
+      inset 0 0 0 1.5px rgb(var(--hw-violet) / 0.6),
+      0 0 24px -6px rgb(var(--hw-violet) / 0.5);
+  }
+  html[data-theme="halloween"] .btn-outline {
+    background: transparent;
+  }
+  html[data-theme="halloween"] .btn-outline:hover {
+    border-color: var(--color-glow-deep);
+  }
+
+  html[data-theme="halloween"] .field {
+    background: #120c1a;
+  }
+  html[data-theme="halloween"] .field::placeholder {
+    color: #7d6b93;
+  }
+  html[data-theme="halloween"] .field:focus {
+    border-color: var(--color-glow-deep);
+    box-shadow: 0 0 0 4px rgb(255 122 26 / 0.18);
+  }
+}
+
+/* 3. Where green or cream is used as a background, paint it with the night colours instead.
+      hw-photo and hw-web are plain hook classes: outside Halloween they have no styles at all. */
+@layer utilities {
+  html[data-theme="halloween"] [class~="bg-pine-900"] {
+    background-color: var(--hw-surface);
+    box-shadow: inset 0 0 0 1px rgb(var(--hw-violet) / 0.16);
+  }
+  html[data-theme="halloween"] [class~="hover:bg-pine-800"]:hover {
+    background-color: var(--hw-surface-hover);
+  }
+  html[data-theme="halloween"] [class~="has-checked:bg-pine-900"]:has(:checked),
+  html[data-theme="halloween"] .group:has(:checked) [class~="group-has-checked:bg-pine-900"] {
+    border-color: var(--color-glow);
+    background-color: var(--color-glow);
+    color: #1a0d05;
+  }
+  html[data-theme="halloween"] [class~="from-pine-900"] {
+    --tw-gradient-from: var(--hw-surface);
+  }
+  html[data-theme="halloween"] [class~="via-pine-900/20"] {
+    --tw-gradient-via: rgb(38 23 58 / 0.2);
+  }
+  html[data-theme="halloween"] [class~="accent-pine-900"] {
+    accent-color: var(--color-glow);
+  }
+
+  html[data-theme="halloween"] [class~="bg-snow"] {
+    background-color: var(--hw-night);
+  }
+  html[data-theme="halloween"] [class~="bg-snow/95"] {
+    background-color: rgb(14 9 21 / 0.95);
+  }
+  html[data-theme="halloween"] [class~="bg-snow/80"] {
+    background-color: rgb(14 9 21 / 0.8);
+  }
+  html[data-theme="halloween"] [class~="hover:bg-snow"]:hover {
+    background-color: var(--hw-surface-hover);
+  }
+  html[data-theme="halloween"] [class~="to-snow"] {
+    --tw-gradient-to: var(--hw-night);
+  }
+
+  /* Product photos have white backgrounds: show them on parchment instead of a glaring white tile. */
+  html[data-theme="halloween"] .hw-photo {
+    background-color: #f1e3cc;
+  }
+  html[data-theme="halloween"] .hw-photo img {
+    mix-blend-mode: multiply;
+  }
+
+  /* Snowy house photos turn into a violet night lit by pumpkin glow. */
+  html[data-theme="halloween"] .hw-night img {
+    filter: grayscale(1) brightness(0.72) contrast(1.3);
+  }
+  html[data-theme="halloween"] .hw-night::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg, #2a0d4d 0%, #4c1d95 30%, #c2410c 64%, #ff7a1a 100%);
+    mix-blend-mode: color;
+  }
+  html[data-theme="halloween"] .hw-night > :not(img) {
+    z-index: 2;
+  }
+
+  /* Cobweb in the top right corner of a card. */
+  html[data-theme="halloween"] .hw-web {
+    position: relative;
+  }
+  html[data-theme="halloween"] .hw-web::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
+    width: 7.5rem;
+    height: 7.5rem;
+    pointer-events: none;
+    transform: scaleX(-1);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M0 0L120 0 M0 0L115 33 M0 0L101 65 M0 0L77 92 M0 0L47 110 M0 0L15 119 M0 0L0 120 M22 0Q19 3 21 6Q17 8 18 12Q14 12 14 17Q10 16 9 20Q5 18 3 22Q1 19 0 22 M42 0Q35 5 40 12Q33 15 35 23Q27 24 27 32Q19 30 16 39Q9 35 5 42Q2 36 0 42 M63 0Q53 7 61 17Q49 22 53 34Q40 36 40 48Q28 46 25 58Q14 52 8 63Q3 54 0 63 M86 0Q73 10 83 24Q67 30 72 47Q55 48 55 66Q38 62 34 79Q19 71 10 85Q5 74 0 86 M110 0Q93 13 106 30Q85 39 92 60Q70 62 71 84Q49 80 43 101Q24 90 13 109Q6 94 0 110' fill='none' stroke='%23d9cfe8' stroke-opacity='.38' stroke-width='.9'/%3E%3C/svg%3E")
+      top left / contain no-repeat;
+  }
+}
+
+/* 4. Drawings used only by the Halloween components (components/halloween). */
+.hw-moon {
+  background:
+    radial-gradient(circle at 63% 38%, rgb(160 140 92 / 0.45) 0 8%, transparent 9%),
+    radial-gradient(circle at 38% 64%, rgb(160 140 92 / 0.35) 0 6%, transparent 7%),
+    radial-gradient(circle at 70% 70%, rgb(160 140 92 / 0.3) 0 4%, transparent 5%),
+    radial-gradient(circle at 30% 34%, rgb(160 140 92 / 0.25) 0 3.5%, transparent 4.5%),
+    radial-gradient(circle at 36% 30%, #fffaf0 0%, #f4e7c4 40%, #dcc893 75%, #c7b077 100%);
+  box-shadow:
+    0 0 60px 16px rgb(255 222 160 / 0.28),
+    0 0 180px 60px rgb(166 108 255 / 0.16);
+}
+
+.hw-fog {
+  height: 9rem;
+  background-image:
+    radial-gradient(ellipse 50% 60% at 50% 100%, rgb(214 204 240 / 0.16), transparent 70%),
+    radial-gradient(ellipse 40% 50% at 50% 100%, rgb(214 204 240 / 0.12), transparent 70%);
+  background-size:
+    640px 100%,
+    420px 80%;
+  background-repeat: repeat-x;
+  background-position:
+    0 100%,
+    200px 100%;
+  filter: blur(6px);
+  animation: hw-fog 40s linear infinite;
+}
+
+.hw-flap {
+  transform-origin: 50% 45%;
+  animation: hw-flap 0.34s ease-in-out infinite;
+}
+.hw-hover {
+  animation: hw-hover 8s ease-in-out infinite;
+}
+.hw-float {
+  filter: drop-shadow(0 0 14px rgb(201 247 210 / 0.45));
+  animation: hw-float 4.5s ease-in-out infinite;
+}
+.hw-dangle {
+  animation: hw-dangle 5s ease-in-out infinite;
+}
+.hw-flicker {
+  animation: hw-flicker 2.6s linear infinite;
+}
+
+@keyframes hw-fog {
+  to {
+    background-position:
+      640px 100%,
+      -220px 100%;
+  }
+}
+@keyframes hw-flap {
+  50% {
+    transform: scaleY(0.4) translateY(2px);
+  }
+}
+@keyframes hw-hover {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-4deg);
+  }
+  25% {
+    transform: translate(18px, -10px) rotate(3deg);
+  }
+  50% {
+    transform: translate(34px, 4px) rotate(6deg);
+  }
+  75% {
+    transform: translate(12px, 12px) rotate(-2deg);
+  }
+}
+@keyframes hw-float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes hw-dangle {
+  50% {
+    transform: translateY(10px);
+  }
+}
+@keyframes hw-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  8% {
+    opacity: 0.72;
+  }
+  12% {
+    opacity: 0.95;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  55% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.68;
+  }
+  74% {
+    opacity: 0.95;
+  }
+}

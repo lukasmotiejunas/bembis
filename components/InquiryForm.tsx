@@ -4,6 +4,22 @@ import { CheckCircle2, Loader2, Mail, Send } from "lucide-react";
 import { sendInquiry } from "@/app/kontaktai/actions";
 import { serviceOptions } from "@/lib/inquiry";
 import { emailHref, phoneHref, site } from "@/lib/site";
+import { useSiteTheme } from "./SiteTheme";
+
+const copy = {
+  christmas: {
+    thanks: "Ačiū, užklausą gavome!",
+    thanksText: "Susisieksime su jumis kuo greičiau.",
+    intro: "Užtenka vardo ir telefono — paskambinsime patys.",
+    placeholder: "Papasakokite apie savo namus: kokio dydžio, ką norėtumėte papuošti...",
+  },
+  halloween: {
+    thanks: "Ačiū! Užklausa jau mūsų katile.",
+    thanksText: "Susisieksime kuo greičiau — dar prieš pirmąjį vaiduoklį.",
+    intro: "Užtenka vardo ir telefono — paskambinsime patys (ne vidurnaktį).",
+    placeholder: "Papasakokite apie savo namus: ką norėtumėte apšviesti Helovyno naktį...",
+  },
+};
 
 /** Fallback when sending fails: a ready-made email to our business address. */
 function mailtoFrom(data: FormData) {
@@ -35,6 +51,7 @@ export default function InquiryForm({
     mailto: string;
   } | null>(null);
   const [pending, startTransition] = useTransition();
+  const t = copy[useSiteTheme()];
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -62,10 +79,10 @@ export default function InquiryForm({
           <CheckCircle2 className="size-7 text-pine-950" aria-hidden="true" />
         </span>
         <h3 className="mt-6 text-3xl font-semibold text-pine-900">
-          Ačiū, užklausą gavome!
+          {t.thanks}
         </h3>
         <p className="mt-3 text-lg leading-relaxed text-stone">
-          Susisieksime su jumis kuo greičiau.
+          {t.thanksText}
         </p>
         <p className="mt-3 leading-relaxed text-stone">
           Skubu? Skambinkite{" "}
@@ -97,7 +114,7 @@ export default function InquiryForm({
         Palikite užklausą
       </h3>
       <p className="mt-1 text-stone">
-        Užtenka vardo ir telefono — paskambinsime patys.
+        {t.intro}
       </p>
 
       {/* Spam trap: hidden from people, bots fill it in */}
@@ -193,7 +210,7 @@ export default function InquiryForm({
           rows={4}
           maxLength={2000}
           className="field resize-y"
-          placeholder="Papasakokite apie savo namus: kokio dydžio, ką norėtumėte papuošti..."
+          placeholder={t.placeholder}
         />
       </label>
 

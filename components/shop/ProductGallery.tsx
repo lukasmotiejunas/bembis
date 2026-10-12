@@ -17,7 +17,7 @@ export default function ProductGallery({
 
   return (
     <div className="lg:sticky lg:top-28 lg:self-start">
-      <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-sand bg-white">
+      <div className="hw-photo hw-web relative aspect-square overflow-hidden rounded-[2rem] border border-sand bg-white">
         <Image
           src={photos[active]}
           alt={alt}
@@ -38,7 +38,7 @@ export default function ProductGallery({
               aria-label={`${i + 1} nuotrauka iš ${photos.length}`}
               aria-pressed={i === active}
               className={clsx(
-                "relative size-20 shrink-0 overflow-hidden rounded-2xl border-2 bg-white transition sm:size-24",
+                "hw-photo relative size-20 shrink-0 overflow-hidden rounded-2xl border-2 bg-white transition sm:size-24",
                 i === active
                   ? "border-pine-900"
                   : "border-sand hover:border-pine-900/40",

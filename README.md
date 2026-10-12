@@ -23,6 +23,7 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 | Žingsniai, DUK, nuotraukų galerija                       | `lib/data/services.ts`       |
 | Kainos pavyzdys Montavimo puslapyje                      | `lib/data/priceExample.ts`   |
 | Spalvos ir šriftai                                       | `app/globals.css` (`@theme`) |
+| Helovyno dizaino spalvos ir piešiniai                    | `app/halloween.css`, `components/halloween/` |
 
 ## Puslapiai
 
@@ -34,8 +35,31 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 - `/checkout` — užsakymas: prekės, paslaugos (montavimas ir nuėmimas atskirai), kontaktai, apmokėjimas
 - `/checkout/success` — užsakymas apmokėtas
 - `/kontaktai` — kontaktai ir užklausos forma (užklausa ateina el. paštu ir įrašoma į Google Sheets)
+- `/admin` — administravimas: svetainės dizainas (Kalėdinis arba Helovynas). Paieškos sistemoms nerodomas.
 
 Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus.
+
+## Administravimas: Kalėdinis arba Helovyno dizainas
+
+`/admin` puslapyje pasirenkamas vienas iš dviejų dizainų. Išsaugojus jį iškart mato visi lankytojai — visi puslapiai
+sugeneruojami iš naujo, o krepšelis, kainos ir užsakymai nesikeičia.
+
+- **Kalėdinis** — numatytasis, toks kaip buvo: tie patys tekstai ir spalvos.
+- **Helovynas** — naktinės spalvos, moliūgų ir vaiduoklių girliandos, šikšnosparniai, mėnulis, voratinkliai, kapinių
+  siluetas apačioje ir Helovyno tekstai. Nuotraukos nudažomos nakties spalvomis. Kainos, garantija, pristatymas ir prekių
+  aprašymai lieka tie patys. Tekstai yra šalia kalėdinių (`copy` objektai komponentuose, `halloween*` sąrašai
+  `lib/data/services.ts`).
+
+Įjungimas:
+
+1. `ADMIN_PASSWORD` (bent 8 simboliai) — `.env.local` ir Vercel → Settings → Environment Variables. Pakeitus slaptažodį,
+   visi prisijungę atjungiami.
+2. Vercel'yje pasirinkimui išsaugoti reikia duomenų bazės: **Vercel → Storage → Upstash for Redis → Connect Project**
+   (užtenka nemokamo plano). Kintamieji `KV_REST_API_URL` ir `KV_REST_API_TOKEN` įrašomi automatiškai — perkurkite diegimą.
+   Kompiuteryje Redis nereikia: pasirinkimas įrašomas į `.data/site-theme.json`.
+3. Atidarykite `/admin`, prisijunkite, pasirinkite dizainą ir spauskite **Išsaugoti dizainą**.
+
+Jei pasirinkimo nepavyksta perskaityti, svetainė rodoma kalėdiniu dizainu.
 
 ## SEO
 
