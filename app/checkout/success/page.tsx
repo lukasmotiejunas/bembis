@@ -93,6 +93,7 @@ function Paid({ session }: { session: Stripe.Checkout.Session }) {
               </p>
             )
           )}
+          {m.delivery_days === "4" && <p className="mt-4 font-semibold text-pine-700">Pristatymas per 4 dienas.</p>}
         </div>
 
         <div className="rounded-[2rem] bg-cream p-6 sm:p-8">
@@ -111,13 +112,13 @@ function Paid({ session }: { session: Stripe.Checkout.Session }) {
               </>
             ) : m.delivery === "parcel" ? (
               <>
-                <NextStep icon={Package} title="Išsiųsime siuntą" text="Supakuosime lemputes ir išsiųsime į jūsų pasirinktą Omniva paštomatą." />
+                <NextStep icon={Package} title="Išsiųsime siuntą" text="Supakuosime prekes ir išsiųsime į jūsų pasirinktą Omniva paštomatą." />
                 <NextStep icon={MapPin} title="Atsiimsite paštomate" text="Kai siunta bus paštomate, Omniva jums praneš." />
               </>
             ) : (
               <>
-                <NextStep icon={Package} title="Išsiųsime siuntą" text="Supakuosime lemputes ir perduosime kurjeriui." />
-                <NextStep icon={Truck} title="Kurjeris pristatys" text="Lemputes pristatysime jūsų nurodytu adresu." />
+                <NextStep icon={Package} title="Išsiųsime siuntą" text="Supakuosime prekes ir perduosime kurjeriui." />
+                <NextStep icon={Truck} title="Kurjeris pristatys" text="Prekes pristatysime jūsų nurodytu adresu." />
               </>
             )}
             {removal && <NextStep icon={Clock} title="Po švenčių nuimsime" text="Sausį atvažiuosime ir viską nuimsime." />}

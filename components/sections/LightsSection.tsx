@@ -4,6 +4,7 @@ import { ShieldCheck, Layers, Lightbulb, MoonStar } from "lucide-react";
 import { products } from "@/lib/data/products";
 import { getSiteTheme } from "@/lib/themeStore";
 import ProductFeatureCard from "../shop/ProductFeatureCard";
+import ProductCatalog from "../shop/ProductCatalog";
 import SectionHeading from "../ui/SectionHeading";
 
 export const qualityPoints = [
@@ -86,6 +87,7 @@ export default async function LightsSection({
     : products;
   return (
     <section
+      aria-label={withHeading ? "Girliandų komplektai" : "Visas prekių katalogas"}
       className={
         withHeading
           ? "container-page py-20 sm:py-28"
@@ -101,11 +103,11 @@ export default async function LightsSection({
           />
         </div>
       )}
-      <div className="grid gap-6 lg:grid-cols-2">
-        {shown.map((p) => (
-          <ProductFeatureCard key={p.id} product={p} />
-        ))}
-      </div>
+      {withHeading ? (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {shown.map((p) => <ProductFeatureCard key={p.id} product={p} />)}
+        </div>
+      ) : <ProductCatalog products={shown} />}
       {withHeading && (
         <div className="mt-7 flex flex-wrap gap-3">
           <Link href="/kaledines-lemputes" className="btn btn-dark">

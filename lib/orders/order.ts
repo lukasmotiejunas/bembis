@@ -41,6 +41,7 @@ export function buildOrder(
 ) {
   const products: OrderLine[] = [];
   let meters = 0;
+  let deliveryDays = 0;
   for (const item of items) {
     const product = getProduct(item.productId, item.mode);
     if (
@@ -52,12 +53,15 @@ export function buildOrder(
       continue;
     const unitCents = Math.round(product.price * 100);
     meters += product.meters * item.quantity;
+    deliveryDays = Math.max(deliveryDays, product.deliveryDays ?? 0);
     products.push({
       key: `${product.id}-${item.mode}`,
       kind: "product",
       productId: product.id,
       name: product.name,
-      detail: `${formatMeters(product.meters)} · ${product.kind === "bundle" ? "visas komplektas" : "viena sekcija"}`,
+      detail: product.kind === "decoration"
+        ? `Helovyno dekoracija · pristatymas per ${product.deliveryDays} dienas`
+        : `${formatMeters(product.meters)} · ${product.kind === "bundle" ? "visas komplektas" : "viena sekcija"}`,
       image: product.image,
       mode: item.mode,
       unitPrice: unitCents / 100,
@@ -90,6 +94,7 @@ export function buildOrder(
     products,
     extras,
     meters: money(meters),
+    deliveryDays,
     installationEstimate: money(meters * pricing.installPerMeter),
     serviceRequested,
     requiresQuote,
@@ -117,7 +122,9 @@ export function describeOrderInquiry(order: Order) {
     ...order.products.map(describeLine),
     `Prekių suma: ${formatPrice(order.productsTotal)}.`,
     order.serviceRequested
-      ? `Domina ir montavimas bei nuėmimas po sezono, lemputes atvešite montavimo metu. Pagal prekių ilgį (${formatMeters(order.meters)}) standartinis darbų įvertis yra ${formatPrice(order.installationEstimate)}. Prašau galutinio pasiūlymo mano objektui.`
+      ? order.meters > 0
+        ? `Domina ir montavimas bei nuėmimas po sezono, lemputes atvešite montavimo metu. Pagal prekių ilgį (${formatMeters(order.meters)}) standartinis darbų įvertis yra ${formatPrice(order.installationEstimate)}. Prašau galutinio pasiūlymo mano objektui.`
+        : "Domina dekoracijų montavimas. Prašau suderinti galutinę darbų kainą ir laiką mano objektui."
       : "Prašau suderinti galutinį užsakymo pasiūlymą.",
   ].join("\n");
 }

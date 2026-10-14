@@ -30,14 +30,34 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 - `/` — pradžia
 - `/montavimas` — kalėdinių lempučių montavimas ir nuėmimas
 - `/nuoma` — kalėdinių lempučių nuoma
-- `/kaledines-lemputes` — dekoracijos: šiltos baltos lemputės pirkimui ir spalvotos — nuomai
+- `/kaledines-lemputes` — bendras katalogas: 8 lauko LED girliandų prekės ir 60 Helovyno dekoracijų viename sąraše
 - `/kaledines-lemputes/[slug]` — lemputės puslapis
+- `/helovyno-dekoracijos` — nukreipia į bendrą parduotuvės katalogą
+- `/helovyno-dekoracijos/[slug]` — dekoracijos nuotraukos, kaina ir pristatymas per 4 dienas visoje Lietuvoje
 - `/checkout` — užsakymas: prekės, paslaugos (montavimas ir nuėmimas atskirai), kontaktai, apmokėjimas
 - `/checkout/success` — užsakymas apmokėtas
 - `/kontaktai` — kontaktai ir užklausos forma (užklausa ateina el. paštu ir įrašoma į Google Sheets)
 - `/admin` — administravimas: svetainės dizainas (Kalėdinis arba Helovynas). Paieškos sistemoms nerodomas.
 
 Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus.
+
+## Helovyno prekių importas
+
+Katalogas laikomas `lib/data/halloweenProducts.ts`, originalios tiekėjų nuotraukos — `public/products/halloween/`.
+Pardavimo kainos paimtos iš lentelės „pirmi 60“ paskutinio stulpelio „mūsų kaina“; tiekėjo savikainos kataloge neviešinamos.
+Importuotos visos 60 prekių su originaliomis tiekėjų nuotraukomis ir lietuviškais aprašymais.
+Jos pateikiamos po 8 lauko LED girliandų prekėmis tame pačiame `/kaledines-lemputes` kataloge.
+Bendro katalogo paieška, kategorijos ir kainų rūšiavimas — `components/shop/ProductCatalog.tsx`;
+pradiniame vaizde rodomos visos 68 prekės.
+Tiekėjo nurodomų matmenų neatitikimų atvejais dydis prekės pavadinime praleistas.
+
+Privatus vietinis `.data/halloween-import/fulfilment-map.json` susieja svetainės prekių kodus su tiekėjo nuorodomis
+ir lentelės eilutėmis. Stripe mokėjimo metaduomenyse išsaugomi prekių kodai ir kiekiai; naujoms prekėms naudojamas
+tas pats serverio perskaičiuojamų kainų apmokėjimas. Papildomų Stripe produktų kurti nereikia.
+
+Pakartotiniam importui `scripts/import-halloween-products.py` priima patikrintų prekių JSON su vietiniais
+originalių nuotraukų failais. Jam reikalingas Python su Pillow. Prieš skelbiant būtina palyginti kainas su pradiniu
+lapu, patikrinti produktų nuotraukas ir paleisti prekybos testus, lint bei gamybinį build.
 
 ## Administravimas: Kalėdinis arba Helovyno dizainas
 

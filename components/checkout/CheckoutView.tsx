@@ -145,7 +145,7 @@ export default function CheckoutView({
           </h2>
           <p className="mt-3 max-w-xl text-lg text-stone">
             Susisieksime ir suderinsime montavimo laiką bei galutinį
-            pasiūlymą. Lemputes atvešime montavimo metu. Šiame žingsnyje
+            pasiūlymą. Prekes atvešime montavimo metu. Šiame žingsnyje
             mokėjimas neatliktas.
           </p>
           <Link href="/kaledines-lemputes" className="btn btn-dark mt-7">
@@ -164,12 +164,12 @@ export default function CheckoutView({
           </h2>
           <p className="mt-2 max-w-md text-stone">
             {items.length
-              ? "Katalogas atnaujintas. Pasirinkite prekes iš naujo pagal tikrą XP ir LLinks pasiūlą."
-              : "Išsirinkite girliandas ar komplektą, o dėl nuomos suderinsime atskirą pasiūlymą."}
+              ? "Katalogas atnaujintas. Pasirinkite prekes iš naujo."
+              : "Išsirinkite dekoracijas, girliandas ar komplektą, o dėl nuomos suderinsime atskirą pasiūlymą."}
           </p>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
             <Link href="/kaledines-lemputes" className="btn btn-dark">
-              Pirkti lemputes
+              Visos prekės
             </Link>
             <Link href="/nuoma" className="btn btn-outline">
               Nuomos pasirinkimai
@@ -351,7 +351,7 @@ export default function CheckoutView({
           step={2}
           id="pristatymas"
           title="Pristatymas"
-          text="Pasirinkite, kaip norite gauti lemputes."
+          text={order.deliveryDays ? `Pristatymas visoje Lietuvoje per ${order.deliveryDays} dienas. Pasirinkite pristatymo būdą.` : "Pasirinkite, kaip norite gauti prekes."}
         >
           <fieldset className="min-w-0">
             <legend className="sr-only">Pristatymo būdas</legend>
@@ -389,7 +389,7 @@ export default function CheckoutView({
                         </span>
                         <span className="block text-sm text-stone">
                           {installing
-                            ? `Lemputes atvešime montavimo metu · ${site.serviceArea}`
+                            ? `Prekes atvešime montavimo metu · ${site.serviceArea}`
                             : deliveryOptions[value].text}
                         </span>
                       </span>
@@ -411,7 +411,7 @@ export default function CheckoutView({
                     )}
                     {choice === value && installing && (
                       <div className="border-t border-sand px-4 py-5 text-sm text-stone sm:px-5">
-                        <p>
+                        {order.meters > 0 ? <p>
                           Darbų tarifas su mūsų lemputėmis —{" "}
                           {formatPrice(pricing.installPerMeter)}/m, įskaitant
                           nuėmimą po sezono. Pagal prekių ilgį:{" "}
@@ -421,7 +421,7 @@ export default function CheckoutView({
                             {formatPrice(order.installationEstimate)}
                           </strong>
                           .
-                        </p>
+                        </p> : <p>Dekoracijų montavimo kainą ir laiką suderinsime pagal jūsų objektą.</p>}
                         <p className="mt-2">
                           Pateiksite užsakymo užklausą — galutinę darbų kainą ir
                           laiką suderinsime prieš apmokėjimą.

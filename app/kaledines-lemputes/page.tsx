@@ -8,17 +8,18 @@ import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { breadcrumbSchema, catalogSchema, pageMetadata } from "@/lib/seo";
 import { getSiteTheme } from "@/lib/themeStore";
+import { products } from "@/lib/data/products";
 
 const meta = {
   christmas: {
-    title: "XP ir LLinks lauko LED girliandos ir komplektai",
+    title: "Lauko LED girliandos, komplektai ir Helovyno dekoracijos",
     description:
-      "Šiltai baltos XP ir LLinks lauko LED girliandos: 7,5 m motininės ir papildomos sekcijos, 45 m ir 60 m komplektai. Sudėtis, pardavimo kainos ir nuomos pasirinkimai.",
+      "XP ir LLinks lauko LED girliandos, komplektai bei Helovyno dekoracijos: vorai, vaiduokliai, moliūgai ir rinkiniai. Prekes pristatome visoje Lietuvoje.",
   },
   halloween: {
-    title: "Lauko LED girliandos Helovynui ir Kalėdoms",
+    title: "Lauko LED girliandos ir Helovyno dekoracijos",
     description:
-      "Šiltai baltos XP ir LLinks lauko LED girliandos Helovynui ir visam sezonui: 7,5 m motininės ir papildomos sekcijos, 45 m ir 60 m komplektai. Sudėtis, kainos ir nuomos pasirinkimai.",
+      "Lauko LED girliandos Helovynui ir Kalėdoms bei vorai, vaiduokliai, moliūgai ir kitos Helovyno dekoracijos. Prekes pristatome visoje Lietuvoje.",
   },
 };
 
@@ -28,16 +29,16 @@ export async function generateMetadata() {
 
 const copy = {
   christmas: {
-    eyebrow: "Lempučių ir komplektų katalogas",
-    title: "Šiltai baltos lauko LED girliandos",
-    text: "XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Pardavimo kainos nurodytos už vienetą arba visą komplektą.",
+    eyebrow: "Girliandų ir dekoracijų parduotuvė",
+    title: "Lauko LED girliandos ir Helovyno dekoracijos",
+    text: "Parduodame XP ir komercinės klasės LLinks girliandas: 7,5 m motinines ir papildomas sekcijas bei 45 m ir 60 m komplektus. Taip pat rasite vorus, vaiduoklius, moliūgus ir kitas Helovyno dekoracijas savo namams. Prekes pristatome visoje Lietuvoje.",
     catalogTitle: "Arba išsirinkite patys",
     ctaTitle: "Nenorite lipti ant kopėčių?",
   },
   halloween: {
-    eyebrow: "Helovyno lempučių parduotuvė",
-    title: "Girliandos tamsiausioms rudens naktims",
-    text: "XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Švies per Helovyną, Kalėdas ir visus tamsius vakarus tarp jų.",
+    eyebrow: "Girliandų ir dekoracijų parduotuvė",
+    title: "Lauko LED girliandos ir Helovyno dekoracijos",
+    text: "Parduodame XP ir komercinės klasės LLinks girliandas, kurios švies per Helovyną, Kalėdas ir visą tamsųjį sezoną. Taip pat rasite vorus, vaiduoklius, moliūgus ir kitas Helovyno dekoracijas savo namams. Prekes pristatome visoje Lietuvoje.",
     catalogTitle: "Arba išsirinkite patys — be burtų",
     ctaTitle: "Nenorite tamsoje lipti ant kopėčių?",
   },
@@ -52,7 +53,7 @@ export default async function ShopPage() {
           catalogSchema(),
           breadcrumbSchema([
             { name: "Pradžia", path: "/" },
-            { name: "Kalėdinės lemputės", path: "/kaledines-lemputes" },
+            { name: "Parduotuvė", path: "/kaledines-lemputes" },
           ]),
         ]}
       />
@@ -62,6 +63,7 @@ export default async function ShopPage() {
         text={t.text}
       >
         <GuaranteeBadge dark className="px-4 py-2 text-sm" />
+        <span className="ml-2 text-sm text-stone">Lauko LED girliandoms</span>
         <div className="mt-10">
           <LightSetBuilder />
         </div>
@@ -71,8 +73,9 @@ export default async function ShopPage() {
         <SectionHeading
           eyebrow="Visas katalogas"
           title={t.catalogTitle}
-          text="Motininės girliandos, papildomos sekcijos ir komplektai atskirai — sudėkite krepšelį savo nuožiūra."
+          text="Motininės girliandos, papildomos sekcijos, komplektai ir Helovyno dekoracijos — sudėkite krepšelį savo nuožiūra."
         />
+        <p className="mt-4 text-sm text-stone">{products.length} prekės vienoje vietoje. Helovyno dekoracijas pristatome per 4 dienas visoje Lietuvoje.</p>
       </section>
       <LightsSection withHeading={false} />
 

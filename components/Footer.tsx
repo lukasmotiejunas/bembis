@@ -12,7 +12,7 @@ const links = [
   { href: "/montavimas", label: "Kalėdinių lempučių montavimas" },
   { href: "/kiek-kainuoja", label: "Kiek kainuoja" },
   { href: "/nuoma", label: "Kalėdinių lempučių nuoma" },
-  { href: "/kaledines-lemputes", label: "Kalėdinės lemputės" },
+  { href: "/kaledines-lemputes", label: "Parduotuvė" },
   { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
   { href: "/kontaktai", label: "Kontaktai" },
 ];
@@ -20,7 +20,7 @@ const halloweenLinks = [
   { href: "/montavimas", label: "Apšvietimo montavimas" },
   { href: "/kiek-kainuoja", label: "Kiek kainuoja" },
   { href: "/nuoma", label: "Lempučių nuoma" },
-  { href: "/kaledines-lemputes", label: "Lauko LED girliandos" },
+  { href: "/kaledines-lemputes", label: "Parduotuvė" },
   { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
   { href: "/kontaktai", label: "Kontaktai" },
 ];

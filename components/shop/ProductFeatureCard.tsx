@@ -38,7 +38,7 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
             ? "Komplektas"
             : product.kind === "starter"
               ? "Motininė girlianda"
-              : "Papildoma sekcija"}
+              : product.kind === "decoration" ? "Helovyno dekoracija" : "Papildoma sekcija"}
         </span>
         {!product.photos && (
           <span className="absolute right-5 bottom-4 text-xs text-stone">
@@ -48,9 +48,9 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
       </Link>
       <div className="flex flex-1 flex-col border-t border-sand p-7 sm:p-9">
         <p className="text-sm text-stone">
-          {product.color} · {formatMeters(product.meters)}
+          {product.kind === "decoration" ? "Pristatymas per 4 dienas visoje Lietuvoje" : `${product.color} · ${formatMeters(product.meters)}`}
         </p>
-        <h3 className="mt-1 text-2xl font-semibold text-pine-900 sm:text-3xl">
+        <h3 className={clsx("mt-1 font-semibold text-pine-900", product.kind === "decoration" ? "text-xl leading-snug" : "text-2xl sm:text-3xl")}>
           <Link href={productHref(product)} className="hover:text-pine-700">
             {product.name}
           </Link>
@@ -75,7 +75,7 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
             <span className="ml-1 block text-sm text-stone">
               {product.kind === "bundle"
                 ? "už visą komplektą"
-                : "už vieną sekciją"}
+                : product.kind === "decoration" ? "už prekę arba nurodytą rinkinį" : "už vieną sekciją"}
             </span>
           </p>
           <div className="flex flex-wrap gap-2">

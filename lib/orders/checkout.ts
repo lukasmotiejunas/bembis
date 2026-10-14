@@ -203,6 +203,8 @@ export function buildSessionParams(
     delivery: order.delivery.method,
     parcel_machine: machine ? describeParcelMachine(machine).slice(0, 490) : "",
     meters: String(order.meters),
+    ...(order.deliveryDays ? { delivery_days: String(order.deliveryDays) } : {}),
+    ...toChunks("product_ids", order.products.map((line) => `${line.productId}:${line.quantity}`).join(",")),
     ...toChunks("items", order.lines.map(describeLine).join("\n")),
   };
 
@@ -220,6 +222,7 @@ export function buildSessionParams(
           name: line.mode
             ? `${line.name} — ${modeLabel[line.mode].toLowerCase()}`
             : line.name,
+          ...(line.productId ? { metadata: { product_id: line.productId } } : {}),
           ...(line.detail ? { description: line.detail } : {}),
           ...(imageUrl(line.image) ? { images: imageUrl(line.image) } : {}),
         },
@@ -235,10 +238,10 @@ export function buildSessionParams(
     },
     custom_text: {
       submit: {
-        message:
+        message: (order.deliveryDays ? `Pristatymas per ${order.deliveryDays} dienas. ` : "") + (
           order.delivery.method === "parcel"
             ? "Po apmokėjimo išsiųsime prekes į pasirinktą Omniva paštomatą."
-            : "Po apmokėjimo prekes išsiųsime kurjeriu nurodytu adresu.",
+            : "Po apmokėjimo prekes išsiųsime kurjeriu nurodytu adresu."),
       },
     },
     success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,

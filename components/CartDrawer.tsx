@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
-import { productFor, productHref } from "@/lib/data/products";
 import { deliveryPricesText } from "@/lib/data/delivery";
 import { formatPrice } from "@/lib/format";
 import { modeLabel } from "@/lib/orders/order";
@@ -15,6 +14,7 @@ export default function CartDrawer() {
     useCartStore();
   const lines = resolveLines(items);
   const { total } = cartTotals(lines);
+  const deliveryDays = Math.max(0, ...lines.map((line) => line.product.deliveryDays ?? 0));
   const theme = useSiteTheme();
 
   useEffect(() => {
@@ -71,12 +71,12 @@ export default function CartDrawer() {
             </p>
             <p className="text-stone">
               {theme === "halloween"
-                ? "Tuščias kaip apleista pilis. Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui."
+                ? "Tuščias kaip apleista pilis. Išsirinkite Helovyno dekoracijas arba lemputes savo namams."
                 : "Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui."}
             </p>
             <div className="mt-2 flex gap-3">
               <Link
-                href={productHref(productFor("buy"))}
+                href="/kaledines-lemputes"
                 onClick={closeCart}
                 className="btn btn-dark"
               >
@@ -178,8 +178,8 @@ export default function CartDrawer() {
                 </span>
               </div>
               <p className="mt-2 text-sm text-stone">
-                Pristatymą pasirinksite kitame žingsnyje: {deliveryPricesText}.
-                Užsakius montavimą, lemputes atvešime nemokamai.
+                {deliveryDays > 0 && `Pristatymas per ${deliveryDays} dienas. `}Pristatymą pasirinksite kitame žingsnyje: {deliveryPricesText}.
+                Užsakius montavimą, prekes atvešime nemokamai.
               </p>
               <Link
                 href="/checkout"

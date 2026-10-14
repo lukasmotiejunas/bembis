@@ -1,12 +1,14 @@
 import { LightSeries, Product, ProductKind, PurchaseMode } from "../types";
 import { formatMeters } from "../format";
+import { halloweenProducts } from "./halloweenProducts";
 
 export const guarantee = { years: 2, label: "2 metų garantija" };
 /** Vartotojo patvirtinta: pirktas prekes galima grąžinti per 14 d., grąžinimo išlaidas apmoka pirkėjas. */
 export const returnPolicy = { days: 14 };
-export const seriesNames: Record<LightSeries, string> = {
+export const seriesNames: Record<Product["series"], string> = {
   xp: "XP",
   llinks: "LLinks",
+  halloween: "Helovyno dekoracijos",
 };
 
 function light(
@@ -109,6 +111,7 @@ export const products: Product[] = [
   light("xp", "bundle", 8, 120.99, "xp-60", [
     "/products/xp-komplektas-60.png",
   ]),
+  ...halloweenProducts,
 ];
 export const getProductBySlug = (slug: string) =>
   products.find((p) => p.slug === slug);
@@ -122,4 +125,4 @@ export function productFor(mode: PurchaseMode) {
   return p;
 }
 export const productHref = (product: Product) =>
-  `/kaledines-lemputes/${product.slug}`;
+  `${product.kind === "decoration" ? "/helovyno-dekoracijos" : "/kaledines-lemputes"}/${product.slug}`;
