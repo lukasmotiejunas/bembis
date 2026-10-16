@@ -10,7 +10,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 21.99,
+    "price": 22.99,
     "image": "/products/halloween/hw-18960487612-1.jpg",
     "photos": [
       "/products/halloween/hw-18960487612-1.jpg",
@@ -50,7 +50,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-19000543702-1.jpg",
     "photos": [
       "/products/halloween/hw-19000543702-1.jpg",
@@ -98,7 +98,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-14568134827-1.jpg",
     "photos": [
       "/products/halloween/hw-14568134827-1.jpg",
@@ -146,7 +146,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-18971300078-1.jpg",
     "photos": [
       "/products/halloween/hw-18971300078-1.jpg",
@@ -194,7 +194,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-18830749358-1.jpg",
     "photos": [
       "/products/halloween/hw-18830749358-1.jpg",
@@ -238,7 +238,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-17954873968-1.jpg",
     "photos": [
       "/products/halloween/hw-17954873968-1.jpg",
@@ -286,7 +286,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-18993975171-1.jpg",
     "photos": [
       "/products/halloween/hw-18993975171-1.jpg",
@@ -334,7 +334,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-16471881224-1.jpg",
     "photos": [
       "/products/halloween/hw-16471881224-1.jpg",
@@ -374,7 +374,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-18890961309-1.jpg",
     "photos": [
       "/products/halloween/hw-18890961309-1.jpg",
@@ -418,7 +418,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 11.99,
+    "price": 16.99,
     "image": "/products/halloween/hw-18832410058-1.jpg",
     "photos": [
       "/products/halloween/hw-18832410058-1.jpg",
@@ -462,7 +462,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-17942787070-1.jpg",
     "photos": [
       "/products/halloween/hw-17942787070-1.jpg",
@@ -510,7 +510,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 16.99,
+    "price": 19.99,
     "image": "/products/halloween/hw-17876604473-1.jpg",
     "photos": [
       "/products/halloween/hw-17876604473-1.jpg",
@@ -554,7 +554,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 12.99,
+    "price": 17.99,
     "image": "/products/halloween/hw-18210486228-1.jpg",
     "photos": [
       "/products/halloween/hw-18210486228-1.jpg",
@@ -598,7 +598,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 9.99,
+    "price": 14.99,
     "image": "/products/halloween/hw-18996486517-1.jpg",
     "photos": [
       "/products/halloween/hw-18996486517-1.jpg",
@@ -646,7 +646,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 12.99,
+    "price": 17.99,
     "image": "/products/halloween/hw-17817939135-1.jpg",
     "photos": [
       "/products/halloween/hw-17817939135-1.jpg",
@@ -690,7 +690,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 12.99,
+    "price": 17.99,
     "image": "/products/halloween/hw-18999920056-1.jpg",
     "photos": [
       "/products/halloween/hw-18999920056-1.jpg",
@@ -734,7 +734,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 10.99,
+    "price": 15.99,
     "image": "/products/halloween/hw-18994182775-1.jpg",
     "photos": [
       "/products/halloween/hw-18994182775-1.jpg",
@@ -782,7 +782,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 9.99,
+    "price": 14.99,
     "image": "/products/halloween/hw-17942763309-1.jpg",
     "photos": [
       "/products/halloween/hw-17942763309-1.jpg"
@@ -825,7 +825,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 10.99,
+    "price": 15.99,
     "image": "/products/halloween/hw-18965139607-1.jpg",
     "photos": [
       "/products/halloween/hw-18965139607-1.jpg",
@@ -869,7 +869,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 9.99,
+    "price": 14.99,
     "image": "/products/halloween/hw-18918894184-1.jpg",
     "photos": [
       "/products/halloween/hw-18918894184-1.jpg",
@@ -917,7 +917,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 12.99,
+    "price": 17.99,
     "image": "/products/halloween/hw-18899535579-1.jpg",
     "photos": [
       "/products/halloween/hw-18899535579-1.jpg",
@@ -965,7 +965,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 14.99,
+    "price": 18.99,
     "image": "/products/halloween/hw-17736773195-1.jpg",
     "photos": [
       "/products/halloween/hw-17736773195-1.jpg"
@@ -1012,7 +1012,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 10.99,
+    "price": 15.99,
     "image": "/products/halloween/hw-18851235208-1.jpg",
     "photos": [
       "/products/halloween/hw-18851235208-1.jpg",
@@ -1060,7 +1060,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-18935055147-1.jpg",
     "photos": [
       "/products/halloween/hw-18935055147-1.jpg",
@@ -1108,7 +1108,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-16404186106-1.jpg",
     "photos": [
       "/products/halloween/hw-16404186106-1.jpg",
@@ -1148,7 +1148,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 9.99,
+    "price": 14.99,
     "image": "/products/halloween/hw-18994150564-1.jpg",
     "photos": [
       "/products/halloween/hw-18994150564-1.jpg",
@@ -1188,7 +1188,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-17867435867-1.jpg",
     "photos": [
       "/products/halloween/hw-17867435867-1.jpg",
@@ -1228,7 +1228,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 11.99,
+    "price": 16.99,
     "image": "/products/halloween/hw-17929934856-1.jpg",
     "photos": [
       "/products/halloween/hw-17929934856-1.jpg",
@@ -1272,7 +1272,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 12.99,
+    "price": 17.99,
     "image": "/products/halloween/hw-18951775011-1.jpg",
     "photos": [
       "/products/halloween/hw-18951775011-1.jpg",
@@ -1316,7 +1316,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 9.99,
+    "price": 14.99,
     "image": "/products/halloween/hw-17790783948-1.jpg",
     "photos": [
       "/products/halloween/hw-17790783948-1.jpg",
@@ -1364,7 +1364,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 10.99,
+    "price": 15.99,
     "image": "/products/halloween/hw-18968671665-1.jpg",
     "photos": [
       "/products/halloween/hw-18968671665-1.jpg",
@@ -1408,7 +1408,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-16557959073-1.jpg",
     "photos": [
       "/products/halloween/hw-16557959073-1.jpg",
@@ -1452,7 +1452,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 10.99,
+    "price": 15.99,
     "image": "/products/halloween/hw-18968794250-1.jpg",
     "photos": [
       "/products/halloween/hw-18968794250-1.jpg",
@@ -1496,7 +1496,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-17940129385-1.jpg",
     "photos": [
       "/products/halloween/hw-17940129385-1.jpg",
@@ -1540,7 +1540,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-14317193115-1.jpg",
     "photos": [
       "/products/halloween/hw-14317193115-1.jpg",
@@ -1588,7 +1588,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-7630774804-1.jpg",
     "photos": [
       "/products/halloween/hw-7630774804-1.jpg",
@@ -1632,7 +1632,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 21.99,
+    "price": 22.99,
     "image": "/products/halloween/hw-18949370579-1.jpg",
     "photos": [
       "/products/halloween/hw-18949370579-1.jpg",
@@ -1680,7 +1680,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 9.99,
+    "price": 14.99,
     "image": "/products/halloween/hw-17898777172-1.jpg",
     "photos": [
       "/products/halloween/hw-17898777172-1.jpg",
@@ -1728,7 +1728,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 10.99,
+    "price": 15.99,
     "image": "/products/halloween/hw-18996591817-1.jpg",
     "photos": [
       "/products/halloween/hw-18996591817-1.jpg",
@@ -1772,7 +1772,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-17803083199-1.jpg",
     "photos": [
       "/products/halloween/hw-17803083199-1.jpg",
@@ -1816,7 +1816,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-17859788960-1.jpg",
     "photos": [
       "/products/halloween/hw-17859788960-1.jpg",
@@ -1860,7 +1860,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 11.99,
+    "price": 16.99,
     "image": "/products/halloween/hw-18583283290-1.jpg",
     "photos": [
       "/products/halloween/hw-18583283290-1.jpg",
@@ -1900,7 +1900,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 10.99,
+    "price": 15.99,
     "image": "/products/halloween/hw-18934493123-1.jpg",
     "photos": [
       "/products/halloween/hw-18934493123-1.jpg",
@@ -1988,7 +1988,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-18926321925-1.jpg",
     "photos": [
       "/products/halloween/hw-18926321925-1.jpg",
@@ -2032,7 +2032,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-18899766969-1.jpg",
     "photos": [
       "/products/halloween/hw-18899766969-1.jpg",
@@ -2072,7 +2072,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 15.99,
+    "price": 19.99,
     "image": "/products/halloween/hw-16458171266-1.jpg",
     "photos": [
       "/products/halloween/hw-16458171266-1.jpg",
@@ -2120,7 +2120,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-18855030843-1.jpg",
     "photos": [
       "/products/halloween/hw-18855030843-1.jpg",
@@ -2168,7 +2168,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-16371693902-1.jpg",
     "photos": [
       "/products/halloween/hw-16371693902-1.jpg",
@@ -2216,7 +2216,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-18891187155-1.jpg",
     "photos": [
       "/products/halloween/hw-18891187155-1.jpg"
@@ -2263,7 +2263,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-18952619891-1.jpg",
     "photos": [
       "/products/halloween/hw-18952619891-1.jpg"
@@ -2310,7 +2310,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-17909545859-1.jpg",
     "photos": [
       "/products/halloween/hw-17909545859-1.jpg",
@@ -2406,7 +2406,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 14.99,
+    "price": 18.99,
     "image": "/products/halloween/hw-18955110875-1.jpg",
     "photos": [
       "/products/halloween/hw-18955110875-1.jpg",
@@ -2446,7 +2446,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-14343170704-1.jpg",
     "photos": [
       "/products/halloween/hw-14343170704-1.jpg",
@@ -2494,7 +2494,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 9.99,
+    "price": 14.99,
     "image": "/products/halloween/hw-18958091520-1.jpg",
     "photos": [
       "/products/halloween/hw-18958091520-1.jpg",
@@ -2542,7 +2542,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-17936622548-1.jpg",
     "photos": [
       "/products/halloween/hw-17936622548-1.jpg",
@@ -2586,7 +2586,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 12.99,
+    "price": 17.99,
     "image": "/products/halloween/hw-17828659353-1.jpg",
     "photos": [
       "/products/halloween/hw-17828659353-1.jpg",
@@ -2630,7 +2630,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 8.99,
+    "price": 13.99,
     "image": "/products/halloween/hw-16565356905-1.jpg",
     "photos": [
       "/products/halloween/hw-16565356905-1.jpg",
@@ -2674,7 +2674,7 @@ export const halloweenProducts: Product[] = [
     "series": "halloween",
     "kind": "decoration",
     "sections": 0,
-    "price": 7.99,
+    "price": 12.99,
     "image": "/products/halloween/hw-17820400904-1.jpg",
     "photos": [
       "/products/halloween/hw-17820400904-1.jpg",
