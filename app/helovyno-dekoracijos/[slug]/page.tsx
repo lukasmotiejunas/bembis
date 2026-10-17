@@ -58,7 +58,7 @@ export default async function DecorationPage(props: PageProps<"/helovyno-dekorac
             </dl>
           </div>
         </div>
-        {related.length > 0 && <div className="mt-20"><h2 className="text-3xl font-semibold text-pine-900">Derinkite su kitomis dekoracijomis</h2><div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">{related.map((p) => <ProductFeatureCard key={p.id} product={p} />)}</div></div>}
+        {related.length > 0 && <div className="mt-20"><h2 className="text-3xl font-semibold text-pine-900">Derinkite su kitomis dekoracijomis</h2><div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-5 xl:gap-4">{related.map((p) => <ProductFeatureCard key={p.id} product={p} />)}</div></div>}
       </section>
     </>
   );

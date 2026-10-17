@@ -8,13 +8,14 @@ import { formatMeters, formatPrice } from "@/lib/format";
 import { Product } from "@/lib/types";
 import AddToCartButton from "./AddToCartButton";
 
+/** Product grids show five cards per row on desktop (xl), so from there the card is compact: every xl: class below. */
 export default function ProductFeatureCard({ product }: { product: Product }) {
   return (
-    <article className="hw-web group flex flex-col overflow-hidden rounded-[2rem] border border-sand bg-white transition hover:border-pine-900/20 hover:shadow-[0_32px_64px_-36px_rgb(18_42_31/0.45)]">
+    <article className="hw-web group flex flex-col overflow-hidden rounded-[2rem] border border-sand bg-white transition hover:border-pine-900/20 hover:shadow-[0_32px_64px_-36px_rgb(18_42_31/0.45)] xl:rounded-3xl">
       <Link
         href={productHref(product)}
         className={clsx(
-          "relative block aspect-[4/3]",
+          "relative block aspect-[4/3] xl:aspect-square",
           product.photos ? "hw-photo bg-white" : "bg-cream",
         )}
         aria-label={product.name}
@@ -27,13 +28,13 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
               : `${product.series === "xp" ? "XP" : "LLinks"} LED girliandos schema`
           }
           fill
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          sizes="(max-width: 1024px) 100vw, (max-width: 1279px) 50vw, 240px"
           className={clsx(
-            "object-contain",
+            "object-contain xl:p-3",
             product.photos ? "p-4" : "p-8",
           )}
         />
-        <span className="absolute top-5 left-5 rounded-full bg-pine-900 px-3 py-1 text-xs font-extrabold text-snow">
+        <span className="absolute top-5 left-5 rounded-full bg-pine-900 px-3 py-1 text-xs font-extrabold text-snow xl:top-3 xl:left-3 xl:px-2.5 xl:py-0.5 xl:text-[0.65rem]">
           {product.kind === "bundle"
             ? "Komplektas"
             : product.kind === "starter"
@@ -46,17 +47,24 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
           </span>
         )}
       </Link>
-      <div className="flex flex-1 flex-col border-t border-sand p-7 sm:p-9">
-        <p className="text-sm text-stone">
+      <div className="flex flex-1 flex-col border-t border-sand p-7 sm:p-9 xl:p-4">
+        <p className="text-sm text-stone xl:text-xs">
           {product.kind === "decoration" ? "Pristatymas per 4 dienas visoje Lietuvoje" : `${product.color} · ${formatMeters(product.meters)}`}
         </p>
-        <h3 className={clsx("mt-1 font-semibold text-pine-900", product.kind === "decoration" ? "text-xl leading-snug" : "text-2xl sm:text-3xl")}>
+        <h3
+          className={clsx(
+            "mt-1 font-semibold text-pine-900 xl:line-clamp-3 xl:text-base xl:leading-snug",
+            product.kind === "decoration" ? "text-xl leading-snug" : "text-2xl sm:text-3xl",
+          )}
+        >
           <Link href={productHref(product)} className="hover:text-pine-700">
             {product.name}
           </Link>
         </h3>
-        <p className="mt-3 leading-relaxed text-stone">{product.description}</p>
-        <ul className="mt-5 space-y-2.5">
+        <p className="mt-3 leading-relaxed text-stone xl:mt-2 xl:line-clamp-2 xl:text-[0.8rem] xl:leading-snug">
+          {product.description}
+        </p>
+        <ul className="mt-5 space-y-2.5 xl:hidden">
           {product.features.map((f) => (
             <li key={f} className="flex items-start gap-3 text-pine-900">
               <Check
@@ -67,25 +75,26 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
             </li>
           ))}
         </ul>
-        <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-8">
+        <div className="mt-auto flex flex-wrap items-end justify-between gap-4 pt-8 xl:gap-3 xl:pt-4">
           <p>
-            <span className="font-display text-4xl font-semibold text-pine-900">
+            <span className="font-display text-4xl font-semibold text-pine-900 xl:text-2xl">
               {formatPrice(product.price)}
             </span>
-            <span className="ml-1 block text-sm text-stone">
+            <span className="ml-1 block text-sm text-stone xl:ml-0 xl:text-xs">
               {product.kind === "bundle"
                 ? "už visą komplektą"
                 : product.kind === "decoration" ? "už prekę arba nurodytą rinkinį" : "už vieną sekciją"}
             </span>
           </p>
-          <div className="flex flex-wrap gap-2">
-            <Link href={productHref(product)} className="btn btn-outline">
+          <div className="flex flex-wrap gap-2 xl:w-full">
+            {/* On desktop the photo and the name already open the product. */}
+            <Link href={productHref(product)} className="btn btn-outline xl:hidden">
               Plačiau
             </Link>
-            <AddToCartButton product={product} />
+            <AddToCartButton product={product} className="xl:min-h-10 xl:w-full xl:px-3 xl:text-sm" />
           </div>
         </div>
-        <p className="mt-4 text-sm font-semibold text-pine-700">
+        <p className="mt-4 text-sm font-semibold text-pine-700 xl:mt-3 xl:text-xs">
           Pristatymas nuo {formatPrice(cheapestDelivery)}
         </p>
       </div>

@@ -109,7 +109,7 @@ export default async function LightsSection({
         </div>
       )}
       {withHeading ? (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-5 xl:gap-4">
           {shown.map((p) => <ProductFeatureCard key={p.id} product={p} />)}
         </div>
       ) : <ProductCatalog products={shown} lightsLast={lightsLast} />}

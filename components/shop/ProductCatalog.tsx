@@ -59,7 +59,7 @@ export default function ProductCatalog({ products, lightsLast = false }: { produ
         <p className="text-sm text-stone" aria-live="polite">Rasta prekių: {shown.length}</p>
       </div>
       {shown.length ? (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-5 xl:gap-4">
           {shown.map((product) => <ProductFeatureCard key={product.id} product={product} />)}
         </div>
       ) : <p className="rounded-2xl border border-sand bg-white p-8 text-center text-stone">Pagal šią paiešką prekių neradome. Pabandykite kitą pavadinimą arba kategoriją.</p>}

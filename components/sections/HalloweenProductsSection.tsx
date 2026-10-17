@@ -12,7 +12,7 @@ export default async function HalloweenProductsSection() {
   return (
     <section className="container-page py-16 sm:py-24">
       <SectionHeading eyebrow="Helovyno dekoracijų pardavimas" title="Papuoškite savo Helovyno namus" text="Vorai, vaiduokliai, moliūgai ir dekoracijų rinkiniai. Pristatome per 4 dienas visoje Lietuvoje." />
-      <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">{featured.map((p) => <ProductFeatureCard key={p.id} product={p} />)}</div>
+      <div className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-5 xl:gap-4">{featured.map((p) => <ProductFeatureCard key={p.id} product={p} />)}</div>
       <Link href="/kaledines-lemputes#katalogas" className="btn btn-primary mt-8">Visos prekės<ArrowRight className="size-4" aria-hidden="true" /></Link>
     </section>
   );

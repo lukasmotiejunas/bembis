@@ -233,7 +233,7 @@ export default async function ProductPage(
           <h2 className="text-3xl font-semibold text-pine-900">
             Kiti {seriesNames[product.series]} pasirinkimai
           </h2>
-          <div className="mt-8 grid gap-6 lg:grid-cols-2">
+          <div className="mt-8 grid gap-6 lg:grid-cols-2 xl:grid-cols-5 xl:gap-4">
             {related.map((p) => (
               <ProductFeatureCard key={p.id} product={p} />
             ))}
