@@ -6,7 +6,7 @@ import {
 } from "../data/delivery";
 import { getProduct } from "../data/products";
 import { CartItem } from "../types";
-import { describeLine, modeLabel, Order, OrderServices } from "./order";
+import { describeDiscount, describeLine, modeLabel, Order, OrderServices } from "./order";
 
 export interface CustomerDetails {
   name: string;
@@ -41,6 +41,8 @@ export interface CheckoutInput {
   customer: CustomerDetails;
   /** null when we install the lights and bring them along */
   delivery: CheckoutDelivery | null;
+  /** Laimės rato kodas as typed; empty for none. The checkout action verifies it (lib/discount.ts). */
+  discountCode?: string;
 }
 
 type Result = { ok: true; value: CheckoutInput } | { ok: false; error: string };
@@ -138,7 +140,8 @@ export function validateCheckout(raw: unknown): Result {
     return { ok: false, error: "Neteisinga montavimo data." };
   }
 
-  return { ok: true, value: { items, services, customer, delivery } };
+  const discountCode = text(raw.discountCode, 40);
+  return { ok: true, value: { items, services, customer, delivery, discountCode } };
 }
 
 /** e.g. KD-261004-7QX2 — short enough to read over the phone. */
@@ -167,6 +170,15 @@ export function fromChunks(metadata: Record<string, string>, key: string) {
   for (let i = 0; metadata[`${key}_${i}`] !== undefined; i++)
     value += metadata[`${key}_${i}`];
   return value;
+}
+
+/** The line's detail, plus the discount on discounted products. */
+function lineDescription(line: Order["lines"][number], order: Order) {
+  const discount =
+    order.discount && line.kind === "product"
+      ? `−${order.discount.percent} % nuolaida (kodas ${order.discount.code})`
+      : "";
+  return [line.detail, discount].filter(Boolean).join(" · ");
 }
 
 export function buildSessionParams(
@@ -204,8 +216,14 @@ export function buildSessionParams(
     parcel_machine: machine ? describeParcelMachine(machine).slice(0, 490) : "",
     meters: String(order.meters),
     ...(order.deliveryDays ? { delivery_days: String(order.deliveryDays) } : {}),
+    ...(order.discount
+      ? { discount_code: order.discount.code, discount_percent: String(order.discount.percent) }
+      : {}),
     ...toChunks("product_ids", order.products.map((line) => `${line.productId}:${line.quantity}`).join(",")),
-    ...toChunks("items", order.lines.map(describeLine).join("\n")),
+    ...toChunks(
+      "items",
+      [...order.lines.map(describeLine), describeDiscount(order)].filter(Boolean).join("\n"),
+    ),
   };
 
   return {
@@ -217,13 +235,14 @@ export function buildSessionParams(
       quantity: line.quantity,
       price_data: {
         currency: "eur",
-        unit_amount: Math.round(line.unitPrice * 100),
+        // The discount is built into each product's unit price: Stripe has no negative lines.
+        unit_amount: Math.round(line.paidUnitPrice * 100),
         product_data: {
           name: line.mode
             ? `${line.name} — ${modeLabel[line.mode].toLowerCase()}`
             : line.name,
           ...(line.productId ? { metadata: { product_id: line.productId } } : {}),
-          ...(line.detail ? { description: line.detail } : {}),
+          ...(lineDescription(line, order) ? { description: lineDescription(line, order) } : {}),
           ...(imageUrl(line.image) ? { images: imageUrl(line.image) } : {}),
         },
       },

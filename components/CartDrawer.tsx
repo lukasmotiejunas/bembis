@@ -10,7 +10,7 @@ import { modeLabel } from "@/lib/orders/order";
 import { useSiteTheme } from "./SiteTheme";
 
 export default function CartDrawer() {
-  const { items, isOpen, closeCart, updateQuantity, removeItem } =
+  const { items, isOpen, closeCart, updateQuantity, removeItem, discount } =
     useCartStore();
   const lines = resolveLines(items);
   const { total } = cartTotals(lines);
@@ -177,6 +177,12 @@ export default function CartDrawer() {
                   {formatPrice(total)}
                 </span>
               </div>
+              {discount && (
+                <p className="mt-2 text-sm font-semibold text-pine-700">
+                  Laimėta −{discount.percent}&nbsp;% nuolaida bus pritaikyta
+                  užsakant.
+                </p>
+              )}
               <p className="mt-2 text-sm text-stone">
                 {deliveryDays > 0 && `Pristatymas per ${deliveryDays} dienas. `}Pristatymą pasirinksite kitame žingsnyje: {deliveryPricesText}.
                 Užsakius montavimą, prekes atvešime nemokamai.

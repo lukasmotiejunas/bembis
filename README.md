@@ -81,6 +81,25 @@ sugeneruojami iš naujo, o krepšelis, kainos ir užsakymai nesikeičia.
 
 Jei pasirinkimo nepavyksta perskaityti, svetainė rodoma kalėdiniu dizainu.
 
+## Laimės ratas
+
+Pirmą kartą per dieną atėjus į svetainę, po sekundės parodomas laimės ratas (išskyrus apmokėjimo ir
+administravimo puslapius). Kad jau sukta ar atsisakyta šiandien, įsimenama naršyklės `localStorage`
+(`laimes-ratas`), todėl kitą dieną ratas rodomas vėl.
+
+- **Visi prizai tikri.** Prizai ir tikimybės — `lib/data/wheel.ts`: −3 % (45 %), −5 % (30 %), −7 % (17 %),
+  −10 % (8 %). Kiekvieno prizo plotas rate lygus jo tikimybei, o kur ratas sustos, parenka serveris
+  (`spinWheel` faile `app/checkout/actions.ts`). Keičiant prizus, keiskite tik šį failą.
+- **Kodas.** Laimėjus išduodamas kodas, pvz. `RATAS5-2NAGGM-BF6K6F`. Jis iškart pritaikomas krepšeliui, o
+  apmokėjimo puslapyje jį galima įvesti ir ranka. Kodą pasirašo serveris (`lib/discount.ts`), todėl jo
+  neįmanoma atspėti ar pakeisti procento. Galioja 7 dienas.
+- **Nuolaida** skaičiuojama nuo dabartinių kainų ir tik prekėms (ne pristatymui). Serveris kodą patikrina dar
+  kartą apmokant. Stripe nuolaida įskaičiuojama į prekių kainas, o kodas įrašomas į užsakymą, Google Sheets
+  stulpelį „Nuolaida“ ir pranešimo laišką.
+- Kodai veikia, kai nustatytas `STRIPE_SECRET_KEY` arba `DISCOUNT_CODE_SECRET`; be jų ratas nerodomas.
+- Vienas sukimas per dieną ribojamas naršyklėje, todėl išvalius naršyklės duomenis galima sukti dar kartą.
+  Prizai nedideli, todėl tai priimtina.
+
 ## SEO
 
 - Kiekvienas puslapis turi savo pavadinimą, aprašymą ir pagrindinį adresą (`pageMetadata` faile `lib/seo.ts`).

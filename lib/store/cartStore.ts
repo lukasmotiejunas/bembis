@@ -5,7 +5,7 @@ import { persist } from "zustand/middleware";
 import { DeliveryMethod, ParcelMachine } from "../data/delivery";
 import { getProduct } from "../data/products";
 import { CustomerDetails, emptyCustomer } from "../orders/checkout";
-import { OrderServices } from "../orders/order";
+import { OrderDiscount, OrderServices } from "../orders/order";
 import { CartItem, Product, PurchaseMode } from "../types";
 import { buildOrder } from "../orders/order";
 
@@ -22,6 +22,8 @@ interface CartStore {
   services: OrderServices;
   customer: CustomerDetails;
   delivery: DeliveryChoice;
+  /** A laimės ratas code checked by the server; checked again when paying. */
+  discount: OrderDiscount | null;
   isOpen: boolean;
   addItem: (productId: string, mode: PurchaseMode, quantity?: number) => void;
   removeItem: (productId: string, mode: PurchaseMode) => void;
@@ -33,6 +35,7 @@ interface CartStore {
   setService: (service: keyof OrderServices, enabled: boolean) => void;
   setCustomerField: (field: keyof CustomerDetails, value: string) => void;
   setDelivery: (delivery: Partial<DeliveryChoice>) => void;
+  setDiscount: (discount: OrderDiscount | null) => void;
   /** After a paid order: empty the cart and forget the checkout details. */
   resetAfterOrder: () => void;
   openCart: () => void;
@@ -49,6 +52,7 @@ export const useCartStore = create<CartStore>()(
       services: noServices,
       customer: emptyCustomer,
       delivery: noDelivery,
+      discount: null,
       isOpen: false,
 
       addItem: (productId, mode, quantity = 1) => {
@@ -101,12 +105,14 @@ export const useCartStore = create<CartStore>()(
         set((state) => ({ customer: { ...state.customer, [field]: value } })),
       setDelivery: (delivery) =>
         set((state) => ({ delivery: { ...state.delivery, ...delivery } })),
+      setDiscount: (discount) => set({ discount }),
       resetAfterOrder: () =>
         set({
           items: [],
           services: noServices,
           customer: emptyCustomer,
           delivery: noDelivery,
+          discount: null,
         }),
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
@@ -118,6 +124,7 @@ export const useCartStore = create<CartStore>()(
         services: state.services,
         customer: state.customer,
         delivery: state.delivery,
+        discount: state.discount,
       }),
       // Rehydrated on mount by <CartHydration /> so server and client render the same markup.
       skipHydration: true,

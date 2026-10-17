@@ -30,6 +30,58 @@
   --animate-drawer-in: drawer-in 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
   --animate-fade-in: fade-in 0.2s ease-out;
 
+  /* Laimės ratas (components/wheel/LuckyWheel.tsx) */
+  --animate-wheel-bulb: wheel-bulb 0.9s steps(1, end) infinite;
+  --animate-wheel-bulb-fast: wheel-bulb 0.24s steps(1, end) infinite;
+  --animate-wheel-tick: wheel-tick 0.15s ease-in-out infinite;
+  --animate-wheel-pop: wheel-pop 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+  --animate-wheel-pulse: wheel-pulse 1.6s ease-out infinite;
+  --animate-wheel-confetti: wheel-confetti 2.4s cubic-bezier(0.15, 0.6, 0.35, 1) both;
+
+  @keyframes wheel-bulb {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+  @keyframes wheel-tick {
+    50% {
+      transform: rotate(-18deg);
+    }
+  }
+  @keyframes wheel-pop {
+    from {
+      opacity: 0;
+      transform: scale(0.85) translateY(16px);
+    }
+  }
+  @keyframes wheel-pulse {
+    from {
+      box-shadow: 0 0 0 0 rgb(255 214 107 / 0.75);
+    }
+    to {
+      box-shadow: 0 0 0 18px rgb(255 214 107 / 0);
+    }
+  }
+  /* Each piece bursts out to (--dx, --dy), then falls and fades. */
+  @keyframes wheel-confetti {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(0.3);
+    }
+    25% {
+      opacity: 1;
+      transform: translate(calc(-50% + var(--dx) * 0.7), calc(-50% + var(--dy))) rotate(calc(var(--rot) * 0.3));
+    }
+    100% {
+      opacity: 0;
+      transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy) + 460px)) rotate(var(--rot));
+    }
+  }
+
   @keyframes twinkle {
     0%,
     100% {

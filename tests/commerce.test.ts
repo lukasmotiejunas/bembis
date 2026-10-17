@@ -28,6 +28,8 @@ import {
   verifySessionToken,
 } from "../lib/admin";
 import { isSiteTheme } from "../lib/theme";
+import { createDiscountCode, discountsEnabled, spinWheelPrize, verifyDiscountCode } from "../lib/discount";
+import { wheelPrizes, wheelSlices } from "../lib/data/wheel";
 import {
   describeParcelMachine,
   parseParcelMachines,
@@ -130,6 +132,8 @@ const expected = [
   ["xp-45", 45, 97.99],
   ["xp-60", 60, 120.99],
 ] as const;
+/** Price on the site: the approved list price plus 10 %, rounded to the cent (computed independently). */
+const raised = (price: number) => Math.round(Math.round(price * 100) * 1.1) / 100;
 const customer = {
   name: "Patikros klientas",
   phone: "+37060000000",
@@ -159,10 +163,10 @@ test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąr
   for (const [id, meters, price] of expected) {
     const p = getProduct(id, "buy")!;
     assert.equal(p.meters, meters);
-    assert.equal(p.price, price);
+    assert.equal(p.price, raised(price));
     assert.equal(p.sections * 7.5, meters);
     const schema = productSchema(p);
-    assert.equal(schema.offers.price, price.toFixed(2));
+    assert.equal(schema.offers.price, raised(price).toFixed(2));
     assert.equal(schema.offers.availability, "https://schema.org/InStock");
     assert.equal(schema.offers.priceCurrency, "EUR");
     assert.equal(schema.offers.hasMerchantReturnPolicy.merchantReturnDays, 14);
@@ -195,7 +199,10 @@ test("Helovyno kainos sutampa su patvirtintu mūsų kaina stulpeliu; nuotraukos 
     assert.ok(p.photos?.length);
     for (const photo of p.photos!) assert.ok(existsSync(join(process.cwd(), "public", photo)), photo);
     assert.equal(productSchema(p).offers.availability, "https://schema.org/PreOrder");
-    assert.equal(productSchema(p).offers.price, p.price.toFixed(2));
+    // The site sells at the list price plus 10 %.
+    const sold = getProduct(p.id, "buy")!;
+    assert.equal(sold.price, raised(p.price));
+    assert.equal(productSchema(sold).offers.price, raised(p.price).toFixed(2));
   }
 });
 test("Dekoracijos ir lemputės apmokamos kartu teisingomis kainomis, be fiktyvių dekoracijų metrų", () => {
@@ -206,13 +213,13 @@ test("Dekoracijos ir lemputės apmokamos kartu teisingomis kainomis, be fiktyvi�
   const order = buildOrder(mixed.items, mixed.services, { method: "courier" });
   assert.equal(order.meters, 15);
   assert.equal(order.deliveryDays, 4);
-  assert.equal(order.productsTotal, Math.round((38.99 * 2 + decoration.price * 3) * 100) / 100);
+  assert.equal(order.productsTotal, Math.round((raised(38.99) * 2 + raised(decoration.price) * 3) * 100) / 100);
   assert.ok(order.products[1].detail?.includes("4 dienas"));
   assert.ok(!order.products[1].detail?.includes("0 m"));
   const session = buildSessionParams(mixed, order, "https://www.kaledudekoras.lt", "KD-TEST-DECOR");
   assert.equal(session.metadata?.delivery_days, "4");
   assert.ok(String(session.metadata?.product_ids_0).includes(`${decoration.id}:3`));
-  assert.equal(session.line_items?.[1].price_data?.unit_amount, Math.round(decoration.price * 100));
+  assert.equal(session.line_items?.[1].price_data?.unit_amount, Math.round(raised(decoration.price) * 100));
   assert.equal(session.line_items?.[1].price_data?.product_data?.metadata?.product_id, decoration.id);
   const submit = session.custom_text?.submit;
   assert.match(submit && typeof submit === "object" ? String(submit.message) : "", /Pristatymas per 4 dienas/);
@@ -272,7 +279,7 @@ test("Krepšelis ir serveris vienodai skaičiuoja visus vienetus centais", () =>
     quantity: i + 1,
   }));
   const independentCents = expected.reduce(
-    (s, [, , price], i) => s + Math.round(price * 100) * (i + 1),
+    (s, [, , price], i) => s + Math.round(raised(price) * 100) * (i + 1),
     0,
   );
   const order = buildOrder(items, services);
@@ -286,7 +293,7 @@ test("Krepšelis ir serveris vienodai skaičiuoja visus vienetus centais", () =>
     [{ productId: "63110", mode: "buy", quantity: 99 }],
     services,
   );
-  assert.equal(repeated.productsTotal, 1781.01);
+  assert.equal(repeated.productsTotal, 1959.21); // 99 × 19,79
 });
 test("Serveris nepasitiki naršyklės kaina ir atmeta netinkamas prekes, nuomos režimą bei kiekius", () => {
   const forged = {
@@ -300,7 +307,7 @@ test("Serveris nepasitiki naršyklės kaina ir atmeta netinkamas prekes, nuomos 
   if (parsed.ok)
     assert.equal(
       buildOrder(parsed.value.items, parsed.value.services).productsTotal,
-      77.98,
+      85.78,
     );
   for (const item of [
     { productId: "1", mode: "buy", quantity: 1 },
@@ -318,7 +325,7 @@ test("Pristatymas: paštomatas 2,29 €, kurjeris 4,99 €, montuojant lemputes 
   assert.deepEqual(pricing.delivery, { parcel: 2.29, courier: 4.99 });
   const none = buildOrder(input.items, services);
   assert.equal(none.deliveryMissing, true);
-  assert.equal(none.total, 77.98);
+  assert.equal(none.total, 85.78); // 2 × 42,89
   assert.equal(none.extras.length, 0);
   assert.throws(() =>
     buildSessionParams(input, none, "https://www.kaledudekoras.lt", "TEST"),
@@ -326,7 +333,7 @@ test("Pristatymas: paštomatas 2,29 €, kurjeris 4,99 €, montuojant lemputes 
   const courier = buildOrder(input.items, services, { method: "courier" });
   assert.equal(courier.deliveryMissing, false);
   assert.equal(courier.extras[0].name, "Pristatymas kurjeriu");
-  assert.equal(courier.total, 82.97);
+  assert.equal(courier.total, 90.77);
   const noMachine = buildOrder(input.items, services, { method: "parcel" });
   assert.equal(noMachine.deliveryMissing, true);
   const parcel = buildOrder(input.items, services, {
@@ -336,8 +343,8 @@ test("Pristatymas: paštomatas 2,29 €, kurjeris 4,99 €, montuojant lemputes 
   assert.equal(parcel.deliveryMissing, false);
   assert.equal(parcel.extras[0].name, "Pristatymas į Omniva paštomatą");
   assert.equal(parcel.extras[0].detail, "Vilniaus Akropolio paštomatas, Ozo g. 25, Vilniaus m.");
-  assert.equal(parcel.total, 80.27);
-  assert.equal(parcel.productsTotal, 77.98);
+  assert.equal(parcel.total, 88.07);
+  assert.equal(parcel.productsTotal, 85.78);
   for (const selection of [
     { installation: true, removal: true },
     { installation: false, removal: true },
@@ -345,7 +352,7 @@ test("Pristatymas: paštomatas 2,29 €, kurjeris 4,99 €, montuojant lemputes 
     const order = buildOrder(input.items, selection, { method: "courier" });
     assert.equal(order.requiresQuote, true);
     assert.equal(order.deliveryMissing, false);
-    assert.equal(order.total, 77.98);
+    assert.equal(order.total, 85.78);
     assert.equal(order.extras.length, 0);
     assert.throws(
       () =>
@@ -421,7 +428,7 @@ test("Užsakymo užklausa perskaičiuojama iš katalogo ir suderinama su esamos 
     services: f.getAll("services"),
   });
   assert.equal(q.ok, true);
-  assert.match(String(f.get("message")), /77,98/);
+  assert.match(String(f.get("message")), /85,78/);
   assert.deepEqual(f.getAll("services"), ["Lempučių pirkimas"]);
   const installed = prepareOrderInquiry({
     ...input,
@@ -443,7 +450,7 @@ test("Stripe gauna pristatymo eilutę, paštomatą ir pristatymo būdą lentelei
     "https://www.kaledudekoras.lt",
     "TEST-ONLY",
   );
-  assert.equal(session.line_items?.[0].price_data?.unit_amount, 3899);
+  assert.equal(session.line_items?.[0].price_data?.unit_amount, 4289);
   assert.equal(session.line_items?.[0].quantity, 2);
   const delivery = session.line_items?.[1].price_data;
   assert.equal(delivery?.unit_amount, 229);
@@ -509,27 +516,28 @@ test("Omniva sąrašas: tik Lietuvos paštomatai, paieška be lietuviškų raid�
 test("Rinkinys: viena motininė ir reikiamas papildomų sekcijų kiekis, komplektas tik kai pigiau", () => {
   const ids = (set: ReturnType<typeof buildLightSet>) =>
     set!.lines.map((l) => [l.product.id, l.quantity]);
-  // 7,5 m — tik motininė; 30 m — motininė ir 3 papildomos (24,99 + 3 × 17,99).
+  // Kainos su 10 % pakėlimu: XP motininė 27,49, papildoma 19,79, 45 m komplektas 107,79.
+  // 7,5 m — tik motininė; 30 m — motininė ir 3 papildomos (27,49 + 3 × 19,79).
   assert.deepEqual(ids(buildLightSet("xp", 7.5)), [["63100", 1]]);
   const thirty = buildLightSet("xp", 30)!;
   assert.deepEqual(ids(thirty), [["63100", 1], ["63110", 3]]);
-  assert.equal(thirty.total, 78.96);
+  assert.equal(thirty.total, 86.86);
   assert.equal(thirty.savings, 0);
-  // 32 m apvalinama iki 5 sekcijų (37,5 m): 24,99 + 4 × 17,99 pigiau nei 45 m komplektas.
+  // 32 m apvalinama iki 5 sekcijų (37,5 m): 27,49 + 4 × 19,79 pigiau nei 45 m komplektas.
   const rounded = buildLightSet("xp", 32)!;
   assert.equal(rounded.meters, 37.5);
-  assert.equal(rounded.total, 96.95);
-  // 45 m: komplektas (97,99) pigesnis nei 24,99 + 5 × 17,99 = 114,94.
+  assert.equal(rounded.total, 106.65);
+  // 45 m: komplektas (107,79) pigesnis nei 27,49 + 5 × 19,79 = 126,44.
   const kit = buildLightSet("xp", 45)!;
   assert.deepEqual(ids(kit), [["xp-45", 1]]);
-  assert.equal(kit.savings, 16.95);
-  // 50 m = 7 sekcijos: 45 m komplektas + 1 papildoma (97,99 + 17,99).
+  assert.equal(kit.savings, 18.65);
+  // 50 m = 7 sekcijos: 45 m komplektas + 1 papildoma (107,79 + 19,79).
   assert.deepEqual(ids(buildLightSet("xp", 50)), [["xp-45", 1], ["63110", 1]]);
-  assert.equal(buildLightSet("xp", 50)!.total, 115.98);
-  // LLinks 100 m = 14 sekcijų: 60 m komplektas + 6 papildomos (209,99 + 6 × 31,99).
+  assert.equal(buildLightSet("xp", 50)!.total, 127.58);
+  // LLinks 100 m = 14 sekcijų: 60 m komplektas + 6 papildomos (230,99 + 6 × 35,19).
   const llinks = buildLightSet("llinks", 100)!;
   assert.deepEqual(ids(llinks), [["llinks-60", 1], ["61040", 6]]);
-  assert.equal(llinks.total, 401.93);
+  assert.equal(llinks.total, 442.13);
   assert.equal(llinks.meters, 105);
   assert.equal(llinks.leds, 700);
   // Krepšelis ir serveris perskaičiuoja tą pačią sumą.
@@ -585,4 +593,111 @@ test("Dizainas: priimami tik žinomi pavadinimai", () => {
   assert.equal(isSiteTheme("halloween"), true);
   for (const value of ["", "Halloween", "admin", null, undefined, 1])
     assert.equal(isSiteTheme(value), false);
+});
+
+/** Runs `fn` with a fixed discount secret, restoring the environment afterwards. */
+function withDiscountSecret(fn: () => void) {
+  const previous = { secret: process.env.DISCOUNT_CODE_SECRET, stripe: process.env.STRIPE_SECRET_KEY };
+  try {
+    process.env.DISCOUNT_CODE_SECRET = "test-only-discount-secret";
+    fn();
+  } finally {
+    if (previous.secret === undefined) delete process.env.DISCOUNT_CODE_SECRET;
+    else process.env.DISCOUNT_CODE_SECRET = previous.secret;
+    if (previous.stripe === undefined) delete process.env.STRIPE_SECRET_KEY;
+    else process.env.STRIPE_SECRET_KEY = previous.stripe;
+  }
+}
+
+test("Laimės ratas sąžiningas: prizo dalių plotas lygus jo tikimybei, o sustojimas atitinka prizą", () => {
+  const last = wheelSlices[wheelSlices.length - 1];
+  assert.equal(wheelSlices[0].start, 0);
+  assert.ok(Math.abs(last.end - 360) < 1e-9);
+  for (const prize of wheelPrizes) {
+    const area = wheelSlices.filter((s) => s.percent === prize.percent).reduce((sum, s) => sum + s.end - s.start, 0);
+    assert.ok(Math.abs(area - prize.chance * 3.6) < 1e-9, `${prize.percent}% užima ${area}°`);
+  }
+  assert.equal(wheelPrizes.reduce((sum, p) => sum + p.chance, 0), 100);
+  // Every stopping point over the whole wheel: the prize counts match the published chances.
+  const won: Record<number, number> = {};
+  for (let hundredth = 0; hundredth < 36000; hundredth++) {
+    const { angle, percent } = spinWheelPrize(hundredth / 100);
+    const slice = wheelSlices.find((s) => angle > s.start && angle < s.end)!;
+    assert.equal(slice.percent, percent);
+    won[percent] = (won[percent] ?? 0) + 1;
+  }
+  for (const prize of wheelPrizes) assert.ok(Math.abs(won[prize.percent] - prize.chance * 360) <= 2);
+});
+
+test("Nuolaidos kodas: pasirašytas, galioja 7 dienas, negalima pakeisti procento ar parašo", () => {
+  withDiscountSecret(() => {
+    const now = Date.UTC(2026, 9, 17, 12);
+    const day = 24 * 60 * 60 * 1000;
+    const created = createDiscountCode(7, now);
+    assert.match(created.code, /^RATAS7-[2-9A-HJ-NP-Z]{6}-[2-9A-HJ-NP-Z]{6}$/);
+    assert.deepEqual(verifyDiscountCode(created.code, now), created);
+    assert.equal(verifyDiscountCode(` ${created.code.toLowerCase()} `, now)?.percent, 7);
+    assert.ok(verifyDiscountCode(created.code, now + 7 * day));
+    assert.equal(verifyDiscountCode(created.code, now + 8 * day), null);
+    assert.equal(verifyDiscountCode(created.code.replace("RATAS7", "RATAS10"), now), null);
+    const signature = created.code.slice(-6);
+    const forged = created.code.slice(0, -6) + (signature[0] === "A" ? "B" : "A") + signature.slice(1);
+    assert.equal(verifyDiscountCode(forged, now), null);
+    assert.throws(() => createDiscountCode(50, now));
+    assert.equal(verifyDiscountCode("RATAS50-ABCDEF-ABCDEF", now), null);
+  });
+  const previous = { secret: process.env.DISCOUNT_CODE_SECRET, stripe: process.env.STRIPE_SECRET_KEY };
+  try {
+    delete process.env.DISCOUNT_CODE_SECRET;
+    delete process.env.STRIPE_SECRET_KEY;
+    assert.equal(discountsEnabled(), false);
+    assert.equal(verifyDiscountCode("RATAS5-ABCDEF-ABCDEF"), null);
+  } finally {
+    if (previous.secret !== undefined) process.env.DISCOUNT_CODE_SECRET = previous.secret;
+    if (previous.stripe !== undefined) process.env.STRIPE_SECRET_KEY = previous.stripe;
+  }
+});
+
+test("Nuolaida taikoma tik prekėms nuo dabartinių kainų, o Stripe suma sutampa su užsakymo suma", () => {
+  const decoration = halloweenProducts[0];
+  const items = [...input.items, { productId: decoration.id, mode: "buy" as const, quantity: 3 }];
+  const discount = { code: "RATAS7-TEST00-TEST00", percent: 7 };
+  const full = buildOrder(items, services, { method: "courier" });
+  const order = buildOrder(items, services, { method: "courier" }, discount);
+  const unitDiscount = (price: number) => Math.round(price * 100) - Math.round((Math.round(price * 100) * 93) / 100);
+  assert.equal(order.productsTotal, full.productsTotal);
+  assert.equal(order.discountTotal, (unitDiscount(raised(38.99)) * 2 + unitDiscount(raised(decoration.price)) * 3) / 100);
+  assert.equal(order.total, Math.round((full.total - order.discountTotal) * 100) / 100);
+  assert.equal(order.extras[0].paidUnitPrice, pricing.delivery.courier);
+
+  const session = buildSessionParams({ ...input, items }, order, "https://www.kaledudekoras.lt", "KD-TEST-DISCOUNT");
+  const charged = (session.line_items ?? []).reduce(
+    (sum, line) => sum + (line.price_data?.unit_amount ?? 0) * (line.quantity ?? 0), 0);
+  assert.equal(charged, Math.round(order.total * 100));
+  assert.equal(session.line_items?.[0].price_data?.unit_amount, Math.round(4289 * 0.93));
+  assert.equal(session.metadata?.discount_code, discount.code);
+  assert.equal(session.metadata?.discount_percent, "7");
+  assert.match(String(session.metadata?.items_0), /Nuolaida RATAS7-TEST00-TEST00 \(−7 %\)/);
+  assert.match(String(session.line_items?.[0].price_data?.product_data?.description), /−7 % nuolaida/);
+  // No discount: nothing changes.
+  assert.equal(full.discount, null);
+  assert.equal(full.discountTotal, 0);
+});
+
+test("Nuolaidos kodas tikrinamas užklausoje ir įrašomas apmokėto užsakymo laiške", () => {
+  withDiscountSecret(() => {
+    const { code } = createDiscountCode(5);
+    const valid = prepareOrderInquiry({ ...input, services: { installation: true, removal: true }, delivery: null, discountCode: code });
+    assert.equal(valid.ok, true);
+    assert.match(String(valid.ok && valid.formData.get("message")), new RegExp(`Nuolaida ${code} \\(−5 %\\)`));
+    const invalid = prepareOrderInquiry({ ...input, services: { installation: true, removal: true }, delivery: null, discountCode: "RATAS5-AAAAAA-AAAAAA" });
+    assert.equal(invalid.ok, false);
+  });
+  const parsed = validateCheckout({ ...input, discountCode: "  ratas5-abc  " });
+  assert.equal(parsed.ok && parsed.value.discountCode, "ratas5-abc");
+  const fields = sheetFieldsFromSession({
+    id: "cs_test_discount", created: 1791357300, amount_total: 7252,
+    metadata: { order_number: "TEST-DISCOUNT", discount_code: "RATAS7-TEST00-TEST00", discount_percent: "7" },
+  } as unknown as Stripe.Checkout.Session);
+  assert.equal(fields.Nuolaida, "RATAS7-TEST00-TEST00 (−7 %)");
 });

@@ -6,14 +6,13 @@ import JsonLd from "@/components/JsonLd";
 import ProductGallery from "@/components/shop/ProductGallery";
 import ProductPurchase from "@/components/shop/ProductPurchase";
 import ProductFeatureCard from "@/components/shop/ProductFeatureCard";
-import { getProductBySlug, productHref, returnPolicy } from "@/lib/data/products";
-import { halloweenProducts } from "@/lib/data/halloweenProducts";
+import { decorations, getProductBySlug, productHref, returnPolicy } from "@/lib/data/products";
 import { deliveryPricesText } from "@/lib/data/delivery";
 import { formatPrice } from "@/lib/format";
 import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
 
 export function generateStaticParams() {
-  return halloweenProducts.map((p) => ({ slug: p.slug }));
+  return decorations.map((p) => ({ slug: p.slug }));
 }
 export async function generateMetadata(props: PageProps<"/helovyno-dekoracijos/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
@@ -25,7 +24,7 @@ export default async function DecorationPage(props: PageProps<"/helovyno-dekorac
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product || product.kind !== "decoration" || !product.photos?.length) notFound();
-  const related = halloweenProducts.filter((p) => p.id !== product.id && p.decorationCategory === product.decorationCategory).slice(0, 3);
+  const related = decorations.filter((p) => p.id !== product.id && p.decorationCategory === product.decorationCategory).slice(0, 3);
   return (
     <>
       <JsonLd data={[productSchema(product), breadcrumbSchema([{ name: "Pradžia", path: "/" }, { name: "Parduotuvė", path: "/kaledines-lemputes" }, { name: product.name, path: productHref(product) }])]} />

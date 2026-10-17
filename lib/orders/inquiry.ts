@@ -1,4 +1,5 @@
 import { INSTALLATION_SERVICE } from "../inquiry";
+import { INVALID_DISCOUNT, verifyDiscountCode } from "../discount";
 import { validateCheckout } from "./checkout";
 import { buildOrder, describeOrderInquiry } from "./order";
 
@@ -6,7 +7,10 @@ import { buildOrder, describeOrderInquiry } from "./order";
 export function prepareOrderInquiry(raw: unknown) {
   const parsed = validateCheckout(raw);
   if (parsed.ok === false) return { ok: false as const, error: parsed.error };
-  const order = buildOrder(parsed.value.items, parsed.value.services);
+  const code = parsed.value.discountCode;
+  const discount = code ? verifyDiscountCode(code) : null;
+  if (code && !discount) return { ok: false as const, error: INVALID_DISCOUNT };
+  const order = buildOrder(parsed.value.items, parsed.value.services, null, discount);
   if (!order.products.length)
     return { ok: false as const, error: "Krepšelis tuščias." };
   const customer = parsed.value.customer;

@@ -1,13 +1,13 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { halloweenProducts } from "@/lib/data/halloweenProducts";
+import { decorations } from "@/lib/data/products";
 import { getSiteTheme } from "@/lib/themeStore";
 import ProductFeatureCard from "../shop/ProductFeatureCard";
 import SectionHeading from "../ui/SectionHeading";
 
 export default async function HalloweenProductsSection() {
   if (await getSiteTheme() !== "halloween") return null;
-  const featured = ["vorai", "moliugai", "vaiduokliai"].flatMap((category) => halloweenProducts.find((p) => p.decorationCategory === category) ?? []);
+  const featured = ["vorai", "moliugai", "vaiduokliai"].flatMap((category) => decorations.find((p) => p.decorationCategory === category) ?? []);
   if (!featured.length) return null;
   return (
     <section className="container-page py-16 sm:py-24">

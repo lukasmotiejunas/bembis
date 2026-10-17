@@ -18,7 +18,12 @@ import {
   Truck,
   Wrench,
 } from "lucide-react";
-import { sendOrderInquiry, startCheckout } from "@/app/checkout/actions";
+import {
+  checkDiscountCode,
+  sendOrderInquiry,
+  startCheckout,
+} from "@/app/checkout/actions";
+import { INVALID_DISCOUNT } from "@/lib/data/wheel";
 import { DeliveryMethod, deliveryOptions } from "@/lib/data/delivery";
 import { pricing } from "@/lib/data/pricing";
 import { formatMeters, formatPrice } from "@/lib/format";
@@ -102,11 +107,16 @@ export default function CheckoutView({
     setDelivery,
     updateQuantity,
     removeItem,
+    discount,
+    setDiscount,
   } = useCartStore();
   const [error, setError] = useState<string | null>(null);
   const [redirecting, setRedirecting] = useState(false);
   const [sent, setSent] = useState(false);
   const [pending, startTransition] = useTransition();
+  const [codeInput, setCodeInput] = useState("");
+  const [codeError, setCodeError] = useState<string | null>(null);
+  const [checkingCode, startCodeCheck] = useTransition();
   const busy = pending || redirecting;
   if (!hydrated)
     return (
@@ -120,7 +130,31 @@ export default function CheckoutView({
     delivery.method
       ? { method: delivery.method, parcelMachine: delivery.parcelMachine }
       : null,
+    discount,
   );
+  function applyCode() {
+    const code = codeInput.trim();
+    if (!code) return;
+    setCodeError(null);
+    startCodeCheck(async () => {
+      try {
+        const result = await checkDiscountCode(code);
+        if (result.ok) {
+          setDiscount({ code: result.code, percent: result.percent });
+          setCodeInput("");
+        } else setCodeError(result.error);
+      } catch {
+        setCodeError("Nepavyko patikrinti kodo. Bandykite dar kartą.");
+      }
+    });
+  }
+  // A code can expire between applying it and paying; the server says so and the code is removed.
+  const failed = (message: string) => {
+    if (message === INVALID_DISCOUNT) {
+      setDiscount(null);
+      setError(`${message} Pašalinome jį — patikrinkite sumą ir bandykite dar kartą.`);
+    } else setError(message);
+  };
   const choice: DeliveryChoice | null = order.serviceRequested
     ? "installation"
     : delivery.method;
@@ -212,9 +246,10 @@ export default function CheckoutView({
             services,
             customer,
             website,
+            discountCode: discount?.code ?? "",
           });
           if (result.ok) setSent(true);
-          else setError(result.error);
+          else failed(result.error);
         } else {
           const result = await startCheckout({
             items: selectedItems,
@@ -224,11 +259,12 @@ export default function CheckoutView({
               method: delivery.method,
               parcelMachineId: delivery.parcelMachine?.id ?? "",
             },
+            discountCode: discount?.code ?? "",
           });
           if ("url" in result) {
             setRedirecting(true);
             window.location.assign(result.url);
-          } else setError(result.error);
+          } else failed(result.error);
         }
       } catch {
         setError(`Nepavyko pateikti užsakymo. Paskambinkite ${site.phone}.`);
@@ -528,6 +564,14 @@ export default function CheckoutView({
                 </span>
               </li>
             ))}
+            {order.discount && (
+              <li className="flex justify-between gap-4 text-glow">
+                <span>Nuolaida (−{order.discount.percent}&nbsp;%)</span>
+                <span className="shrink-0 font-semibold">
+                  −{formatPrice(order.discountTotal)}
+                </span>
+              </li>
+            )}
           </ul>
           <div className="mt-4 flex justify-between gap-4 border-t border-snow/15 pt-4 text-sm">
             <span>
@@ -555,6 +599,64 @@ export default function CheckoutView({
                     </a>
                   )}
             </span>
+          </div>
+          <div className="mt-4 border-t border-snow/15 pt-4 text-sm">
+            {discount ? (
+              <div className="flex items-center justify-between gap-3 rounded-2xl bg-snow/10 px-4 py-3">
+                <span className="min-w-0">
+                  <span className="block text-snow/65">Pritaikytas nuolaidos kodas</span>
+                  <strong className="block truncate tracking-wide">{discount.code}</strong>
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setDiscount(null)}
+                  className="shrink-0 font-semibold text-snow/75 underline-offset-4 hover:text-snow hover:underline"
+                >
+                  Pašalinti
+                </button>
+              </div>
+            ) : (
+              <>
+                <label htmlFor="discount-code" className="mb-1.5 block text-snow/75">
+                  Nuolaidos kodas
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    id="discount-code"
+                    value={codeInput}
+                    onChange={(e) => setCodeInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      // Enter applies the code instead of submitting the whole order.
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        applyCode();
+                      }
+                    }}
+                    autoComplete="off"
+                    spellCheck={false}
+                    placeholder="RATAS5-…"
+                    className="field min-h-11 min-w-0 flex-1 uppercase placeholder:normal-case"
+                  />
+                  <button
+                    type="button"
+                    onClick={applyCode}
+                    disabled={!codeInput.trim() || checkingCode}
+                    className="btn btn-outline min-h-11 shrink-0 px-4 disabled:opacity-60"
+                  >
+                    {checkingCode ? (
+                      <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                    ) : (
+                      "Pritaikyti"
+                    )}
+                  </button>
+                </div>
+                {codeError && (
+                  <p role="alert" className="mt-2 font-semibold text-glow">
+                    {codeError}
+                  </p>
+                )}
+              </>
+            )}
           </div>
           <div className="mt-6 flex flex-wrap items-baseline justify-between gap-4 border-t border-dashed border-snow/20 pt-5">
             <span className="font-semibold">

@@ -8,9 +8,11 @@ import Footer from "@/components/Footer";
 import MobileContactBar from "@/components/MobileContactBar";
 import CartHydration from "@/components/CartHydration";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import LuckyWheel from "@/components/wheel/LuckyWheel";
 import { SiteThemeProvider } from "@/components/SiteTheme";
 import { site } from "@/lib/site";
 import { getSiteTheme } from "@/lib/themeStore";
+import { discountsEnabled } from "@/lib/discount";
 
 // Self-hosted as one file: Google's split version renders "ū" with the macron over the next letter
 // ("Jūs" looked like "Juš"). Fraunces (SIL OFL), Latin + Latin Extended-A, axes opsz/wght/SOFT.
@@ -74,6 +76,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <main>{children}</main>
           <Footer />
           <MobileContactBar />
+          <LuckyWheel enabled={discountsEnabled()} />
           <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} hostname={new URL(site.url).hostname} />
         </SiteThemeProvider>
       </body>

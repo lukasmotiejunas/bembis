@@ -42,6 +42,7 @@ export function sheetFieldsFromSession(session: Stripe.Checkout.Session): Record
     "Suma, €": (session.amount_total ?? 0) / 100,
     "Stripe ID": session.id,
     Pristatymas: deliveryText(m),
+    ...(m.discount_code ? { Nuolaida: `${m.discount_code} (−${m.discount_percent} %)` } : {}),
   };
 }
 

@@ -6,6 +6,13 @@ import {
   validateCheckout,
 } from "@/lib/orders/checkout";
 import { buildOrder } from "@/lib/orders/order";
+import {
+  createDiscountCode,
+  discountsEnabled,
+  INVALID_DISCOUNT,
+  spinWheelPrize,
+  verifyDiscountCode,
+} from "@/lib/discount";
 import { findParcelMachine } from "@/lib/omniva";
 import { site } from "@/lib/site";
 import { getStripe, paymentsConfigured } from "@/lib/stripe";
@@ -13,6 +20,33 @@ import { sendInquiry, SendInquiryResult } from "@/app/kontaktai/actions";
 import { prepareOrderInquiry } from "@/lib/orders/inquiry";
 
 export type StartCheckoutResult = { url: string } | { error: string };
+
+export type SpinResult =
+  | { ok: true; angle: number; percent: number; code: string; validUntil: string }
+  | { ok: false; error: string };
+
+/**
+ * One spin of the laimės ratas: the server picks where the wheel stops, so the prize can't be chosen in the browser.
+ * The once-a-day limit lives in the visitor's browser, as asked; the prizes are capped at 10 % anyway.
+ */
+export async function spinWheel(): Promise<SpinResult> {
+  if (!discountsEnabled())
+    return { ok: false, error: "Laimės ratas šiuo metu nesisuka. Bandykite vėliau." };
+  const { angle, percent } = spinWheelPrize();
+  const { code, validUntil } = createDiscountCode(percent);
+  return { ok: true, angle, percent, code, validUntil: validUntil.toISOString() };
+}
+
+export type DiscountCheck =
+  | { ok: true; code: string; percent: number }
+  | { ok: false; error: string };
+
+export async function checkDiscountCode(raw: unknown): Promise<DiscountCheck> {
+  const found = typeof raw === "string" ? verifyDiscountCode(raw.slice(0, 40)) : null;
+  return found
+    ? { ok: true, code: found.code, percent: found.percent }
+    : { ok: false, error: INVALID_DISCOUNT };
+}
 
 export async function sendOrderInquiry(
   raw: unknown,
@@ -45,7 +79,9 @@ export async function startCheckout(
     };
   }
 
-  const { items, services, delivery } = parsed.value;
+  const { items, services, delivery, discountCode } = parsed.value;
+  const discount = discountCode ? verifyDiscountCode(discountCode) : null;
+  if (discountCode && !discount) return { error: INVALID_DISCOUNT };
   if (!delivery) {
     return {
       error:
@@ -66,10 +102,12 @@ export async function startCheckout(
     if (!parcelMachine)
       return { error: "Pasirinkto paštomato neradome. Pasirinkite kitą." };
   }
-  const order = buildOrder(items, services, {
-    method: delivery.method,
-    parcelMachine,
-  });
+  const order = buildOrder(
+    items,
+    services,
+    { method: delivery.method, parcelMachine },
+    discount,
+  );
   if (order.products.length === 0) return { error: "Krepšelis tuščias." };
 
   const h = await headers();
