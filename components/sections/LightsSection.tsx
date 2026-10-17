@@ -81,10 +81,15 @@ export default async function LightsSection({
 }: {
   withHeading?: boolean;
 }) {
-  const t = copy[await getSiteTheme()];
+  const theme = await getSiteTheme();
+  const t = copy[theme];
+  // In the Halloween design the catalog opens with the decorations; our lights follow at the end.
+  const lightsLast = theme === "halloween";
   const shown = withHeading
     ? products.filter((p) => p.kind === "bundle" && p.sections === 6)
-    : products;
+    : lightsLast
+      ? [...products.filter((p) => p.kind === "decoration"), ...products.filter((p) => p.kind !== "decoration")]
+      : products;
   return (
     <section
       aria-label={withHeading ? "Girliandų komplektai" : "Visas prekių katalogas"}
@@ -107,7 +112,7 @@ export default async function LightsSection({
         <div className="grid gap-6 lg:grid-cols-2">
           {shown.map((p) => <ProductFeatureCard key={p.id} product={p} />)}
         </div>
-      ) : <ProductCatalog products={shown} />}
+      ) : <ProductCatalog products={shown} lightsLast={lightsLast} />}
       {withHeading && (
         <div className="mt-7 flex flex-wrap gap-3">
           <Link href="/kaledines-lemputes" className="btn btn-dark">

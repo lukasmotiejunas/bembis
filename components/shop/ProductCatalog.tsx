@@ -17,7 +17,8 @@ const categories: { id: Category; label: string }[] = [
 ];
 const fold = (value: string) => value.toLocaleLowerCase("lt").normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-export default function ProductCatalog({ products }: { products: Product[] }) {
+/** `lightsLast` moves the lights filter after the decoration categories, matching the product order. */
+export default function ProductCatalog({ products, lightsLast = false }: { products: Product[]; lightsLast?: boolean }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<Category>("all");
   const [sort, setSort] = useState("default");
@@ -26,6 +27,9 @@ export default function ProductCatalog({ products }: { products: Product[] }) {
     && fold(`${p.name} ${p.description}`).includes(fold(query.trim())));
   if (sort === "price-asc") shown.sort((a, b) => a.price - b.price);
   if (sort === "price-desc") shown.sort((a, b) => b.price - a.price);
+  const chips = lightsLast
+    ? [...categories.filter((c) => c.id !== "lights"), ...categories.filter((c) => c.id === "lights")]
+    : categories;
 
   return (
     <>
@@ -45,7 +49,7 @@ export default function ProductCatalog({ products }: { products: Product[] }) {
           </label>
         </div>
         <div className="flex flex-wrap gap-2" aria-label="Prekių kategorijos">
-          {categories.map(({ id, label }) => (
+          {chips.map(({ id, label }) => (
             <button key={id} type="button" aria-pressed={category === id} onClick={() => setCategory(id)}
               className={clsx("rounded-full border px-4 py-2 text-sm font-bold transition", category === id ? "border-pine-900 bg-pine-900 text-snow" : "border-sand bg-white text-pine-900 hover:border-pine-700")}>
               {label}
