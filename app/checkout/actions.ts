@@ -27,7 +27,7 @@ export type SpinResult =
 
 /**
  * One spin of the laimės ratas: the server picks where the wheel stops, so the prize can't be chosen in the browser.
- * The once-a-day limit lives in the visitor's browser, as asked; the prizes are capped at 10 % anyway.
+ * The once-a-week limit lives in the visitor's browser, as asked; the prizes are capped at 10 % anyway.
  */
 export async function spinWheel(): Promise<SpinResult> {
   if (!discountsEnabled())

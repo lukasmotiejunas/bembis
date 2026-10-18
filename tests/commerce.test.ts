@@ -1,8 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { halloweenProducts } from "../lib/data/halloweenProducts";
 import { products, getProduct, productHref } from "../lib/data/products";
 import { pricing } from "../lib/data/pricing";
 import { buildEstimate, EstimateChoice } from "../lib/data/priceExample";
@@ -158,7 +157,7 @@ const machine = {
 };
 
 test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąrašu", () => {
-  assert.equal(products.filter((p) => p.kind !== "decoration").length, 8);
+  assert.equal(products.length, 8);
   assert.equal(new Set(products.map(productHref)).size, products.length);
   for (const [id, meters, price] of expected) {
     const p = getProduct(id, "buy")!;
@@ -181,48 +180,16 @@ test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąr
     for (const d of schema.offers.shippingDetails)
       assert.equal(d.shippingDestination.addressCountry, "LT");
     assert.equal(getProduct(id, "rent"), undefined);
+    for (const photo of p.photos ?? []) assert.ok(existsSync(join(process.cwd(), "public", photo)), photo);
   }
 });
-test("Helovyno kainos sutampa su patvirtintu mūsų kaina stulpeliu; nuotraukos ir pristatymas paruošti", () => {
-  const source: { id: string; price: number }[] = JSON.parse(readFileSync(join(process.cwd(), "tests/fixtures/halloween-retail-prices.json"), "utf8"));
-  const expectedPrices = new Map(source.map((row) => [row.id, row.price]));
-  assert.equal(source.length, 60);
-  assert.ok(halloweenProducts.length > 0);
-  assert.equal(new Set(halloweenProducts.map((p) => p.id)).size, halloweenProducts.length);
-  for (const p of halloweenProducts) {
-    assert.equal(p.price, expectedPrices.get(p.id));
-    assert.equal(p.mode, "buy");
-    assert.equal(p.meters, 0);
-    assert.equal(p.deliveryDays, 4);
-    assert.equal(getProduct(p.id, "rent"), undefined);
-    assert.ok(productHref(p).startsWith("/helovyno-dekoracijos/"));
-    assert.ok(p.photos?.length);
-    for (const photo of p.photos!) assert.ok(existsSync(join(process.cwd(), "public", photo)), photo);
-    assert.equal(productSchema(p).offers.availability, "https://schema.org/PreOrder");
-    // The site sells at the list price plus 10 %.
-    const sold = getProduct(p.id, "buy")!;
-    assert.equal(sold.price, raised(p.price));
-    assert.equal(productSchema(sold).offers.price, raised(p.price).toFixed(2));
-  }
-});
-test("Dekoracijos ir lemputės apmokamos kartu teisingomis kainomis, be fiktyvių dekoracijų metrų", () => {
-  const decoration = halloweenProducts[0];
-  const mixed = { ...input, items: [...input.items, { productId: decoration.id, mode: "buy" as const, quantity: 3 }] };
-  const parsed = validateCheckout(mixed);
-  assert.equal(parsed.ok, true);
-  const order = buildOrder(mixed.items, mixed.services, { method: "courier" });
-  assert.equal(order.meters, 15);
-  assert.equal(order.deliveryDays, 4);
-  assert.equal(order.productsTotal, Math.round((raised(38.99) * 2 + raised(decoration.price) * 3) * 100) / 100);
-  assert.ok(order.products[1].detail?.includes("4 dienas"));
-  assert.ok(!order.products[1].detail?.includes("0 m"));
-  const session = buildSessionParams(mixed, order, "https://www.kaledudekoras.lt", "KD-TEST-DECOR");
-  assert.equal(session.metadata?.delivery_days, "4");
-  assert.ok(String(session.metadata?.product_ids_0).includes(`${decoration.id}:3`));
-  assert.equal(session.line_items?.[1].price_data?.unit_amount, Math.round(raised(decoration.price) * 100));
-  assert.equal(session.line_items?.[1].price_data?.product_data?.metadata?.product_id, decoration.id);
-  const submit = session.custom_text?.submit;
-  assert.match(submit && typeof submit === "object" ? String(submit.message) : "", /Pristatymas per 4 dienas/);
+test("Stripe sesijoje išsaugomi prekių kodai ir kiekiai", () => {
+  const items = [...input.items, { productId: "63110", mode: "buy" as const, quantity: 3 }];
+  const order = buildOrder(items, input.services, { method: "courier" });
+  const session = buildSessionParams({ ...input, items }, order, "https://www.kaledudekoras.lt", "KD-TEST-IDS");
+  assert.equal(session.metadata?.product_ids_0, "61030:2,63110:3");
+  assert.equal(session.line_items?.[1].price_data?.product_data?.metadata?.product_id, "63110");
+  assert.equal(session.line_items?.[1].price_data?.unit_amount, Math.round(raised(17.99) * 100));
 });
 test("Komplektų kainų formulės perskaičiuotos nepriklausomai", () => {
   assert.equal(Math.round((38.99 + 31.99 * 5) * 0.85) - 0.01, 168.99);
@@ -659,14 +626,13 @@ test("Nuolaidos kodas: pasirašytas, galioja 7 dienas, negalima pakeisti procent
 });
 
 test("Nuolaida taikoma tik prekėms nuo dabartinių kainų, o Stripe suma sutampa su užsakymo suma", () => {
-  const decoration = halloweenProducts[0];
-  const items = [...input.items, { productId: decoration.id, mode: "buy" as const, quantity: 3 }];
+  const items = [...input.items, { productId: "63110", mode: "buy" as const, quantity: 3 }];
   const discount = { code: "RATAS7-TEST00-TEST00", percent: 7 };
   const full = buildOrder(items, services, { method: "courier" });
   const order = buildOrder(items, services, { method: "courier" }, discount);
   const unitDiscount = (price: number) => Math.round(price * 100) - Math.round((Math.round(price * 100) * 93) / 100);
   assert.equal(order.productsTotal, full.productsTotal);
-  assert.equal(order.discountTotal, (unitDiscount(raised(38.99)) * 2 + unitDiscount(raised(decoration.price)) * 3) / 100);
+  assert.equal(order.discountTotal, (unitDiscount(raised(38.99)) * 2 + unitDiscount(raised(17.99)) * 3) / 100);
   assert.equal(order.total, Math.round((full.total - order.discountTotal) * 100) / 100);
   assert.equal(order.extras[0].paidUnitPrice, pricing.delivery.courier);
 

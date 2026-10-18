@@ -30,34 +30,15 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 - `/` — pradžia
 - `/montavimas` — kalėdinių lempučių montavimas ir nuėmimas
 - `/nuoma` — kalėdinių lempučių nuoma
-- `/kaledines-lemputes` — bendras katalogas: 8 lauko LED girliandų prekės ir 60 Helovyno dekoracijų viename sąraše
+- `/kaledines-lemputes` — katalogas: 8 XP ir LLinks lauko LED girliandų prekės
 - `/kaledines-lemputes/[slug]` — lemputės puslapis
-- `/helovyno-dekoracijos` — nukreipia į bendrą parduotuvės katalogą
-- `/helovyno-dekoracijos/[slug]` — dekoracijos nuotraukos, kaina ir pristatymas per 4 dienas visoje Lietuvoje
 - `/checkout` — užsakymas: prekės, paslaugos (montavimas ir nuėmimas atskirai), kontaktai, apmokėjimas
 - `/checkout/success` — užsakymas apmokėtas
 - `/kontaktai` — kontaktai ir užklausos forma (užklausa ateina el. paštu ir įrašoma į Google Sheets)
 - `/admin` — administravimas: svetainės dizainas (Kalėdinis arba Helovynas). Paieškos sistemoms nerodomas.
 
-Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus.
-
-## Helovyno prekių importas
-
-Katalogas laikomas `lib/data/halloweenProducts.ts`, originalios tiekėjų nuotraukos — `public/products/halloween/`.
-Pardavimo kainos paimtos iš lentelės „pirmi 60“ paskutinio stulpelio „mūsų kaina“; tiekėjo savikainos kataloge neviešinamos.
-Importuotos visos 60 prekių su originaliomis tiekėjų nuotraukomis ir lietuviškais aprašymais.
-Jos pateikiamos po 8 lauko LED girliandų prekėmis tame pačiame `/kaledines-lemputes` kataloge.
-Bendro katalogo paieška, kategorijos ir kainų rūšiavimas — `components/shop/ProductCatalog.tsx`;
-pradiniame vaizde rodomos visos 68 prekės.
-Tiekėjo nurodomų matmenų neatitikimų atvejais dydis prekės pavadinime praleistas.
-
-Privatus vietinis `.data/halloween-import/fulfilment-map.json` susieja svetainės prekių kodus su tiekėjo nuorodomis
-ir lentelės eilutėmis. Stripe mokėjimo metaduomenyse išsaugomi prekių kodai ir kiekiai; naujoms prekėms naudojamas
-tas pats serverio perskaičiuojamų kainų apmokėjimas. Papildomų Stripe produktų kurti nereikia.
-
-Pakartotiniam importui `scripts/import-halloween-products.py` priima patikrintų prekių JSON su vietiniais
-originalių nuotraukų failais. Jam reikalingas Python su Pillow. Prieš skelbiant būtina palyginti kainas su pradiniu
-lapu, patikrinti produktų nuotraukas ir paleisti prekybos testus, lint bei gamybinį build.
+Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus. Helovyno dekoracijos
+nebeparduodamos (2026-10-18): `/helovyno-dekoracijos` ir jų puslapiai laikinai nukreipiami į `/kaledines-lemputes`.
 
 ## Administravimas: Kalėdinis arba Helovyno dizainas
 
@@ -83,9 +64,9 @@ Jei pasirinkimo nepavyksta perskaityti, svetainė rodoma kalėdiniu dizainu.
 
 ## Laimės ratas
 
-Pirmą kartą per dieną atėjus į svetainę, po sekundės parodomas laimės ratas (išskyrus apmokėjimo ir
-administravimo puslapius). Kad jau sukta ar atsisakyta šiandien, įsimenama naršyklės `localStorage`
-(`laimes-ratas`), todėl kitą dieną ratas rodomas vėl.
+Atėjus į svetainę, po sekundės parodomas laimės ratas (išskyrus apmokėjimo ir administravimo puslapius).
+Kol lankytojas jo nesuko, ratas rodomas po kiekvieno puslapio perkrovimo. Pasukus sukimo diena ir laimėtas kodas
+įsimenami naršyklės `localStorage` (`laimes-ratas`), o ratas vėl rodomas po savaitės (sukta 18 d. — vėl 25 d.).
 
 - **Visi prizai tikri.** Prizai ir tikimybės — `lib/data/wheel.ts`: −3 % (45 %), −5 % (30 %), −7 % (17 %),
   −10 % (8 %). Kiekvieno prizo plotas rate lygus jo tikimybei, o kur ratas sustos, parenka serveris
@@ -97,7 +78,7 @@ administravimo puslapius). Kad jau sukta ar atsisakyta šiandien, įsimenama nar
   kartą apmokant. Stripe nuolaida įskaičiuojama į prekių kainas, o kodas įrašomas į užsakymą, Google Sheets
   stulpelį „Nuolaida“ ir pranešimo laišką.
 - Kodai veikia, kai nustatytas `STRIPE_SECRET_KEY` arba `DISCOUNT_CODE_SECRET`; be jų ratas nerodomas.
-- Vienas sukimas per dieną ribojamas naršyklėje, todėl išvalius naršyklės duomenis galima sukti dar kartą.
+- Vienas sukimas per savaitę ribojamas naršyklėje, todėl išvalius naršyklės duomenis galima sukti dar kartą.
   Prizai nedideli, todėl tai priimtina.
 
 ## SEO

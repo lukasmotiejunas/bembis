@@ -9,22 +9,28 @@ import { useCartStore } from "@/lib/store/cartStore";
 import type { SiteTheme } from "@/lib/theme";
 import { useSiteTheme } from "../SiteTheme";
 
-// Shown once a day (in this browser) on the first page visited; never during checkout or in the admin.
+// Shown on every page load until this browser spins it, then not again for a week.
+// Never during checkout or in the admin.
 const STORAGE_KEY = "laimes-ratas";
+const SPIN_EVERY_DAYS = 7;
 const HIDDEN_ON = ["/checkout", "/admin", "/mokejimo-patikra"];
 const SPIN_MS = 5600;
 
 const today = () => new Date().toLocaleDateString("en-CA"); // YYYY-MM-DD, visitor's time zone
-function seenToday() {
+/** Spun within the last week: a spin on the 18th shows the wheel again on the 25th. */
+function spunRecently() {
   try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}").day === today();
+    const { day, code } = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "{}");
+    // Records without a code are from closing the wheel unspun, which no longer counts.
+    if (!code || typeof day !== "string") return false;
+    return (Date.parse(today()) - Date.parse(day)) / 86_400_000 < SPIN_EVERY_DAYS;
   } catch {
     return false;
   }
 }
-function remember(record: Record<string, unknown>) {
+function rememberSpin(win: Win) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ day: today(), ...record }));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ day: today(), ...win }));
   } catch {
     // Private mode or blocked storage: the wheel may simply show again.
   }
@@ -63,7 +69,7 @@ const themes: Record<
       10: { fill: "#f4b03e", text: "#7a1020" },
     },
     confetti: ["#ffe08a", "#ffffff", "#f4b03e", "#3fa36b", "#ff6b6b"],
-    chip: "Kasdienė dovana",
+    chip: "Savaitės dovana",
     title: "Sukite laimės ratą!",
     subtitle: `Laimėkite iki ${maxWheelPercent} % nuolaidą prekėms`,
   },
@@ -132,10 +138,9 @@ export default function LuckyWheel({ enabled }: { enabled: boolean }) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (!enabled || shown.current || HIDDEN_ON.some((p) => pathname.startsWith(p)) || seenToday()) return;
+    if (!enabled || shown.current || HIDDEN_ON.some((p) => pathname.startsWith(p)) || spunRecently()) return;
     const timer = setTimeout(() => {
       shown.current = true;
-      remember({});
       setOpen(true);
     }, 1200);
     return () => clearTimeout(timer);
@@ -164,7 +169,7 @@ export default function LuckyWheel({ enabled }: { enabled: boolean }) {
       }
       // The prize is decided on the server; apply it at once so closing early loses nothing.
       setDiscount({ code: result.code, percent: result.percent });
-      remember({ code: result.code, percent: result.percent, validUntil: result.validUntil });
+      rememberSpin({ code: result.code, percent: result.percent, validUntil: result.validUntil });
       setWin(result);
       // Turn clockwise so the server's stopping point ends under the pointer at the top.
       setRotation(7 * 360 + (360 - result.angle));

@@ -154,7 +154,7 @@ export function productSchema(product: Product) {
       ? { image: product.photos.map((p) => absoluteUrl(p)) }
       : {}),
     ...(product.kind !== "bundle" ? { sku: product.id } : {}),
-    ...(product.color ? { color: product.color } : {}),
+    color: product.color,
     additionalProperty: product.specs.map((s) => ({
       "@type": "PropertyValue",
       name: s.label,
@@ -165,7 +165,7 @@ export function productSchema(product: Product) {
       url: absoluteUrl(productHref(product)),
       price: product.price.toFixed(2),
       priceCurrency: "EUR",
-      availability: product.kind === "decoration" ? "https://schema.org/PreOrder" : "https://schema.org/InStock",
+      availability: "https://schema.org/InStock",
       seller: { "@id": BUSINESS_ID },
       hasMerchantReturnPolicy: merchantReturnPolicy,
       shippingDetails,
@@ -173,19 +173,15 @@ export function productSchema(product: Product) {
   };
 }
 
-export function catalogSchema(
-  items = products,
-  path = "/kaledines-lemputes",
-  name = "Lauko LED girliandos, komplektai ir Helovyno dekoracijos",
-) {
+export function catalogSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name,
-    url: absoluteUrl(path),
+    name: "XP ir LLinks lauko LED girliandos ir komplektai",
+    url: absoluteUrl("/kaledines-lemputes"),
     mainEntity: {
       "@type": "ItemList",
-      itemListElement: items.map((product, index) => ({
+      itemListElement: products.map((product, index) => ({
         "@type": "ListItem",
         position: index + 1,
         name: product.name,

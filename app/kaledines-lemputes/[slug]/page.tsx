@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { ArrowRight, Check, ChevronRight, MoonStar, Wrench } from "lucide-react";
 import {
   getProductBySlug,
@@ -24,7 +24,7 @@ import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
 import { getSiteTheme } from "@/lib/themeStore";
 
 export function generateStaticParams() {
-  return products.filter((p) => p.kind !== "decoration").map((p) => ({ slug: p.slug }));
+  return products.map((p) => ({ slug: p.slug }));
 }
 export async function generateMetadata(
   props: PageProps<"/kaledines-lemputes/[slug]">,
@@ -44,7 +44,6 @@ export default async function ProductPage(
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) notFound();
-  if (product.series === "halloween") redirect(productHref(product));
   const halloween = (await getSiteTheme()) === "halloween";
   const related = products
     .filter(

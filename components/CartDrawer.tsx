@@ -14,7 +14,6 @@ export default function CartDrawer() {
     useCartStore();
   const lines = resolveLines(items);
   const { total } = cartTotals(lines);
-  const deliveryDays = Math.max(0, ...lines.map((line) => line.product.deliveryDays ?? 0));
   const theme = useSiteTheme();
 
   useEffect(() => {
@@ -71,7 +70,7 @@ export default function CartDrawer() {
             </p>
             <p className="text-stone">
               {theme === "halloween"
-                ? "Tuščias kaip apleista pilis. Išsirinkite Helovyno dekoracijas arba lemputes savo namams."
+                ? "Tuščias kaip apleista pilis. Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui."
                 : "Išsirinkite lemputes — galite jas pirkti arba išsinuomoti sezonui."}
             </p>
             <div className="mt-2 flex gap-3">
@@ -184,8 +183,8 @@ export default function CartDrawer() {
                 </p>
               )}
               <p className="mt-2 text-sm text-stone">
-                {deliveryDays > 0 && `Pristatymas per ${deliveryDays} dienas. `}Pristatymą pasirinksite kitame žingsnyje: {deliveryPricesText}.
-                Užsakius montavimą, prekes atvešime nemokamai.
+                Pristatymą pasirinksite kitame žingsnyje: {deliveryPricesText}.
+                Užsakius montavimą, lemputes atvešime nemokamai.
               </p>
               <Link
                 href="/checkout"

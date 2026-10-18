@@ -4,7 +4,6 @@ import { ShieldCheck, Layers, Lightbulb, MoonStar } from "lucide-react";
 import { products } from "@/lib/data/products";
 import { getSiteTheme } from "@/lib/themeStore";
 import ProductFeatureCard from "../shop/ProductFeatureCard";
-import ProductCatalog from "../shop/ProductCatalog";
 import SectionHeading from "../ui/SectionHeading";
 
 export const qualityPoints = [
@@ -81,18 +80,12 @@ export default async function LightsSection({
 }: {
   withHeading?: boolean;
 }) {
-  const theme = await getSiteTheme();
-  const t = copy[theme];
-  // In the Halloween design the catalog opens with the decorations; our lights follow at the end.
-  const lightsLast = theme === "halloween";
+  const t = copy[await getSiteTheme()];
   const shown = withHeading
     ? products.filter((p) => p.kind === "bundle" && p.sections === 6)
-    : lightsLast
-      ? [...products.filter((p) => p.kind === "decoration"), ...products.filter((p) => p.kind !== "decoration")]
-      : products;
+    : products;
   return (
     <section
-      aria-label={withHeading ? "Girliandų komplektai" : "Visas prekių katalogas"}
       className={
         withHeading
           ? "container-page py-20 sm:py-28"
@@ -108,11 +101,11 @@ export default async function LightsSection({
           />
         </div>
       )}
-      {withHeading ? (
-        <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-5 xl:gap-4">
-          {shown.map((p) => <ProductFeatureCard key={p.id} product={p} />)}
-        </div>
-      ) : <ProductCatalog products={shown} lightsLast={lightsLast} />}
+      <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-5 xl:gap-4">
+        {shown.map((p) => (
+          <ProductFeatureCard key={p.id} product={p} />
+        ))}
+      </div>
       {withHeading && (
         <div className="mt-7 flex flex-wrap gap-3">
           <Link href="/kaledines-lemputes" className="btn btn-dark">

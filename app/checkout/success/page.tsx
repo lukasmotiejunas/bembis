@@ -93,7 +93,6 @@ function Paid({ session }: { session: Stripe.Checkout.Session }) {
               </p>
             )
           )}
-          {m.delivery_days === "4" && <p className="mt-4 font-semibold text-pine-700">Pristatymas per 4 dienas.</p>}
         </div>
 
         <div className="rounded-[2rem] bg-cream p-6 sm:p-8">

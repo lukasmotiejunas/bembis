@@ -23,6 +23,9 @@ const nextConfig: NextConfig = {
         destination: "/kaledines-lemputes",
         permanent: true,
       },
+      // Helovyno dekoracijos nebeparduodamos (2026-10-18). Laikinas nukreipimas, nes kitą sezoną jos gali grįžti.
+      { source: "/helovyno-dekoracijos", destination: "/kaledines-lemputes", permanent: false },
+      { source: "/helovyno-dekoracijos/:slug", destination: "/kaledines-lemputes", permanent: false },
     ];
   },
 };

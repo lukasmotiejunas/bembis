@@ -39,7 +39,6 @@ yarn-error.log*
 
 # site design chosen in /admin when running locally (lib/themeStore.ts)
 /.data/
-/output/halloween-import/
 
 # typescript
 *.tsbuildinfo

@@ -1,14 +1,12 @@
 import { LightSeries, Product, ProductKind, PurchaseMode } from "../types";
 import { formatMeters } from "../format";
-import { halloweenProducts } from "./halloweenProducts";
 
 export const guarantee = { years: 2, label: "2 metų garantija" };
 /** Vartotojo patvirtinta: pirktas prekes galima grąžinti per 14 d., grąžinimo išlaidas apmoka pirkėjas. */
 export const returnPolicy = { days: 14 };
-export const seriesNames: Record<Product["series"], string> = {
+export const seriesNames: Record<LightSeries, string> = {
   xp: "XP",
   llinks: "LLinks",
-  halloween: "Helovyno dekoracijos",
 };
 
 function light(
@@ -82,8 +80,8 @@ function light(
 }
 
 /**
- * Visos prekių kainos pakeltos 10 % (2026-10-17). Sąraše žemiau ir halloweenProducts.ts lieka kainos iki
- * pakėlimo; svetainėje, krepšelyje ir apmokant naudojamos pakeltos. Grąžinti senas kainas — nustatykite 0.
+ * Visos prekių kainos pakeltos 10 % (2026-10-17). Sąraše žemiau lieka kainos iki pakėlimo;
+ * svetainėje, krepšelyje ir apmokant naudojamos pakeltos. Grąžinti senas kainas — nustatykite 0.
  */
 export const PRICE_INCREASE_PERCENT = 10;
 /** Price after the increase, rounded to the cent. */
@@ -120,14 +118,11 @@ const catalog: Product[] = [
   light("xp", "bundle", 8, 120.99, "xp-60", [
     "/products/xp-komplektas-60.png",
   ]),
-  ...halloweenProducts,
 ];
 export const products: Product[] = catalog.map((p) => ({
   ...p,
   price: withPriceIncrease(p.price),
 }));
-/** Helovyno dekoracijos su pakeltomis kainomis — rodymui naudokite šį sąrašą, ne halloweenProducts. */
-export const decorations = products.filter((p) => p.kind === "decoration");
 export const getProductBySlug = (slug: string) =>
   products.find((p) => p.slug === slug);
 export function getProduct(id: string, mode?: PurchaseMode) {
@@ -140,4 +135,4 @@ export function productFor(mode: PurchaseMode) {
   return p;
 }
 export const productHref = (product: Product) =>
-  `${product.kind === "decoration" ? "/helovyno-dekoracijos" : "/kaledines-lemputes"}/${product.slug}`;
+  `/kaledines-lemputes/${product.slug}`;

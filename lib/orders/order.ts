@@ -51,7 +51,6 @@ export function buildOrder(
 ) {
   const products: OrderLine[] = [];
   let meters = 0;
-  let deliveryDays = 0;
   let discountCents = 0;
   for (const item of items) {
     const product = getProduct(item.productId, item.mode);
@@ -66,15 +65,12 @@ export function buildOrder(
     const paidCents = discount ? Math.round((unitCents * (100 - discount.percent)) / 100) : unitCents;
     discountCents += (unitCents - paidCents) * item.quantity;
     meters += product.meters * item.quantity;
-    deliveryDays = Math.max(deliveryDays, product.deliveryDays ?? 0);
     products.push({
       key: `${product.id}-${item.mode}`,
       kind: "product",
       productId: product.id,
       name: product.name,
-      detail: product.kind === "decoration"
-        ? `Helovyno dekoracija · pristatymas per ${product.deliveryDays} dienas`
-        : `${formatMeters(product.meters)} · ${product.kind === "bundle" ? "visas komplektas" : "viena sekcija"}`,
+      detail: `${formatMeters(product.meters)} · ${product.kind === "bundle" ? "visas komplektas" : "viena sekcija"}`,
       image: product.image,
       mode: item.mode,
       unitPrice: unitCents / 100,
@@ -109,7 +105,6 @@ export function buildOrder(
     products,
     extras,
     meters: money(meters),
-    deliveryDays,
     installationEstimate: money(meters * pricing.installPerMeter),
     serviceRequested,
     requiresQuote,
@@ -148,9 +143,7 @@ export function describeOrderInquiry(order: Order) {
     order.discount &&
       `${describeDiscount(order)}. Suma su nuolaida: ${formatPrice(order.productsTotal - order.discountTotal)}.`,
     order.serviceRequested
-      ? order.meters > 0
-        ? `Domina ir montavimas bei nuėmimas po sezono, lemputes atvešite montavimo metu. Pagal prekių ilgį (${formatMeters(order.meters)}) standartinis darbų įvertis yra ${formatPrice(order.installationEstimate)}. Prašau galutinio pasiūlymo mano objektui.`
-        : "Domina dekoracijų montavimas. Prašau suderinti galutinę darbų kainą ir laiką mano objektui."
+      ? `Domina ir montavimas bei nuėmimas po sezono, lemputes atvešite montavimo metu. Pagal prekių ilgį (${formatMeters(order.meters)}) standartinis darbų įvertis yra ${formatPrice(order.installationEstimate)}. Prašau galutinio pasiūlymo mano objektui.`
       : "Prašau suderinti galutinį užsakymo pasiūlymą.",
   ]
     .filter(Boolean)

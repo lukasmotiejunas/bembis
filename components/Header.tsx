@@ -10,7 +10,7 @@ import Logo from "./Logo";
 import CartDrawer from "./CartDrawer";
 import { useSiteTheme } from "./SiteTheme";
 
-const baseNav = [
+const nav = [
   { href: "/montavimas", label: "Montavimas" },
   { href: "/kiek-kainuoja", label: "Kiek kainuoja" },
   { href: "/kaledines-lemputes", label: "Parduotuvė" },
@@ -20,7 +20,6 @@ const baseNav = [
 export default function Header() {
   const pathname = usePathname();
   const theme = useSiteTheme();
-  const nav = baseNav;
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const items = useCartStore((s) => s.items);
@@ -34,8 +33,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
-    || (href === "/kaledines-lemputes" && pathname.startsWith("/helovyno-dekoracijos/"));
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <>

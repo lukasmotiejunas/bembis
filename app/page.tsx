@@ -5,7 +5,6 @@ import Showcase from "@/components/sections/Showcase";
 import LightsSection from "@/components/sections/LightsSection";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
-import HalloweenProductsSection from "@/components/sections/HalloweenProductsSection";
 import JsonLd from "@/components/JsonLd";
 import { businessSchema, pageMetadata, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -33,7 +32,6 @@ export default function HomePage() {
     <>
       <JsonLd data={[businessSchema(), websiteSchema()]} />
       <Hero />
-      <HalloweenProductsSection />
       <Offers />
       <SeasonSteps />
       <Showcase />
