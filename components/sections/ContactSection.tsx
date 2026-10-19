@@ -1,7 +1,8 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { emailHref, phoneHref, site } from "@/lib/site";
+import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
 import { getSiteTheme } from "@/lib/themeStore";
 import InquiryForm from "../InquiryForm";
+import SocialIcon from "../SocialIcon";
 import SectionHeading from "../ui/SectionHeading";
 
 const copy = {
@@ -81,6 +82,27 @@ export default async function ContactSection({
                 <p className="font-bold text-pine-900">{site.serviceArea}</p>
               </div>
             </div>
+            {activeSocials.length > 0 && (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {activeSocials.map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 rounded-3xl bg-white p-5 transition-colors hover:bg-snow"
+                  >
+                    <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-glow-soft text-glow-deep">
+                      <SocialIcon name={s.label} className="size-6" />
+                    </span>
+                    <span>
+                      <span className="block text-sm text-stone">Sekite mus</span>
+                      <span className="text-lg font-bold text-pine-900">{s.label}</span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

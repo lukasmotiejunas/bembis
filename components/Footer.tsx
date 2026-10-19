@@ -5,6 +5,7 @@ import { productFor, productHref } from "@/lib/data/products";
 import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
 import { getSiteTheme } from "@/lib/themeStore";
 import Logo from "./Logo";
+import SocialIcon from "./SocialIcon";
 import Graveyard from "./halloween/Graveyard";
 import { AnalyticsPreferencesButton } from "./GoogleAnalytics";
 
@@ -91,8 +92,9 @@ export default async function Footer() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-full border border-snow/20 px-4 py-2 text-sm font-semibold hover:border-glow hover:text-glow"
+                  className="inline-flex items-center gap-2 rounded-full border border-snow/20 px-4 py-2 text-sm font-semibold hover:border-glow hover:text-glow"
                 >
+                  <SocialIcon name={s.label} className="size-4" />
                   {s.label}
                 </a>
               ))}

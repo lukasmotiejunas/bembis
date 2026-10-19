@@ -10,10 +10,10 @@ export const site = {
   serviceArea: "Vilnius ir Vilniaus apskritis",
   /** Miestai, kuriuose dirbame — rodomi puslapiuose ir padeda Google rasti mus vietinėse paieškose */
   serviceTowns: ["Vilnius", "Vilniaus rajonas", "Trakai", "Lentvaris", "Elektrėnai", "Vievis", "Nemenčinė", "Šalčininkai", "Širvintos", "Ukmergė", "Švenčionys", "Pabradė"],
-  // Įrašykite pilną nuorodą, kad ji atsirastų puslapio apačioje.
+  // Rodomi kontaktų bloke ir puslapio apačioje; tuščia nuoroda paslepia tinklą.
   socials: [
-    { label: "Facebook", href: "" },
-    { label: "Instagram", href: "" },
+    { label: "Instagram", href: "https://www.instagram.com/kaledudekoras/" },
+    { label: "Facebook", href: "https://www.facebook.com/KaleduDekoras" },
   ],
 };
 
