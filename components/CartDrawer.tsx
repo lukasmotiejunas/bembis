@@ -116,6 +116,7 @@ export default function CartDrawer() {
                         <p className="mt-0.5 text-sm text-stone">
                           {modeLabel[line.mode]} · {formatPrice(line.unitPrice)}
                         </p>
+                        {line.product.deliveryBusinessDays && <p className="mt-1 text-sm text-stone">Pristatymas per {line.product.deliveryBusinessDays} darbo dienas</p>}
                       </div>
                       <button
                         type="button"

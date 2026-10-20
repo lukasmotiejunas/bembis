@@ -35,7 +35,9 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
           )}
         />
         <span className="absolute top-5 left-5 rounded-full bg-pine-900 px-3 py-1 text-xs font-extrabold text-snow xl:top-3 xl:left-3 xl:px-2.5 xl:py-0.5 xl:text-[0.65rem]">
-          {product.kind === "bundle"
+          {product.kind === "decoration"
+            ? "Kalėdinė prekė"
+            : product.kind === "bundle"
             ? "Komplektas"
             : product.kind === "starter"
               ? "Motininė girlianda"
@@ -49,7 +51,9 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
       </Link>
       <div className="flex flex-1 flex-col border-t border-sand p-7 sm:p-9 xl:p-4">
         <p className="text-sm text-stone xl:text-xs">
-          {product.color} · {formatMeters(product.meters)}
+          {product.kind === "decoration"
+            ? `Pristatymas per ${product.deliveryBusinessDays} darbo dienas`
+            : `${product.color} · ${formatMeters(product.meters)}`}
         </p>
         <h3 className="mt-1 text-2xl font-semibold text-pine-900 sm:text-3xl xl:line-clamp-3 xl:text-base xl:leading-snug">
           <Link href={productHref(product)} className="hover:text-pine-700">
@@ -73,7 +77,7 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
               {formatPrice(product.price)}
             </span>
             <span className="ml-1 block text-sm text-stone xl:ml-0 xl:text-xs">
-              {product.kind === "bundle" ? "už visą komplektą" : "už vieną sekciją"}
+              {product.kind === "decoration" ? "už prekę arba nurodytą rinkinį" : product.kind === "bundle" ? "už visą komplektą" : "už vieną sekciją"}
             </span>
           </p>
           <div className="flex flex-wrap gap-2 xl:w-full">

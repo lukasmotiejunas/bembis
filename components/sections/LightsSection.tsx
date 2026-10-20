@@ -4,6 +4,7 @@ import { ShieldCheck, Layers, Lightbulb, MoonStar } from "lucide-react";
 import { products } from "@/lib/data/products";
 import { getSiteTheme } from "@/lib/themeStore";
 import ProductFeatureCard from "../shop/ProductFeatureCard";
+import ProductCatalog from "../shop/ProductCatalog";
 import SectionHeading from "../ui/SectionHeading";
 
 export const qualityPoints = [
@@ -101,11 +102,11 @@ export default async function LightsSection({
           />
         </div>
       )}
-      <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-5 xl:gap-4">
+      {!withHeading ? <ProductCatalog products={shown} /> : <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-5 xl:gap-4">
         {shown.map((p) => (
           <ProductFeatureCard key={p.id} product={p} />
         ))}
-      </div>
+      </div>}
       {withHeading && (
         <div className="mt-7 flex flex-wrap gap-3">
           <Link href="/kaledines-lemputes" className="btn btn-dark">

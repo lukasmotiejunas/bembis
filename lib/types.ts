@@ -1,6 +1,6 @@
 export type PurchaseMode = "buy" | "rent";
 export type LightSeries = "xp" | "llinks";
-export type ProductKind = "starter" | "extension" | "bundle";
+export type ProductKind = "starter" | "extension" | "bundle" | "decoration";
 
 export interface Product {
   id: string;
@@ -8,7 +8,7 @@ export interface Product {
   name: string;
   /** Ar ši lemputė parduodama, ar nuomojama */
   mode: PurchaseMode;
-  series: LightSeries;
+  series: LightSeries | "christmas";
   kind: ProductKind;
   sections: number;
   /** Pirkimo kaina arba nuomos kaina visam sezonui, € */
@@ -25,6 +25,9 @@ export interface Product {
   /** Pavadinimas ir aprašymas Google paieškos rezultatuose */
   seoTitle: string;
   seoDescription: string;
+  category?: "folklore" | "advent" | "decorations" | "gifts";
+  /** Užsakomų prekių pristatymo terminas darbo dienomis. */
+  deliveryBusinessDays?: number;
 }
 
 export interface CartItem {

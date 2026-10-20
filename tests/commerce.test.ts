@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { products, getProduct, productHref } from "../lib/data/products";
 import { pricing } from "../lib/data/pricing";
@@ -157,7 +157,7 @@ const machine = {
 };
 
 test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąrašu", () => {
-  assert.equal(products.length, 8);
+  assert.equal(products.filter((p) => p.kind !== "decoration").length, 8);
   assert.equal(new Set(products.map(productHref)).size, products.length);
   for (const [id, meters, price] of expected) {
     const p = getProduct(id, "buy")!;
@@ -666,4 +666,34 @@ test("Nuolaidos kodas tikrinamas užklausoje ir įrašomas apmokėto užsakymo l
     metadata: { order_number: "TEST-DISCOUNT", discount_code: "RATAS7-TEST00-TEST00", discount_percent: "7" },
   } as unknown as Stripe.Checkout.Session);
   assert.equal(fields.Nuolaida, "RATAS7-TEST00-TEST00 (−7 %)");
+});
+
+
+test("Visos 128 kalėdinės prekės naudoja šaltinio kainą su vienu 10 % priedu ir turi nuotrauką", () => {
+  const expected = JSON.parse(readFileSync(join(process.cwd(), "tests/fixtures/christmas-retail-prices.json"), "utf8")) as { id: string; basePrice: number; price: number }[];
+  assert.equal(expected.length, 128);
+  assert.equal(products.filter(p => p.kind === "decoration").length, 128);
+  for (const row of expected) {
+    const p = getProduct(row.id, "buy")!;
+    assert.ok(p, row.id);
+    assert.equal(p.price, row.price, row.id);
+    assert.equal(Math.round(p.price * 100), Math.round(Math.round(row.basePrice * 100) * 1.1), row.id);
+    assert.equal(p.deliveryBusinessDays, 4);
+    assert.equal(getProduct(row.id, "rent"), undefined);
+    assert.equal(p.meters, 0);
+    assert.ok(existsSync(join(process.cwd(), "public", p.image)), p.image);
+    assert.equal(productSchema(p).offers.availability, "https://schema.org/PreOrder");
+  }
+});
+
+test("Mišriame krepšelyje dekoracijų kainos ir rato nuolaida sutampa su Stripe centais", () => {
+  const decoration = products.find(p => p.kind === "decoration")!;
+  const items = [...input.items, { productId: decoration.id, mode: "buy" as const, quantity: 3 }];
+  const order = buildOrder(items, input.services, { method: "courier" }, { code: "TEST", percent: 10 });
+  const session = buildSessionParams({ ...input, items }, order, "https://www.kaledudekoras.lt", "TEST-CHRISTMAS");
+  const line = order.products.find(p => p.productId === decoration.id)!;
+  assert.match(line.detail!, /4 darbo dienas/);
+  const charged = session.line_items!.reduce((total, row) => total + row.price_data!.unit_amount! * row.quantity!, 0);
+  assert.equal(charged, Math.round(order.total * 100));
+  assert.equal(line.paidUnitPrice, Math.round(Math.round(decoration.price * 100) * .9) / 100);
 });

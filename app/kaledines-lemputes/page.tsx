@@ -11,12 +11,12 @@ import { getSiteTheme } from "@/lib/themeStore";
 
 const meta = {
   christmas: {
-    title: "XP ir LLinks lauko LED girliandos ir komplektai",
+    title: "Kalėdinės dekoracijos, eglutės žaisliukai ir LED girliandos",
     description:
-      "Šiltai baltos XP ir LLinks lauko LED girliandos: 7,5 m motininės ir papildomos sekcijos, 45 m ir 60 m komplektai. Sudėtis, pardavimo kainos ir nuomos pasirinkimai.",
+      "Folkloriniai eglutės žaisliukai, advento kalendoriai, kalėdinės dekoracijos, dovanos ir XP bei LLinks lauko LED girliandos. Prekes pristatome visoje Lietuvoje.",
   },
   halloween: {
-    title: "Lauko LED girliandos Helovynui ir Kalėdoms",
+    title: "Kalėdinės dekoracijos, žaisliukai ir lauko LED girliandos",
     description:
       "Šiltai baltos XP ir LLinks lauko LED girliandos Helovynui ir visam sezonui: 7,5 m motininės ir papildomos sekcijos, 45 m ir 60 m komplektai. Sudėtis, kainos ir nuomos pasirinkimai.",
   },
@@ -28,16 +28,16 @@ export async function generateMetadata() {
 
 const copy = {
   christmas: {
-    eyebrow: "Lempučių ir komplektų katalogas",
-    title: "Šiltai baltos lauko LED girliandos",
-    text: "XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Pardavimo kainos nurodytos už vienetą arba visą komplektą.",
+    eyebrow: "Kalėdinių prekių parduotuvė",
+    title: "Kalėdinės dekoracijos, žaisliukai ir girliandos",
+    text: "Folkloriniai eglutės žaisliukai, advento kalendoriai, kalėdinės dekoracijos ir dovanos. Taip pat XP ir komercinės klasės LLinks lauko LED girliandos. Naujas kalėdines prekes pristatome per 4 darbo dienas visoje Lietuvoje.",
     catalogTitle: "Arba išsirinkite patys",
     ctaTitle: "Nenorite lipti ant kopėčių?",
   },
   halloween: {
-    eyebrow: "Helovyno lempučių parduotuvė",
-    title: "Girliandos tamsiausioms rudens naktims",
-    text: "XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Švies per Helovyną, Kalėdas ir visus tamsius vakarus tarp jų.",
+    eyebrow: "Dekoracijų ir girliandų parduotuvė",
+    title: "Kalėdinės dekoracijos, žaisliukai ir girliandos",
+    text: "Folkloriniai eglutės žaisliukai, advento kalendoriai, dekoracijos ir dovanos bei XP ir LLinks lauko LED girliandos. Naujas kalėdines prekes pristatome per 4 darbo dienas visoje Lietuvoje.",
     catalogTitle: "Arba išsirinkite patys — be burtų",
     ctaTitle: "Nenorite tamsoje lipti ant kopėčių?",
   },
@@ -52,7 +52,7 @@ export default async function ShopPage() {
           catalogSchema(),
           breadcrumbSchema([
             { name: "Pradžia", path: "/" },
-            { name: "Kalėdinės lemputės", path: "/kaledines-lemputes" },
+            { name: "Parduotuvė", path: "/kaledines-lemputes" },
           ]),
         ]}
       />
@@ -61,7 +61,7 @@ export default async function ShopPage() {
         title={t.title}
         text={t.text}
       >
-        <GuaranteeBadge dark className="px-4 py-2 text-sm" />
+        <div className="flex flex-wrap items-center gap-3"><GuaranteeBadge dark className="px-4 py-2 text-sm" /><span className="text-sm text-snow/70">XP ir LLinks LED girliandoms</span></div>
         <div className="mt-10">
           <LightSetBuilder />
         </div>
@@ -71,7 +71,7 @@ export default async function ShopPage() {
         <SectionHeading
           eyebrow="Visas katalogas"
           title={t.catalogTitle}
-          text="Motininės girliandos, papildomos sekcijos ir komplektai atskirai — sudėkite krepšelį savo nuožiūra."
+          text="Žaisliukai, advento kalendoriai, dekoracijos, dovanos ir girliandos — visos prekės vienoje vietoje."
         />
       </section>
       <LightsSection withHeading={false} />
