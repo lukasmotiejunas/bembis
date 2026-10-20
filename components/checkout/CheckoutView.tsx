@@ -387,7 +387,7 @@ export default function CheckoutView({
           step={2}
           id="pristatymas"
           title="Pristatymas"
-          text="Pasirinkite, kaip norite gauti lemputes."
+          text="Pasirinkite, kaip norite gauti prekes."
         >
           <fieldset className="min-w-0">
             <legend className="sr-only">Pristatymo būdas</legend>
