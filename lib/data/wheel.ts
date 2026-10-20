@@ -1,10 +1,10 @@
 // Laimės ratas. Visi prizai tikri: kiekvieno prizo dalys rate užima tiek vietos, kokia jo tikimybė,
 // o serveris parenka atsitiktinį sustojimo tašką. Tikimybės rodomos lankytojui po ratu.
 export const wheelPrizes = [
-  { percent: 3, chance: 45 },
-  { percent: 5, chance: 30 },
-  { percent: 7, chance: 17 },
-  { percent: 10, chance: 8 },
+  { percent: 3, chance: 10 },
+  { percent: 5, chance: 15 },
+  { percent: 7, chance: 25 },
+  { percent: 10, chance: 50 },
 ] as const;
 
 /** Slices clockwise from the top. A prize's slices share its chance equally. */
