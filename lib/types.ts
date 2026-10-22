@@ -26,7 +26,7 @@ export interface Product {
   seoTitle: string;
   seoDescription: string;
   category?: "folklore" | "advent" | "decorations" | "gifts";
-  /** Užsakomų prekių pristatymo terminas darbo dienomis. */
+  /** Pristatymo terminas darbo dienomis: lemputės iš sandėlio — 2, užsakomos dekoracijos — 4. */
   deliveryBusinessDays?: number;
 }
 

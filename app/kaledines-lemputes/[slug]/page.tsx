@@ -142,7 +142,8 @@ export default async function ProductPage(
                   : `Už vieną ${formatMeters(product.meters)} sekciją`}
               </p>
               <p className="mt-3 text-sm font-bold text-pine-700">
-                Turime sandėlyje
+                Turime sandėlyje. Pristatymas per {product.deliveryBusinessDays} darbo
+                dienas visoje Lietuvoje.
               </p>
               <p className="mt-2 text-sm text-stone">
                 Pristatymas: {deliveryPricesText}. Užsakius montavimą, lemputes

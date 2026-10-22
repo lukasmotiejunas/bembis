@@ -49,6 +49,8 @@ function light(
     photos,
     color: "Šilta balta",
     meters,
+    // Turime sandėlyje.
+    deliveryBusinessDays: 2,
     description,
     seoTitle: `${family} lauko LED ${part}, ${length}`,
     seoDescription: `${family} šiltai balta lauko LED ${part}, ${length}. ${kind === "bundle" ? `1 motininė girlianda ir ${sections - 1} papildomos sekcijos.` : "50 LED."} Peržiūrėkite sudėtį ir kainą.`,

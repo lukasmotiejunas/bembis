@@ -167,6 +167,7 @@ test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąr
     const schema = productSchema(p);
     assert.equal(schema.offers.price, raised(price).toFixed(2));
     assert.equal(schema.offers.availability, "https://schema.org/InStock");
+    assert.equal(p.deliveryBusinessDays, 2);
     assert.equal(schema.offers.priceCurrency, "EUR");
     assert.equal(schema.offers.hasMerchantReturnPolicy.merchantReturnDays, 14);
     assert.equal(

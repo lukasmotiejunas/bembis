@@ -89,7 +89,10 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
           </div>
         </div>
         <p className="mt-4 text-sm font-semibold text-pine-700 xl:mt-3 xl:text-xs">
-          Pristatymas nuo {formatPrice(cheapestDelivery)}
+          {/* Decorations show their delivery time at the top of the card instead. */}
+          {product.kind === "decoration"
+            ? `Pristatymas nuo ${formatPrice(cheapestDelivery)}`
+            : `Pristatymas per ${product.deliveryBusinessDays} darbo dienas, nuo ${formatPrice(cheapestDelivery)}`}
         </p>
       </div>
     </article>
