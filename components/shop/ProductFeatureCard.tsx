@@ -36,7 +36,9 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
         />
         <span className="absolute top-5 left-5 rounded-full bg-pine-900 px-3 py-1 text-xs font-extrabold text-snow xl:top-3 xl:left-3 xl:px-2.5 xl:py-0.5 xl:text-[0.65rem]">
           {product.kind === "decoration"
-            ? "Kalėdinė prekė"
+            ? product.category === "folklore"
+              ? "Rankų darbo"
+              : "Kalėdinė prekė"
             : product.kind === "bundle"
             ? "Komplektas"
             : product.kind === "starter"
