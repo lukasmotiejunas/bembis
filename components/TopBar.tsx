@@ -1,5 +1,6 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import { emailHref, phoneHref, site } from "@/lib/site";
+import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
+import SocialIcon from "./SocialIcon";
 
 export default function TopBar() {
   return (
@@ -15,10 +16,24 @@ export default function TopBar() {
             {site.email}
           </a>
         </div>
-        <span className="hidden items-center gap-1.5 sm:inline-flex">
-          <MapPin className="size-3.5 text-glow" aria-hidden="true" />
-          {site.serviceArea}
-        </span>
+        <div className="flex items-center gap-5">
+          <span className="hidden items-center gap-1.5 sm:inline-flex">
+            <MapPin className="size-3.5 text-glow" aria-hidden="true" />
+            {site.serviceArea}
+          </span>
+          {activeSocials.map((s) => (
+            <a
+              key={s.label}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              className="-m-1.5 p-1.5 hover:text-glow"
+            >
+              <SocialIcon name={s.label} className="size-4" />
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );

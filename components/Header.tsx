@@ -5,9 +5,10 @@ import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import { Mail, Menu, Phone, ShoppingBag, X } from "lucide-react";
 import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
-import { emailHref, phoneHref, site } from "@/lib/site";
+import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
 import Logo from "./Logo";
 import CartDrawer from "./CartDrawer";
+import SocialIcon from "./SocialIcon";
 import { useSiteTheme } from "./SiteTheme";
 
 const nav = [
@@ -118,6 +119,12 @@ export default function Header() {
                 <Mail className="size-4" aria-hidden="true" />
                 Rašyti
               </a>
+              {activeSocials.map((s) => (
+                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+                  <SocialIcon name={s.label} className="size-4" />
+                  {s.label}
+                </a>
+              ))}
             </div>
           </div>
         )}
