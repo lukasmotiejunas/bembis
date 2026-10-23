@@ -7,7 +7,7 @@ import JsonLd from "../JsonLd";
 import ProductGallery from "./ProductGallery";
 import ProductPurchase from "./ProductPurchase";
 import ProductFeatureCard from "./ProductFeatureCard";
-import Price from "./Price";
+import Price, { DiscountNote } from "./Price";
 
 export default function DecorationProduct({ product }: { product: Product }) {
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 5);
@@ -26,6 +26,7 @@ export default function DecorationProduct({ product }: { product: Product }) {
           <div className="mt-7 rounded-[1.75rem] border border-sand bg-white p-6">
             <p className="font-display text-5xl font-semibold text-pine-900"><Price price={product.price} /></p>
             <p className="mt-2 text-stone">Už prekę arba pavadinime nurodytą rinkinį.</p>
+            <DiscountNote className="mt-2 block text-sm font-semibold text-pine-700" />
             <p className="mt-3 text-sm font-bold text-pine-700">Užsakoma prekė. Pristatymas per {product.deliveryBusinessDays} darbo dienas visoje Lietuvoje.</p>
             <p className="mt-2 text-sm text-stone">Pristatymas: {deliveryPricesText}.</p>
             <div className="mt-5"><ProductPurchase product={product} /></div>

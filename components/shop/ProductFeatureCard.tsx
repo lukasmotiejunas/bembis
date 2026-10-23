@@ -7,7 +7,7 @@ import { cheapestDelivery } from "@/lib/data/delivery";
 import { formatMeters, formatPrice } from "@/lib/format";
 import { Product } from "@/lib/types";
 import AddToCartButton from "./AddToCartButton";
-import Price from "./Price";
+import Price, { DiscountNote } from "./Price";
 
 /** Product grids show five cards per row on desktop (xl), so from there the card is compact: every xl: class below. */
 export default function ProductFeatureCard({ product }: { product: Product }) {
@@ -83,6 +83,7 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
             <span className="ml-1 block text-sm text-stone xl:ml-0 xl:text-xs">
               {product.kind === "decoration" ? "už prekę arba nurodytą rinkinį" : product.kind === "bundle" ? "už visą komplektą" : "už vieną sekciją"}
             </span>
+            <DiscountNote className="mt-1 ml-1 block text-sm font-semibold text-pine-700 xl:ml-0 xl:text-xs" />
           </p>
           <div className="flex flex-wrap gap-2 xl:w-full">
             {/* On desktop the photo and the name already open the product. */}

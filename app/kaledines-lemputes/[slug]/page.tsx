@@ -18,7 +18,7 @@ import { QualityPoints } from "@/components/sections/LightsSection";
 import ProductPurchase from "@/components/shop/ProductPurchase";
 import ProductFeatureCard from "@/components/shop/ProductFeatureCard";
 import ProductGallery from "@/components/shop/ProductGallery";
-import Price from "@/components/shop/Price";
+import Price, { DiscountNote } from "@/components/shop/Price";
 import DecorationProduct from "@/components/shop/DecorationProduct";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
@@ -142,6 +142,7 @@ export default async function ProductPage(
                   ? `Už visą ${formatMeters(product.meters)} komplektą`
                   : `Už vieną ${formatMeters(product.meters)} sekciją`}
               </p>
+              <DiscountNote className="mt-2 block text-sm font-semibold text-pine-700" />
               <p className="mt-3 text-sm font-bold text-pine-700">
                 Turime sandėlyje. Pristatymas per {product.deliveryBusinessDays} darbo
                 dienas visoje Lietuvoje.

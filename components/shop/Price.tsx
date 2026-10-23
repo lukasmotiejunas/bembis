@@ -9,6 +9,17 @@ interface Line {
   quantity: number;
 }
 
+/** Says the price shown already has the visitor's wheel win taken off; nothing without a discount. */
+export function DiscountNote({ className }: { className?: string }) {
+  const discount = useWheelDiscount();
+  if (!discount) return null;
+  return (
+    <span className={className}>
+      Į kainą įskaičiuota jūsų laimės rato nuolaida −{discount.percent}&nbsp;%.
+    </span>
+  );
+}
+
 /**
  * A product price. With a laimės ratas discount it shows the discounted price and the old one struck through.
  * `price` is a unit price or the lines of a total; each unit is discounted the way the order charges it.
