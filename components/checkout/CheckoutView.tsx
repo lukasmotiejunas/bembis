@@ -31,6 +31,7 @@ import { CustomerDetails } from "@/lib/orders/checkout";
 import { buildOrder } from "@/lib/orders/order";
 import { phoneHref, site } from "@/lib/site";
 import { useCartHydrated, useCartStore } from "@/lib/store/cartStore";
+import Price from "../shop/Price";
 import ParcelMachinePicker from "./ParcelMachinePicker";
 
 type DeliveryChoice = DeliveryMethod | "installation";
@@ -327,7 +328,7 @@ export default function CheckoutView({
                         {line.name}
                       </p>
                       <p className="mt-1 text-sm text-stone">
-                        {line.detail} · {formatPrice(line.unitPrice)} / vnt.
+                        {line.detail} · <Price price={line.unitPrice} /> / vnt.
                       </p>
                     </div>
                     <button
@@ -375,7 +376,7 @@ export default function CheckoutView({
                       </button>
                     </div>
                     <p className="font-bold text-pine-900">
-                      {formatPrice(line.total)}
+                      <Price price={[{ price: line.unitPrice, quantity: line.quantity }]} />
                     </p>
                   </div>
                 </div>

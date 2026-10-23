@@ -18,6 +18,7 @@ import { QualityPoints } from "@/components/sections/LightsSection";
 import ProductPurchase from "@/components/shop/ProductPurchase";
 import ProductFeatureCard from "@/components/shop/ProductFeatureCard";
 import ProductGallery from "@/components/shop/ProductGallery";
+import Price from "@/components/shop/Price";
 import DecorationProduct from "@/components/shop/DecorationProduct";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
@@ -134,7 +135,7 @@ export default async function ProductPage(
             )}
             <div className="mt-7 rounded-[1.75rem] border border-sand bg-white p-6">
               <p className="font-display text-5xl font-semibold text-pine-900">
-                {formatPrice(product.price)}
+                <Price price={product.price} />
               </p>
               <p className="mt-2 text-stone">
                 {product.kind === "bundle"

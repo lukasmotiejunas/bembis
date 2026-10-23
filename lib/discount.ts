@@ -1,10 +1,14 @@
 // Laimės rato nuolaidų kodai: serveris juos pasirašo, todėl kodo negalima atspėti ar pakeisti procento.
 import { createHmac, randomInt, timingSafeEqual } from "node:crypto";
-import { CODE_VALID_DAYS, isWheelPercent, wheelSlices } from "./data/wheel";
-
-const ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-const DAY = 24 * 60 * 60 * 1000;
-const CODE = /^RATAS(\d{1,2})-([2-9A-HJ-NP-Z]{4})([2-9A-HJ-NP-Z]{2})-([2-9A-HJ-NP-Z]{6})$/;
+import {
+  CODE_ALPHABET as ALPHABET,
+  CODE_PATTERN as CODE,
+  CODE_VALID_DAYS,
+  DAY_MS as DAY,
+  decodeCodeText as decode,
+  isWheelPercent,
+  wheelSlices,
+} from "./data/wheel";
 
 /** DISCOUNT_CODE_SECRET, or a key derived from the Stripe key so codes work without extra setup. */
 function secret() {
@@ -19,7 +23,6 @@ export { INVALID_DISCOUNT } from "./data/wheel";
 
 const encode = (value: number, length: number) =>
   Array.from({ length }, (_, i) => ALPHABET[Math.floor(value / 32 ** (length - 1 - i)) % 32]).join("");
-const decode = (text: string) => [...text].reduce((n, c) => n * 32 + ALPHABET.indexOf(c), 0);
 const sign = (key: string, payload: string) =>
   encode(createHmac("sha256", key).update(payload).digest().readUIntBE(0, 4), 6);
 

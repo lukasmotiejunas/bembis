@@ -2,12 +2,12 @@ import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { products, productHref, returnPolicy } from "@/lib/data/products";
 import { deliveryPricesText } from "@/lib/data/delivery";
-import { formatPrice } from "@/lib/format";
 import { breadcrumbSchema, productSchema } from "@/lib/seo";
 import JsonLd from "../JsonLd";
 import ProductGallery from "./ProductGallery";
 import ProductPurchase from "./ProductPurchase";
 import ProductFeatureCard from "./ProductFeatureCard";
+import Price from "./Price";
 
 export default function DecorationProduct({ product }: { product: Product }) {
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 5);
@@ -24,7 +24,7 @@ export default function DecorationProduct({ product }: { product: Product }) {
           <h1 className="mt-3 text-4xl leading-tight font-semibold text-pine-900 sm:text-5xl">{product.name}</h1>
           <p className="mt-5 text-lg leading-relaxed text-stone">{product.description}</p>
           <div className="mt-7 rounded-[1.75rem] border border-sand bg-white p-6">
-            <p className="font-display text-5xl font-semibold text-pine-900">{formatPrice(product.price)}</p>
+            <p className="font-display text-5xl font-semibold text-pine-900"><Price price={product.price} /></p>
             <p className="mt-2 text-stone">Už prekę arba pavadinime nurodytą rinkinį.</p>
             <p className="mt-3 text-sm font-bold text-pine-700">Užsakoma prekė. Pristatymas per {product.deliveryBusinessDays} darbo dienas visoje Lietuvoje.</p>
             <p className="mt-2 text-sm text-stone">Pristatymas: {deliveryPricesText}.</p>

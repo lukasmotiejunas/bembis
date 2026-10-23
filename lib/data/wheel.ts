@@ -15,6 +15,18 @@ export const INVALID_DISCOUNT = "Šis nuolaidos kodas negalioja arba jo galiojim
 export const maxWheelPercent = Math.max(...wheelPrizes.map((p) => p.percent));
 export const isWheelPercent = (percent: number) => wheelPrizes.some((p) => p.percent === percent);
 
+// Kodo forma: RATAS{procentas}-{paskutinė diena}{atsitiktiniai ženklai}-{parašas}. Parašą tikrina tik serveris (lib/discount.ts).
+export const DAY_MS = 24 * 60 * 60 * 1000;
+export const CODE_ALPHABET = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+export const CODE_PATTERN = /^RATAS(\d{1,2})-([2-9A-HJ-NP-Z]{4})([2-9A-HJ-NP-Z]{2})-([2-9A-HJ-NP-Z]{6})$/;
+export const decodeCodeText = (text: string) => [...text].reduce((n, c) => n * 32 + CODE_ALPHABET.indexOf(c), 0);
+
+/** Whether a wheel code's last day has passed, read from the code itself, so the browser can tell too. */
+export function codeExpired(code: string, now = Date.now()) {
+  const match = CODE_PATTERN.exec(code);
+  return !match || Math.floor(now / DAY_MS) > decodeCodeText(match[2]);
+}
+
 export interface WheelSlice {
   percent: number;
   /** Degrees clockwise from the top */

@@ -17,6 +17,7 @@ import { formatMeters, formatPrice, money, plural } from "@/lib/format";
 import { useCartStore } from "@/lib/store/cartStore";
 import { LightSeries, Product } from "@/lib/types";
 import { useSiteTheme } from "../SiteTheme";
+import Price from "./Price";
 
 const presets = [15, 30, 45, 60];
 const seriesText: Record<LightSeries, string> = {
@@ -236,7 +237,7 @@ function SetCard({
       </h3>
       <p className="text-sm text-stone sm:min-h-[2lh]">{seriesText[set.series]}</p>
       <p className="mt-5 font-display text-4xl font-semibold text-pine-900">
-        {formatPrice(set.total)}
+        <Price price={set.lines.map((l) => ({ price: l.product.price, quantity: l.quantity }))} />
       </p>
       <p className="mt-1 text-sm text-stone">
         {formatMeters(set.meters)} · {set.leds} LED
@@ -260,7 +261,7 @@ function SetCard({
               </span>
             </span>
             <span className="shrink-0 font-bold text-pine-900">
-              {formatPrice(line.total)}
+              <Price price={[{ price: line.product.price, quantity: line.quantity }]} />
             </span>
           </li>
         ))}

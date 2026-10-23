@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { products, getProduct, productHref } from "../lib/data/products";
 import { pricing } from "../lib/data/pricing";
 import { buildEstimate, EstimateChoice } from "../lib/data/priceExample";
-import { buildOrder } from "../lib/orders/order";
+import { buildOrder, discountedPrice } from "../lib/orders/order";
 import { buildSessionParams, validateCheckout } from "../lib/orders/checkout";
 import { prepareOrderInquiry } from "../lib/orders/inquiry";
 import { formatPrice } from "../lib/format";
@@ -28,7 +28,7 @@ import {
 } from "../lib/admin";
 import { isSiteTheme } from "../lib/theme";
 import { createDiscountCode, discountsEnabled, spinWheelPrize, verifyDiscountCode } from "../lib/discount";
-import { wheelPrizes, wheelSlices } from "../lib/data/wheel";
+import { codeExpired, wheelPrizes, wheelSlices } from "../lib/data/wheel";
 import {
   describeParcelMachine,
   parseParcelMachines,
@@ -613,6 +613,10 @@ test("Nuolaidos kodas: pasirašytas, galioja 7 dienas, negalima pakeisti procent
     assert.equal(verifyDiscountCode(forged, now), null);
     assert.throws(() => createDiscountCode(50, now));
     assert.equal(verifyDiscountCode("RATAS50-ABCDEF-ABCDEF", now), null);
+    // The browser reads the same last day from the code to stop showing discounted prices.
+    assert.equal(codeExpired(created.code, now + 7 * day), false);
+    assert.equal(codeExpired(created.code, now + 8 * day), true);
+    assert.equal(codeExpired("RATAS7-TEST00-TEST00", now), true);
   });
   const previous = { secret: process.env.DISCOUNT_CODE_SECRET, stripe: process.env.STRIPE_SECRET_KEY };
   try {
@@ -636,6 +640,8 @@ test("Nuolaida taikoma tik prekėms nuo dabartinių kainų, o Stripe suma sutamp
   assert.equal(order.discountTotal, (unitDiscount(raised(38.99)) * 2 + unitDiscount(raised(17.99)) * 3) / 100);
   assert.equal(order.total, Math.round((full.total - order.discountTotal) * 100) / 100);
   assert.equal(order.extras[0].paidUnitPrice, pricing.delivery.courier);
+  // Prices shown with the discount are the ones charged.
+  for (const line of order.products) assert.equal(discountedPrice(line.unitPrice, 7), line.paidUnitPrice);
 
   const session = buildSessionParams({ ...input, items }, order, "https://www.kaledudekoras.lt", "KD-TEST-DISCOUNT");
   const charged = (session.line_items ?? []).reduce(

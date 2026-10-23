@@ -27,6 +27,11 @@ export interface OrderDiscount {
   code: string;
   percent: number;
 }
+const discountedCents = (cents: number, percent: number) =>
+  Math.round((cents * (100 - percent)) / 100);
+/** A unit price less a wheel discount, rounded to the cent exactly as the order charges it. */
+export const discountedPrice = (price: number, percent: number) =>
+  discountedCents(Math.round(price * 100), percent) / 100;
 export interface OrderLine {
   key: string;
   kind: "product" | "service" | "delivery";
@@ -62,7 +67,7 @@ export function buildOrder(
     )
       continue;
     const unitCents = Math.round(product.price * 100);
-    const paidCents = discount ? Math.round((unitCents * (100 - discount.percent)) / 100) : unitCents;
+    const paidCents = discount ? discountedCents(unitCents, discount.percent) : unitCents;
     discountCents += (unitCents - paidCents) * item.quantity;
     meters += product.meters * item.quantity;
     products.push({

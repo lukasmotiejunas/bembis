@@ -3,17 +3,16 @@ import { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
-import { cartTotals, resolveLines, useCartStore } from "@/lib/store/cartStore";
+import { resolveLines, useCartStore } from "@/lib/store/cartStore";
 import { deliveryPricesText } from "@/lib/data/delivery";
-import { formatPrice } from "@/lib/format";
 import { modeLabel } from "@/lib/orders/order";
 import { useSiteTheme } from "./SiteTheme";
+import Price from "./shop/Price";
 
 export default function CartDrawer() {
   const { items, isOpen, closeCart, updateQuantity, removeItem, discount } =
     useCartStore();
   const lines = resolveLines(items);
-  const { total } = cartTotals(lines);
   const theme = useSiteTheme();
 
   useEffect(() => {
@@ -114,7 +113,7 @@ export default function CartDrawer() {
                           {line.product.name}
                         </p>
                         <p className="mt-0.5 text-sm text-stone">
-                          {modeLabel[line.mode]} · {formatPrice(line.unitPrice)}
+                          {modeLabel[line.mode]} · <Price price={line.unitPrice} />
                         </p>
                         {line.product.deliveryBusinessDays && <p className="mt-1 text-sm text-stone">Pristatymas per {line.product.deliveryBusinessDays} darbo dienas</p>}
                       </div>
@@ -162,7 +161,7 @@ export default function CartDrawer() {
                         </button>
                       </div>
                       <p className="font-bold text-pine-900">
-                        {formatPrice(line.unitPrice * line.quantity)}
+                        <Price price={[{ price: line.unitPrice, quantity: line.quantity }]} />
                       </p>
                     </div>
                   </div>
@@ -174,13 +173,12 @@ export default function CartDrawer() {
               <div className="flex items-baseline justify-between">
                 <span className="font-semibold text-stone">Prekių suma</span>
                 <span className="font-display text-3xl font-semibold text-pine-900">
-                  {formatPrice(total)}
+                  <Price price={lines.map((l) => ({ price: l.unitPrice, quantity: l.quantity }))} />
                 </span>
               </div>
               {discount && (
                 <p className="mt-2 text-sm font-semibold text-pine-700">
-                  Laimėta −{discount.percent}&nbsp;% nuolaida bus pritaikyta
-                  užsakant.
+                  Kainos su laimėta −{discount.percent}&nbsp;% nuolaida.
                 </p>
               )}
               <p className="mt-2 text-sm text-stone">
