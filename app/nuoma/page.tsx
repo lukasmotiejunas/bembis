@@ -4,22 +4,22 @@ import JsonLd from "@/components/JsonLd";
 import ContactSection from "@/components/sections/ContactSection";
 import FAQ from "@/components/sections/FAQ";
 import ServiceArea from "@/components/sections/ServiceArea";
+import ServiceGuide from "@/components/sections/ServiceGuide";
 import PageHeader from "@/components/ui/PageHeader";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { pricing } from "@/lib/data/pricing";
-import { rentalFaqs } from "@/lib/data/services";
+import { rentalFaqs, rentalGuide } from "@/lib/data/services";
 import { seriesNames } from "@/lib/data/products";
 import { LightSeries } from "@/lib/types";
 import { formatPrice } from "@/lib/format";
-import { breadcrumbSchema, pageMetadata, rentalServiceSchema } from "@/lib/seo";
+import { breadcrumbSchema, businessSchema, pageMetadata, rentalServiceSchema } from "@/lib/seo";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
 import { getSiteTheme } from "@/lib/themeStore";
 
 const meta = {
   christmas: {
-    title: "XP ir LLinks lempučių nuoma Vilniuje",
-    description:
-      "Šiltai baltų XP ir komercinės klasės LLinks lauko LED lempučių nuoma. Standartiniai tarifai už metrą, montavimas ir nuėmimas po sezono. Vilnius ir apskritis.",
+    title: "Kalėdinių lempučių nuoma Vilniuje su montavimu",
+    description: `Kalėdinių lempučių ir lauko girliandų nuoma visam sezonui Vilniuje ir apskrityje: XP ${formatPrice(pricing.rentalPerMeter.xp)}/m, LLinks ${formatPrice(pricing.rentalPerMeter.llinks)}/m. Sumontuojame, po švenčių nuimame ir pasiimame.`,
   },
   halloween: {
     title: "Lempučių nuoma Helovynui ir visam sezonui Vilniuje",
@@ -34,14 +34,16 @@ export async function generateMetadata() {
 
 const copy = {
   christmas: {
-    title: "Kalėdinis apšvietimas be sandėliavimo rūpesčių",
-    text: "Pasirinkite XP arba komercinės klasės LLinks lauko LED. Atvykstame pas jus, papuošiame ir sumontuojame, o po sezono apšvietimą nuimame bei pasiimame.",
+    eyebrow: "Nuoma su montavimu",
+    title: "Kalėdinių lempučių nuoma Vilniuje",
+    text: "Kalėdinių girliandų nuoma visam sezonui — be pirkimo ir sandėliavimo rūpesčių. Pasirinkite XP arba komercinės klasės LLinks lauko LED: atvykstame, sumontuojame, o po sezono apšvietimą nuimame bei pasiimame.",
     seriesText: "Šiltai baltas apšvietimas jūsų pastato ar aplinkos kontūrams.",
     seasonText: "Nuomos laiką ir darbų datas suderiname su jumis.",
     faqTitle: "Klausimai apie nuomą",
     serviceArea: "Kalėdines lemputes nuomojame ir montuojame",
   },
   halloween: {
+    eyebrow: "Nuoma sezonui",
     title: "Helovyno apšvietimas be sandėliavimo rūpesčių",
     text: "Pasirinkite XP arba komercinės klasės LLinks lauko LED. Atvykstame pas jus, papuošiame ir sumontuojame, o po sezono apšvietimą nuimame bei pasiimame — dingsta kaip vaiduoklis.",
     seriesText: "Šiltai baltas apšvietimas, išryškinantis namo kontūrus Helovyno tamsoje.",
@@ -57,6 +59,7 @@ export default async function RentalPage() {
     <>
       <JsonLd
         data={[
+          businessSchema(),
           rentalServiceSchema(),
           breadcrumbSchema([
             { name: "Pradžia", path: "/" },
@@ -65,7 +68,7 @@ export default async function RentalPage() {
         ]}
       />
       <PageHeader
-        eyebrow="Nuoma sezonui"
+        eyebrow={t.eyebrow}
         title={t.title}
         text={t.text}
       >
@@ -93,7 +96,7 @@ export default async function RentalPage() {
                   : "Aukščiausios kokybės LED"}
               </p>
               <h2 className="mt-2 text-3xl font-semibold text-pine-900">
-                {seriesNames[series]} lauko girliandos
+                {seriesNames[series]} lauko girliandų nuoma
               </h2>
               <p className="mt-3 text-stone">
                 {t.seriesText}
@@ -152,6 +155,7 @@ export default async function RentalPage() {
           ))}
         </div>
       </section>
+      <ServiceGuide guide={rentalGuide} />
       <FAQ faqs={rentalFaqs} title={t.faqTitle} />
       <ServiceArea what={t.serviceArea} />
       <ContactSection

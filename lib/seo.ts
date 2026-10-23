@@ -63,10 +63,27 @@ const areaServed = [
     .map((name) => ({ "@type": "Place", name })),
 ];
 
+const INSTALLATION_ID = `${absoluteUrl("/montavimas")}#service`;
+const RENTAL_ID = `${absoluteUrl("/nuoma")}#service`;
+
+/** A per-metre price, as the services are priced. */
+const perMeter = (price: number, description: string) => ({
+  "@type": "Offer",
+  description,
+  priceSpecification: {
+    "@type": "UnitPriceSpecification",
+    price: price.toFixed(2),
+    priceCurrency: "EUR",
+    unitCode: "MTR",
+    unitText: "m",
+  },
+});
+
+/** A service-area business: it comes to the customer, so only the area it works in is given, no street address. */
 export function businessSchema() {
   return {
     "@context": "https://schema.org",
-    "@type": "Organization",
+    "@type": "LocalBusiness",
     "@id": BUSINESS_ID,
     name: site.name,
     url: site.url,
@@ -75,12 +92,26 @@ export function businessSchema() {
     description: site.description,
     telephone: phone,
     email: site.email,
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Vilnius",
+      addressRegion: "Vilniaus apskritis",
+      addressCountry: "LT",
+    },
+    areaServed,
     knowsAbout: [
       "Kalėdinių lempučių montavimas",
+      "Kalėdinių girliandų montavimas",
+      "Kalėdinių lempučių kabinimas",
+      "Kalėdinio apšvietimo montavimas",
+      "Namo puošimas Kalėdoms",
       "Kalėdinių lempučių nuoma",
-      "Kalėdinės lemputės",
-      "Namų puošimas Kalėdoms",
-      "Lauko kalėdinis apšvietimas",
+      "Lauko girliandų nuoma",
+      "Lauko kalėdinės lemputės",
+    ],
+    makesOffer: [
+      { "@type": "Offer", itemOffered: { "@id": INSTALLATION_ID } },
+      { "@type": "Offer", itemOffered: { "@id": RENTAL_ID } },
     ],
     ...(activeSocials.length
       ? { sameAs: activeSocials.map((s) => s.href) }
@@ -195,13 +226,24 @@ export function installationServiceSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": INSTALLATION_ID,
     serviceType: "Kalėdinių lempučių montavimas",
-    name: "Kalėdinių lempučių montavimas ir nuėmimas",
+    name: "Kalėdinių lempučių montavimas Vilniuje",
+    alternateName: [
+      "Kalėdinių girliandų montavimas",
+      "Kalėdinių lempučių kabinimas",
+      "Kalėdinio apšvietimo montavimas",
+      "Namo puošimas Kalėdoms",
+    ],
     description:
-      "Atvažiuojame, sumontuojame kalėdines lemputes ant namo stogo, langų, terasų, medžių ir tvorų, o po švenčių viską nuimame.",
+      "Atvažiuojame, sumontuojame kalėdines lemputes ir girliandas ant namo stogo, langų, terasų, medžių ir tvorų, o po švenčių viską nuimame. Nuėmimas įskaičiuotas į kainą.",
     url: absoluteUrl("/montavimas"),
     provider: { "@id": BUSINESS_ID },
     areaServed,
+    offers: [
+      perMeter(pricing.installPerMeter, "Montavimas ir nuėmimas su mūsų lemputėmis"),
+      perMeter(pricing.clientLightsPerMeter, "Montavimas ir nuėmimas su kliento lemputėmis"),
+    ],
   };
 }
 
@@ -209,11 +251,17 @@ export function rentalServiceSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    "@id": RENTAL_ID,
     serviceType: "Kalėdinių lempučių nuoma",
-    name: "Kalėdinių lempučių nuoma visam sezonui",
+    name: "Kalėdinių lempučių nuoma Vilniuje",
+    alternateName: ["Kalėdinių girliandų nuoma", "Lauko girliandų nuoma", "Kalėdinių lempučių nuoma su montavimu"],
     description: `Šiltai baltų XP ir komercinės klasės LLinks lauko LED nuoma Vilniuje ir Vilniaus apskrityje. Standartiniai tarifai: XP ${pricing.rentalPerMeter.xp} EUR/m, LLinks ${pricing.rentalPerMeter.llinks} EUR/m. Darbų ir nuomos sąlygos suderinamos konkrečiam objektui.`,
     url: absoluteUrl("/nuoma"),
     provider: { "@id": BUSINESS_ID },
     areaServed,
+    offers: [
+      perMeter(pricing.rentalPerMeter.xp, "XP lauko LED girliandų nuoma sezonui"),
+      perMeter(pricing.rentalPerMeter.llinks, "LLinks lauko LED girliandų nuoma sezonui"),
+    ],
   };
 }

@@ -16,8 +16,8 @@ import { getSiteTheme } from "@/lib/themeStore";
 const rates = `XP nuoma ${formatPrice(pricing.rentalPerMeter.xp)}/m, LLinks ${formatPrice(pricing.rentalPerMeter.llinks)}/m, montavimas su nuėmimu nuo ${formatPrice(pricing.installPerMeter)}/m.`;
 const meta = {
   christmas: {
-    title: "Kiek kainuoja kalėdinių lempučių montavimas",
-    description: `Apskaičiuokite, kiek kainuos papuošti jūsų namą: įveskite matmenis ir pasirinkite lemputes. ${rates}`,
+    title: "Kalėdinių lempučių montavimo kaina — skaičiuoklė",
+    description: `Kiek kainuoja kalėdinių lempučių montavimas? Apskaičiuokite iš karto. ${rates}`,
   },
   halloween: {
     title: "Kiek kainuoja papuošti namą Helovynui",
@@ -31,8 +31,8 @@ export async function generateMetadata() {
 
 const copy = {
   christmas: {
-    title: "Kiek kainuoja papuošti jūsų namą?",
-    text: "Įveskite pastato matmenis ir pasirinkite lemputes — standartinę kainą matysite iš karto.",
+    title: "Kiek kainuoja kalėdinių lempučių montavimas?",
+    text: "Įveskite pastato matmenis ir pasirinkite lemputes — kalėdinių lempučių montavimo ir nuomos kainą matysite iš karto.",
     buyText: "XP ir LLinks girliandas parduodame 7,5 m sekcijomis bei 45 m ir 60 m komplektais. Pirktos lemputės lieka jums.",
     faqTitle: "Klausimai apie kainą",
   },

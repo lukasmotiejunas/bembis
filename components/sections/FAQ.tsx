@@ -1,7 +1,9 @@
 import { Phone, Plus } from "lucide-react";
 import { faqs as defaultFaqs, halloweenFaqs } from "@/lib/data/services";
+import { faqSchema } from "@/lib/seo";
 import { phoneHref, site } from "@/lib/site";
 import { getSiteTheme } from "@/lib/themeStore";
+import JsonLd from "../JsonLd";
 import SectionHeading from "../ui/SectionHeading";
 
 const copy = {
@@ -27,6 +29,8 @@ export default async function FAQ({
   const t = copy[await getSiteTheme()];
   return (
     <section id="duk" className="container-page grid gap-12 py-20 sm:py-28 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+      {/* Only a page's own questions are marked up: the shared list repeats on several pages. */}
+      {faqs && <JsonLd data={faqSchema(faqs)} />}
       <div>
         <SectionHeading eyebrow="Dažni klausimai" title={title ?? t.title} />
         <p className="mt-4 text-lg text-stone">{t.text}</p>

@@ -1,7 +1,7 @@
-import { formatPrice } from "../format";
+import { formatMeters, formatPrice } from "../format";
 import { site } from "../site";
 import { pricing } from "./pricing";
-import { buildEstimate } from "./priceExample";
+import { buildEstimate, priceExample } from "./priceExample";
 import { seriesNames } from "./products";
 
 const example = buildEstimate()!;
@@ -9,6 +9,8 @@ const exampleLights =
   example.choice === "client"
     ? "jūsų lemputėmis"
     : `${seriesNames[example.choice]} nuoma`;
+/** e.g. "12 × 12 m pastato 48 m kontūras su XP nuoma ir darbais kainuoja 360,48 €" */
+const exampleCost = `${priceExample.width} × ${priceExample.length} m pastato ${formatMeters(example.meters)} kontūras su ${exampleLights} ir darbais kainuoja ${formatPrice(example.total)}`;
 export const seasonSteps: { when: string; title: string; text?: string }[] = [
   {
     when: "Prieš sezoną",
@@ -55,6 +57,10 @@ const removalFaq = {
   q: "Ar nuėmimas apmokestinamas atskirai?",
   a: "Ne. Nurodytas darbo tarifas apima kabinimą ir nuėmimą po sezono. Lempučių nuomos dalis pateikiama atskirai nuo darbų.",
 };
+const installCostFaq = {
+  q: "Kiek kainuoja kalėdinių lempučių montavimas?",
+  a: `Naudojant mūsų lemputes standartinis kabinimo ir nuėmimo po sezono tarifas yra ${formatPrice(pricing.installPerMeter)}/m, naudojant jūsų lemputes — ${formatPrice(pricing.clientLightsPerMeter)}/m. Pavyzdžiui, ${exampleCost}. Galutinę darbo kainą suderiname pagal objektą.`,
+};
 const seriesFaq = {
   q: "Kuo skiriasi XP ir LLinks?",
   a: "Kataloge LLinks nurodyta kaip komercinės klasės profesionali lauko LED sistema, XP — kaip aukščiausios kokybės lauko LED serija. Abi serijos yra šiltai baltos. Padėsime pasirinkti pagal jūsų objektą.",
@@ -70,10 +76,7 @@ export const faqs = [
     q: "Kokia garantija suteikiama lemputėms?",
     a: "Lemputėms suteikiame 2 metų garantiją. Pastebėję gedimą, susisiekite su mumis.",
   },
-  {
-    q: "Kiek kainuoja montavimas ir nuėmimas?",
-    a: `Naudojant mūsų lemputes standartinis kabinimo ir nuėmimo po sezono tarifas yra ${formatPrice(pricing.installPerMeter)}/m, naudojant jūsų lemputes — ${formatPrice(pricing.clientLightsPerMeter)}/m. Pavyzdžiui, 12 × 12 m pastato 48 m kontūras su ${exampleLights} ir darbais kainuoja ${formatPrice(example.total)}. Galutinę darbo kainą suderiname pagal objektą.`,
-  },
+  installCostFaq,
   {
     q: "Kada montuojate ir nuimate?",
     a: "Montavimo laiką sutariame su jumis, o po šventinio sezono apšvietimą nuimame. Konkretų grafiką aptariame suderindami pasiūlymą.",
@@ -176,8 +179,12 @@ export const halloweenDecorAreas: Record<(typeof decorAreas)[number]["icon"], { 
 };
 export const rentalFaqs = [
   {
-    q: "Kiek kainuoja lempučių nuoma?",
+    q: "Kiek kainuoja kalėdinių lempučių nuoma?",
     a: `XP lauko LED nuoma kainuoja ${formatPrice(pricing.rentalPerMeter.xp)}/m, komercinės klasės LLinks — ${formatPrice(pricing.rentalPerMeter.llinks)}/m. Tai nuomos tarifas už dekoruojamą metrą. Kabinimas ir nuėmimas su mūsų lemputėmis — ${formatPrice(pricing.installPerMeter)}/m. Konkrečiam objektui suderiname galutinį pasiūlymą.`,
+  },
+  {
+    q: "Ar kalėdinių lempučių nuoma būna su montavimu?",
+    a: `Taip, dažniausiai nuomą užsakote kartu su montavimu: atvežame girliandas, jas sumontuojame, o po sezono nuimame ir pasiimame. Montavimas ir nuėmimas su mūsų lemputėmis kainuoja ${formatPrice(pricing.installPerMeter)}/m, lemputes atvežame nemokamai.`,
   },
   removalFaq,
   {
@@ -185,8 +192,10 @@ export const rentalFaqs = [
     a: "Parašykite, kokio apšvietimo ir ilgio reikia. Atskirai suderinsime nuomos, pristatymo ir grąžinimo sąlygas. Galutinį nuomos pasiūlymą pateiksime pagal jūsų poreikį.",
   },
   seriesFaq,
+  areaFaq,
 ];
 export const pricingFaqs = [
+  installCostFaq,
   {
     q: "Ar skaičiuoklės kaina yra galutinė?",
     a: "Skaičiuoklė rodo standartinę kainą pagal viešus tarifus. Galutinę darbo kainą ir sąlygas suderiname įvertinę konkretų objektą — atvažiuojame į nemokamą apžiūrą, išmatuojame ir pasakome tikslią kainą.",
@@ -197,3 +206,83 @@ export const pricingFaqs = [
   buyVsRentFaq,
   areaFaq,
 ];
+
+// Montavimo puslapio klausimai: atsako į tai, ko dažniausiai ieškoma Google.
+export const installationFaqs = [
+  { ...installCostFaq, q: "Kiek kainuoja kalėdinių lempučių montavimas Vilniuje?" },
+  {
+    q: "Ar kalėdinių lempučių kabinimas nepažeis stogo ir fasado?",
+    a: "Ne. Girliandas tvirtiname specialiais laikikliais, todėl ant stogo, latakų ir sienų nelieka skylių ar žymių.",
+  },
+  {
+    q: "Kada užsakyti kalėdinių girliandų montavimą?",
+    a: "Kalėdines lemputes dažniausiai montuojame lapkritį, kad namai švytėtų visą gruodį, o sausį jas nuimame. Datas suderiname su jumis — kuo anksčiau susisieksite, tuo daugiau laisvų datų galėsime pasiūlyti.",
+  },
+  {
+    q: "Ką galite apšviesti kalėdinėmis lemputėmis?",
+    a: "Stogo kraštus, frontonus ir karnizus, langus ir duris, balkonus, terasas ir turėklus, kiemo medžius bei egles, tvoras ir vartus. Sodyboms ir dideliems namams parengiame individualų apšvietimo planą.",
+  },
+  removalFaq,
+  ownLightsFaq,
+  areaFaq,
+];
+
+/** A keyword-rich explanation of a service: what search engines read, written for people. */
+export interface ServiceGuide {
+  eyebrow: string;
+  title: string;
+  text: string;
+  topics: { title: string; text: string; link?: { href: string; label: string } }[];
+}
+
+export const installationGuide: ServiceGuide = {
+  eyebrow: "Namo puošimas Kalėdoms Vilniuje",
+  title: "Kalėdinių girliandų montavimas ant namo",
+  text: "Namo puošimas Kalėdoms dažniausiai užstringa ties klausimu, kaip saugiai pakabinti girliandas ant stogo krašto ar antro aukšto langų. Tai padarome už jus — nuo apžiūros iki nuėmimo po švenčių.",
+  topics: [
+    {
+      title: "Kaip vyksta kalėdinių lempučių kabinimas",
+      text: "Atvažiuojame į nemokamą apžiūrą, išmatuojame apšviečiamų kontūrų ilgį ir pasiūlome, kaip papuošti namą, kad jis atrodytų tvarkingai ir vientisai. Girliandas tvirtiname specialiais laikikliais, todėl ant stogo, latakų ir sienų nelieka skylių ar žymių.",
+    },
+    {
+      title: "Kalėdinis namo apšvietimas pagal jūsų norus",
+      text: "Montuojame šiltai baltas XP ir komercinės klasės LLinks lauko LED girliandas palei stogo kraštus, frontonus ir karnizus, aplink langus, duris, balkonus ir terasas, ant kiemo medžių, eglių ir tvorų. Lemputes galite pirkti, išsinuomoti arba naudoti savo turimas.",
+    },
+    {
+      title: "Kiek kainuoja kalėdinio apšvietimo montavimas",
+      text: `Montavimas su mūsų lemputėmis kainuoja ${formatPrice(pricing.installPerMeter)}/m, su jūsų lemputėmis — ${formatPrice(pricing.clientLightsPerMeter)}/m, ir į šią kainą jau įeina nuėmimas po švenčių. Pavyzdžiui, ${exampleCost}.`,
+      link: { href: "/kiek-kainuoja", label: "Apskaičiuoti montavimo kainą" },
+    },
+    {
+      title: "Kada montuojame ir nuimame",
+      text: "Kalėdines lemputes dažniausiai kabiname lapkritį, kad namai švytėtų visą gruodį, o sausį jas nuimame. Nuomotas girliandas išsivežame, pirktas supakuojame jums. Kuo anksčiau susisieksite, tuo daugiau laisvų datų galėsime pasiūlyti.",
+    },
+  ],
+};
+
+export const rentalGuide: ServiceGuide = {
+  eyebrow: "Lauko girliandų nuoma",
+  title: "Kalėdinių girliandų nuoma su montavimu",
+  text: "Nuoma tinka, kai norite gražiai apšviesto namo per šventes, bet nenorite pirkti lempučių, jų prižiūrėti ir laikyti visus metus.",
+  topics: [
+    {
+      title: "Kaip vyksta kalėdinių lempučių nuoma",
+      text: "Pasirenkate XP arba komercinės klasės LLinks lauko LED girliandas, o mes jas atvežame, sumontuojame ir po sezono nuimame bei pasiimame. Nuomos laiką ir darbų datas suderiname su jumis.",
+    },
+    {
+      title: "Kiek kainuoja kalėdinių lempučių nuoma",
+      text: `XP lauko girliandų nuoma visam sezonui kainuoja ${formatPrice(pricing.rentalPerMeter.xp)}/m, LLinks — ${formatPrice(pricing.rentalPerMeter.llinks)}/m. Montavimas ir nuėmimas — ${formatPrice(pricing.installPerMeter)}/m. Pavyzdžiui, ${exampleCost}.`,
+      link: { href: "/kiek-kainuoja", label: "Apskaičiuoti savo namo kainą" },
+    },
+    {
+      title: "Nuoma ar pirkimas?",
+      text: "Nuomojantis nereikia pirkti girliandų ir rūpintis jų laikymu — po švenčių jas pasiimame. Jei norite, kad lemputės liktų jums, XP ir LLinks girliandas galite įsigyti 7,5 m sekcijomis arba 45 m ir 60 m komplektais.",
+      link: { href: "/kaledines-lemputes", label: "Žiūrėti lauko girliandas" },
+    },
+    {
+      title: "Lauko girliandų nuoma be montavimo",
+      text: "Norite pasikabinti patys? Parašykite, kokio apšvietimo ir ilgio reikia — atskirai suderinsime nuomos, pristatymo ir grąžinimo sąlygas.",
+      link: { href: "/kontaktai#forma", label: "Parašyti užklausą" },
+    },
+  ],
+};

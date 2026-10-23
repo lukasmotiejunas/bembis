@@ -19,12 +19,15 @@ import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
 import DecorAreas from "@/components/sections/DecorAreas";
 import ServiceArea from "@/components/sections/ServiceArea";
+import ServiceGuide from "@/components/sections/ServiceGuide";
 import JsonLd from "@/components/JsonLd";
 import { INSTALLATION_SERVICE } from "@/lib/inquiry";
 import { pricing } from "@/lib/data/pricing";
+import { halloweenFaqs, installationFaqs, installationGuide } from "@/lib/data/services";
 import { formatPrice } from "@/lib/format";
 import {
   breadcrumbSchema,
+  businessSchema,
   installationServiceSchema,
   pageMetadata,
 } from "@/lib/seo";
@@ -32,9 +35,8 @@ import { getSiteTheme } from "@/lib/themeStore";
 
 const meta = {
   christmas: {
-    title: "Kalėdinių lempučių montavimas ir nuėmimas Vilniuje",
-    description:
-      "Kalėdinių lempučių montavimas ant stogo, langų, medžių ir tvorų bei nuėmimas po švenčių Vilniuje ir Vilniaus apskrityje. Pasiteiraukite apie nemokamą apžiūrą.",
+    title: "Kalėdinių lempučių montavimas Vilniuje — girliandų kabinimas",
+    description: `Kalėdinių lempučių ir girliandų montavimas ant namo stogo, langų, medžių ir tvorų Vilniuje ir apskrityje, nuėmimas po švenčių. Nuo ${formatPrice(pricing.installPerMeter)}/m, nemokama apžiūra.`,
   },
   halloween: {
     title: "Helovyno apšvietimo montavimas ir nuėmimas Vilniuje",
@@ -98,8 +100,8 @@ const halloweenIncluded: typeof included = [
 
 const copy = {
   christmas: {
-    title: "Kalėdinių lempučių montavimas ir nuėmimas",
-    text: "Atvažiuojame ir papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po švenčių viską nuimame. Jums nereikės nei kopėčių, nei laiko, nei vietos joms laikyti.",
+    title: "Kalėdinių lempučių montavimas Vilniuje",
+    text: "Kalėdinių lempučių ir girliandų kabinimas ant namo stogo, langų, terasų, medžių ir tvorų. Papuošiame jūsų namus pirktomis ar išnuomotomis lemputėmis, o po švenčių viską nuimame — jums nereikės nei kopėčių, nei laiko, nei vietos joms laikyti.",
     includedTitle: "Jūs tik pasirenkate — visa kita padarome mes",
     included,
     serviceArea: "Kalėdines lemputes montuojame ir nuimame",
@@ -120,6 +122,7 @@ export default async function InstallationPage() {
     <>
       <JsonLd
         data={[
+          businessSchema(),
           installationServiceSchema(),
           breadcrumbSchema([
             { name: "Pradžia", path: "/" },
@@ -212,8 +215,9 @@ export default async function InstallationPage() {
         </div>
       </section>
       <DecorAreas />
+      <ServiceGuide guide={installationGuide} />
       <SeasonSteps />
-      <FAQ />
+      <FAQ faqs={theme === "halloween" ? [...halloweenFaqs.slice(0, 3), ...installationFaqs] : installationFaqs} />
       <ServiceArea what={t.serviceArea} />
       <ContactSection defaultServices={[INSTALLATION_SERVICE]} />
     </>
