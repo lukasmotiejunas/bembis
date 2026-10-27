@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import MobileContactBar from "@/components/MobileContactBar";
 import CartHydration from "@/components/CartHydration";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import MetaPixel from "@/components/MetaPixel";
 import LuckyWheel from "@/components/wheel/LuckyWheel";
 import { SiteThemeProvider } from "@/components/SiteTheme";
 import { site } from "@/lib/site";
@@ -80,7 +81,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Footer />
           <MobileContactBar />
           <LuckyWheel enabled={discountsEnabled()} />
-          <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} hostname={new URL(site.url).hostname} />
+          <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ""} hostname={new URL(site.url).hostname} />
+          <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ""} hostname={new URL(site.url).hostname} />
         </SiteThemeProvider>
       </body>
     </html>

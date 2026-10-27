@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:commerce": "node scripts/test-commerce.mjs",
-    "test:analytics": "node --test tests/analytics.test.mjs"
+    "test:analytics": "node --test tests/analytics.test.mjs tests/meta-pixel.test.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",

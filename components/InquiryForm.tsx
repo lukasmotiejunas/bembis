@@ -5,6 +5,7 @@ import { sendInquiry } from "@/app/kontaktai/actions";
 import { serviceOptions } from "@/lib/inquiry";
 import { emailHref, phoneHref, site } from "@/lib/site";
 import { useSiteTheme } from "./SiteTheme";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 const copy = {
   christmas: {
@@ -61,6 +62,7 @@ export default function InquiryForm({
     startTransition(async () => {
       const result = await sendInquiry(data);
       if (result.ok) {
+        if (!data.get("website")) trackMetaEvent("Lead");
         form.reset();
         setSent(true);
       } else {

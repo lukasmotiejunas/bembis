@@ -9,6 +9,7 @@ import { CustomerDetails, emptyCustomer } from "../orders/checkout";
 import { OrderDiscount, OrderServices } from "../orders/order";
 import { CartItem, Product, PurchaseMode } from "../types";
 import { buildOrder } from "../orders/order";
+import { trackMetaEvent } from "../meta-pixel";
 
 const noServices: OrderServices = { installation: false, removal: false };
 
@@ -57,6 +58,7 @@ export const useCartStore = create<CartStore>()(
       isOpen: false,
 
       addItem: (productId, mode, quantity = 1) => {
+        const product = getProduct(productId, mode);
         if (
           !getProduct(productId, mode) ||
           !Number.isInteger(quantity) ||
@@ -64,6 +66,7 @@ export const useCartStore = create<CartStore>()(
           quantity > 99
         )
           return;
+        const beforeQuantity = get().items.find(item => same(item, productId, mode))?.quantity ?? 0;
         set((state) => {
           const existing = state.items.find((i) => same(i, productId, mode));
           if (existing) {
@@ -77,6 +80,8 @@ export const useCartStore = create<CartStore>()(
           }
           return { items: [...state.items, { productId, mode, quantity }] };
         });
+        const added = (get().items.find(item => same(item, productId, mode))?.quantity ?? 0) - beforeQuantity;
+        if (product && added > 0) trackMetaEvent("AddToCart", { content_ids: [productId], content_type: "product", currency: "EUR", value: Math.round(product.price * added * 100) / 100, num_items: added });
       },
 
       removeItem: (productId, mode) => {

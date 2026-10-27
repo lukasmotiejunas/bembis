@@ -24,6 +24,7 @@ import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
 import { getSiteTheme } from "@/lib/themeStore";
+import MetaProductView from "@/components/MetaProductView";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -46,7 +47,7 @@ export default async function ProductPage(
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) notFound();
-  if (product.kind === "decoration") return <DecorationProduct product={product} />;
+  if (product.kind === "decoration") return <><MetaProductView id={product.id} price={product.price} /><DecorationProduct product={product} /></>;
   const rentalPrice = product.series === "christmas" ? 0 : pricing.rentalPerMeter[product.series];
   const halloween = (await getSiteTheme()) === "halloween";
   const related = products
@@ -59,6 +60,7 @@ export default async function ProductPage(
     .slice(0, 2);
   return (
     <>
+      <MetaProductView id={product.id} price={product.price} />
       <JsonLd
         data={[
           productSchema(product),

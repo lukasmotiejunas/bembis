@@ -9,6 +9,7 @@ import {
   createPageViewTracker, isMeasurementId, readConsent, SETTINGS_EVENT,
   type AnalyticsConsent, type GoogleTag,
 } from "@/lib/analytics";
+import { isPixelId, marketingConsentSnapshot, saveMarketingConsent, subscribeMarketingConsent } from "@/lib/meta-pixel";
 
 declare global {
   interface Window {
@@ -66,8 +67,8 @@ function clearAnalyticsCookies() {
   }
 }
 
-export function AnalyticsPreferencesButton({ measurementId }: { measurementId: string }) {
-  if (!isMeasurementId(measurementId)) return null;
+export function AnalyticsPreferencesButton({ measurementId, pixelId = "" }: { measurementId: string; pixelId?: string }) {
+  if (!isMeasurementId(measurementId) && !isPixelId(pixelId)) return null;
   return (
     <button
       type="button"
@@ -79,9 +80,11 @@ export function AnalyticsPreferencesButton({ measurementId }: { measurementId: s
   );
 }
 
-export default function GoogleAnalytics({ measurementId, hostname }: { measurementId: string; hostname: string }) {
+export default function GoogleAnalytics({ measurementId, hostname, pixelId = "" }: { measurementId: string; hostname: string; pixelId?: string }) {
   const pathname = usePathname();
   const consent = useSyncExternalStore(subscribeConsent, consentSnapshot, () => null);
+  const marketing = useSyncExternalStore(subscribeMarketingConsent, marketingConsentSnapshot, () => null);
+  const hasPixel = isPixelId(pixelId);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const tracker = useRef<ReturnType<typeof createPageViewTracker> | null>(null);
   const active = isMeasurementId(measurementId) && consent === "granted" &&
@@ -133,34 +136,49 @@ export default function GoogleAnalytics({ measurementId, hostname }: { measureme
     return () => window.cancelAnimationFrame(frame);
   }, [active, consent, measurementId, pathname]);
 
-  function choose(choice: Exclude<AnalyticsConsent, null>) {
+  function choose(choice: Exclude<AnalyticsConsent, null>, ads: "granted" | "denied" = "denied") {
+    const revokeLoadedPixel = ads === "denied" && !!window.fbq;
+    if (ads === "denied") window.fbq?.("consent", "revoke");
     if (choice === "denied") {
       window[`ga-disable-${measurementId}`] = true;
       clearAnalyticsCookies();
     }
     saveConsent(choice);
+    if (hasPixel) saveMarketingConsent(ads);
+    if (ads === "denied") {
+      // Remove Meta cookies without erasing a separately granted GA choice.
+      for (const name of ["_fbp", "_fbc"]) {
+        const host = window.location.hostname;
+        const root = host.replace(/^www\./, "");
+        for (const domain of ["", host, `.${host}`, root, `.${root}`]) {
+          document.cookie = `${name}=; Max-Age=0; path=/;${domain ? ` domain=${domain};` : ""}`;
+        }
+      }
+    }
     setSettingsOpen(false);
     // Remove the previously loaded tag entirely after withdrawing consent.
-    if (choice === "denied" && tracker.current) window.location.reload();
+    if ((choice === "denied" && tracker.current) || revokeLoadedPixel) window.location.reload();
   }
 
-  if (!isMeasurementId(measurementId)) return null;
+  if (!isMeasurementId(measurementId) && !hasPixel) return null;
   return (
     <>
       {active && <Script id="google-analytics" src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`} strategy="afterInteractive" />}
-      {(consent === null || settingsOpen) && (
+      {(consent === null || (hasPixel && marketing === null) || settingsOpen) && (
         <section aria-labelledby="analytics-consent-title" className="fixed inset-x-0 bottom-0 z-50 border-t border-sand bg-snow p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-[0_-8px_40px_rgb(18_42_31/0.12)]">
           <div className="container-page flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
               <h2 id="analytics-consent-title" className="text-lg font-bold text-pine-900">Jūsų privatumas</h2>
               <p className="mt-1 text-sm leading-relaxed text-stone">
                 Su jūsų sutikimu naudojame „Google Analytics“ statistikos slapukus, kad sužinotume, kiek žmonių lankosi svetainėje ir kuriuos puslapius peržiūri. Galite atsisakyti arba vėliau pakeisti pasirinkimą.
+                {hasPixel && <> Reklamos slapukus „Meta Pixel“ naudojame tik papildomai leidus reklamą, kad įvertintume reklamų rezultatus ir sudarytume reklamos auditorijas.</>}
                 {" "}<Link href="/slapukai" className="font-semibold text-pine-900 underline underline-offset-4">Daugiau apie slapukus</Link>.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
               <button type="button" onClick={() => choose("denied")} className="btn btn-outline flex-1 sm:flex-none">Tik būtini</button>
-              <button type="button" onClick={() => choose("granted")} className="btn btn-dark flex-1 sm:flex-none">Leisti statistiką</button>
+              <button type="button" onClick={() => choose("granted")} className="btn btn-outline flex-1 sm:flex-none">Leisti statistiką</button>
+              {hasPixel && <button type="button" onClick={() => choose("granted", "granted")} className="btn btn-dark flex-1 sm:flex-none">Leisti statistiką ir reklamą</button>}
               {settingsOpen && consent !== null && <button type="button" onClick={() => setSettingsOpen(false)} className="px-3 py-2 text-sm font-semibold text-pine-900 underline underline-offset-4">Uždaryti</button>}
             </div>
           </div>

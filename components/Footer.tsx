@@ -106,7 +106,7 @@ export default async function Footer() {
       <div className="border-t border-snow/10">
         <div className="container-page flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-snow/50">
           <span>© {new Date().getFullYear()} {site.name}. Visos teisės saugomos.</span>
-          <AnalyticsPreferencesButton measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} />
+          <AnalyticsPreferencesButton measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ""} />
         </div>
       </div>
     </footer>

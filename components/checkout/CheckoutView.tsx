@@ -33,6 +33,7 @@ import { phoneHref, site } from "@/lib/site";
 import { useCartHydrated, useCartStore } from "@/lib/store/cartStore";
 import Price from "../shop/Price";
 import ParcelMachinePicker from "./ParcelMachinePicker";
+import { trackMetaEvent } from "@/lib/meta-pixel";
 
 type DeliveryChoice = DeliveryMethod | "installation";
 const deliveryIcons = { parcel: MapPin, courier: Truck, installation: Wrench };
@@ -249,7 +250,10 @@ export default function CheckoutView({
             website,
             discountCode: discount?.code ?? "",
           });
-          if (result.ok) setSent(true);
+          if (result.ok) {
+            if (!website) trackMetaEvent("Lead");
+            setSent(true);
+          }
           else failed(result.error);
         } else {
           const result = await startCheckout({
@@ -263,6 +267,7 @@ export default function CheckoutView({
             discountCode: discount?.code ?? "",
           });
           if ("url" in result) {
+            trackMetaEvent("InitiateCheckout", { currency: "EUR", value: order.total, num_items: order.itemCount, content_ids: selectedItems.map(item => item.productId), content_type: "product" });
             setRedirecting(true);
             window.location.assign(result.url);
           } else failed(result.error);
