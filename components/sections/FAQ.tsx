@@ -4,17 +4,18 @@ import { faqSchema } from "@/lib/seo";
 import { phoneHref, site } from "@/lib/site";
 import { getSiteTheme } from "@/lib/themeStore";
 import JsonLd from "../JsonLd";
+import SocialIcon from "../SocialIcon";
 import SectionHeading from "../ui/SectionHeading";
 
 const copy = {
   christmas: {
     title: "Turite klausimų?",
-    text: "Neradote atsakymo? Paskambinkite — mielai viską paaiškinsime.",
+    text: "Neradote atsakymo? Paskambinkite arba parašykite per WhatsApp — mielai viską paaiškinsime.",
     faqs: defaultFaqs,
   },
   halloween: {
     title: "Klausimų, nuo kurių šiurpsta oda?",
-    text: "Neradote atsakymo? Paskambinkite — nekandame, net per Helovyną.",
+    text: "Neradote atsakymo? Paskambinkite arba parašykite per WhatsApp — nekandame, net per Helovyną.",
     faqs: halloweenFaqs,
   },
 };
@@ -34,10 +35,16 @@ export default async function FAQ({
       <div>
         <SectionHeading eyebrow="Dažni klausimai" title={title ?? t.title} />
         <p className="mt-4 text-lg text-stone">{t.text}</p>
-        <a href={phoneHref} className="btn btn-dark mt-6">
-          <Phone className="size-4" aria-hidden="true" />
-          {site.phone}
-        </a>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a href={phoneHref} className="btn btn-dark">
+            <Phone className="size-4" aria-hidden="true" />
+            {site.phone}
+          </a>
+          <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-whatsapp">
+            <SocialIcon name="WhatsApp" className="size-4" />
+            WhatsApp
+          </a>
+        </div>
       </div>
 
       <div className="divide-y divide-sand border-y border-sand">

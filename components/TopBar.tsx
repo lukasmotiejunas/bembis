@@ -11,6 +11,15 @@ export default function TopBar() {
             <Phone className="size-3.5 text-glow" aria-hidden="true" />
             {site.phone}
           </a>
+          <a
+            href={site.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 font-semibold text-snow hover:text-glow"
+          >
+            <SocialIcon name="WhatsApp" className="size-3.5 text-whatsapp" />
+            WhatsApp
+          </a>
           <a href={emailHref} className="hidden items-center gap-1.5 hover:text-glow sm:inline-flex">
             <Mail className="size-3.5 text-glow" aria-hidden="true" />
             {site.email}

@@ -93,6 +93,15 @@ export default function InquiryForm({
             className="font-bold whitespace-nowrap text-pine-900 underline underline-offset-4"
           >
             {site.phone}
+          </a>{" "}
+          arba parašykite per{" "}
+          <a
+            href={site.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-bold text-pine-900 underline underline-offset-4"
+          >
+            WhatsApp
           </a>
           .
         </p>
@@ -251,6 +260,10 @@ export default function InquiryForm({
           className="font-bold whitespace-nowrap text-pine-900"
         >
           {site.phone}
+        </a>{" "}
+        ·{" "}
+        <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="font-bold text-pine-900">
+          WhatsApp
         </a>{" "}
         ·{" "}
         <a href={emailHref} className="font-bold text-pine-900">

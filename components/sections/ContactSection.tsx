@@ -1,18 +1,19 @@
-import { Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
 import { activeSocials, emailHref, phoneHref, site } from "@/lib/site";
 import { getSiteTheme } from "@/lib/themeStore";
 import InquiryForm from "../InquiryForm";
 import SocialIcon from "../SocialIcon";
+import WhatsAppQr from "../WhatsAppQr";
 import SectionHeading from "../ui/SectionHeading";
 
 const copy = {
   christmas: {
     title: "Pasikalbėkime apie jūsų namus",
-    text: "Paskambinkite, parašykite arba palikite užklausą. Padėsime išsirinkti lemputes ir pasakysime kainą.",
+    text: "Paskambinkite, parašykite per WhatsApp arba palikite užklausą. Padėsime išsirinkti lemputes ir pasakysime kainą.",
   },
   halloween: {
     title: "Pasikalbėkime apie jūsų Helovyno namus",
-    text: "Paskambinkite, parašykite arba palikite užklausą. Padėsime išsirinkti lemputes ir pasakysime kainą — jokių triukų, tik skanėstai.",
+    text: "Paskambinkite, parašykite per WhatsApp arba palikite užklausą. Padėsime išsirinkti lemputes ir pasakysime kainą — jokių triukų, tik skanėstai.",
   },
 };
 
@@ -56,6 +57,30 @@ export default async function ContactSection({
                 <span className="font-display text-2xl font-medium sm:text-3xl">
                   {site.phone}
                 </span>
+              </span>
+            </a>
+            <a
+              href={site.whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-5 rounded-3xl bg-white p-6 transition-colors hover:bg-snow"
+            >
+              <span className="flex size-14 shrink-0 items-center justify-center rounded-2xl bg-whatsapp text-pine-950">
+                <SocialIcon name="WhatsApp" className="size-7" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm text-stone">Parašykite per WhatsApp</span>
+                <span className="flex items-center gap-2 text-xl font-bold text-pine-900">
+                  Pradėti pokalbį
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                </span>
+                <span className="mt-1 hidden text-sm leading-snug text-stone sm:block">
+                  Arba nuskenuokite QR kodą telefono kamera.
+                </span>
+              </span>
+              {/* Scanning only helps away from the phone itself. */}
+              <span className="hidden shrink-0 rounded-2xl bg-[#fff] p-2 shadow-[inset_0_0_0_1px_#e7dfd1] sm:block">
+                <WhatsAppQr className="size-28" />
               </span>
             </a>
             <a

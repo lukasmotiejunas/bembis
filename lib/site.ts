@@ -7,6 +7,8 @@ export const site = {
     "Kalėdinių lempučių pardavimas, nuoma ir montavimas. Atvažiuojame, papuošiame jūsų namus, o po švenčių viską nuimame.",
   phone: "+370 623 73 199",
   email: "info@kaledudekoras.lt",
+  /** WhatsApp pokalbio nuoroda; iš jos piešiamas ir svetainėje rodomas QR kodas */
+  whatsapp: "https://wa.me/qr/EBTE3GMGLKAMM1",
   serviceArea: "Vilnius ir Vilniaus apskritis",
   /** Miestai, kuriuose dirbame — rodomi puslapiuose ir padeda Google rasti mus vietinėse paieškose */
   serviceTowns: ["Vilnius", "Vilniaus rajonas", "Trakai", "Lentvaris", "Elektrėnai", "Vievis", "Nemenčinė", "Šalčininkai", "Širvintos", "Ukmergė", "Švenčionys", "Pabradė"],

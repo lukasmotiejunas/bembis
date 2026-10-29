@@ -119,6 +119,10 @@ export default function Header() {
                 <Mail className="size-4" aria-hidden="true" />
                 Rašyti
               </a>
+              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="btn btn-whatsapp col-span-2">
+                <SocialIcon name="WhatsApp" className="size-4" />
+                Parašyti per WhatsApp
+              </a>
               {activeSocials.map((s) => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="btn btn-outline">
                   <SocialIcon name={s.label} className="size-4" />

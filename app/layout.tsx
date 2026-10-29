@@ -6,6 +6,8 @@ import TopBar from "@/components/TopBar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import MobileContactBar from "@/components/MobileContactBar";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import WhatsAppQr from "@/components/WhatsAppQr";
 import CartHydration from "@/components/CartHydration";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
@@ -80,6 +82,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <main>{children}</main>
           <Footer />
           <MobileContactBar />
+          <WhatsAppButton qr={<WhatsAppQr className="w-full" />} />
           <LuckyWheel enabled={discountsEnabled()} />
           <GoogleAnalytics measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ""} hostname={new URL(site.url).hostname} />
           <MetaPixel pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ""} hostname={new URL(site.url).hostname} />

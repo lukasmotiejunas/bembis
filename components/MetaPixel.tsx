@@ -31,7 +31,7 @@ export default function MetaPixel({ pixelId, hostname }: { pixelId: string; host
   useEffect(() => {
     const contactClick = (event: MouseEvent) => {
       const target = event.target;
-      if (target instanceof Element && target.closest('a[href^="tel:"],a[href^="mailto:"]')) trackMetaEvent("Contact");
+      if (target instanceof Element && target.closest('a[href^="tel:"],a[href^="mailto:"],a[href^="https://wa.me/"]')) trackMetaEvent("Contact");
     };
     document.addEventListener("click", contactClick);
     return () => document.removeEventListener("click", contactClick);

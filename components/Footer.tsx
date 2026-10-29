@@ -74,6 +74,12 @@ export default async function Footer() {
               </a>
             </li>
             <li className="flex gap-3">
+              <SocialIcon name="WhatsApp" className="mt-0.5 size-4 shrink-0 text-glow" />
+              <a href={site.whatsapp} target="_blank" rel="noopener noreferrer" className="hover:text-glow">
+                Parašykite per WhatsApp
+              </a>
+            </li>
+            <li className="flex gap-3">
               <Mail className="mt-0.5 size-4 shrink-0 text-glow" aria-hidden="true" />
               <a href={emailHref} className="hover:text-glow">
                 {site.email}
@@ -104,7 +110,8 @@ export default async function Footer() {
       </div>
 
       <div className="border-t border-snow/10">
-        <div className="container-page flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-snow/50">
+        {/* Room under the last line for the WhatsApp button that floats in the corner on desktop. */}
+        <div className="container-page flex flex-wrap items-center justify-between gap-4 py-6 text-sm text-snow/50 md:pb-24">
           <span>© {new Date().getFullYear()} {site.name}. Visos teisės saugomos.</span>
           <AnalyticsPreferencesButton measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID ?? ""} pixelId={process.env.NEXT_PUBLIC_META_PIXEL_ID ?? ""} />
         </div>

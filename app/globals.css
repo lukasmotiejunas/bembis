@@ -23,6 +23,9 @@
   --color-glow-soft: #fdf0d5;
   --color-berry: #b3342b;
 
+  /* Brand green, the same in both designs */
+  --color-whatsapp: #25d366;
+
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-sans: var(--font-manrope), system-ui, sans-serif;
 
@@ -211,6 +214,17 @@
   }
   .btn-outline:hover {
     border-color: var(--color-pine-900);
+  }
+
+  /* Dark text: white on WhatsApp green is too faint to read. */
+  .btn-whatsapp {
+    background: var(--color-whatsapp);
+    color: #0c1b14;
+    box-shadow: 0 8px 24px -10px rgb(37 211 102 / 0.75);
+  }
+  .btn-whatsapp:hover {
+    background: #4ade80;
+    box-shadow: 0 12px 30px -10px rgb(37 211 102 / 0.9);
   }
 
   .btn-ghost-light {
