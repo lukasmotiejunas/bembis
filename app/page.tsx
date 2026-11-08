@@ -1,8 +1,6 @@
 import Hero from "@/components/sections/Hero";
-import Offers from "@/components/sections/Offers";
-import SeasonSteps from "@/components/sections/SeasonSteps";
+import LightsCalculator from "@/components/sections/LightsCalculator";
 import Showcase from "@/components/sections/Showcase";
-import LightsSection from "@/components/sections/LightsSection";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
 import JsonLd from "@/components/JsonLd";
@@ -32,10 +30,8 @@ export default function HomePage() {
     <>
       <JsonLd data={[businessSchema(), websiteSchema()]} />
       <Hero />
-      <Offers />
-      <SeasonSteps />
+      <LightsCalculator />
       <Showcase />
-      <LightsSection />
       <FAQ />
       <ContactSection />
     </>

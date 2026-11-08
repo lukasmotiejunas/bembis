@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import clsx from "clsx";
-import { Minus, Plus, ShoppingBag, Sparkles } from "lucide-react";
+import { ShoppingBag, Sparkles } from "lucide-react";
 import {
   buildLightSet,
   LightSet,
@@ -13,21 +13,21 @@ import {
 } from "@/lib/data/lightSet";
 import { cheapestDelivery } from "@/lib/data/delivery";
 import { guarantee, seriesNames } from "@/lib/data/products";
-import { formatMeters, formatPrice, money, plural } from "@/lib/format";
+import { formatMeters, formatPrice, plural } from "@/lib/format";
 import { useCartStore } from "@/lib/store/cartStore";
 import { LightSeries, Product } from "@/lib/types";
 import { useSiteTheme } from "../SiteTheme";
+import MetersInput from "./MetersInput";
 import Price from "./Price";
 
-const presets = [15, 30, 45, 60];
-const seriesText: Record<LightSeries, string> = {
+export const seriesText: Record<LightSeries, string> = {
   xp: "Aukščiausios kokybės lauko LED",
   llinks: "Komercinės klasės profesionalios LED",
 };
 /** Longest chain drawn segment by segment; longer ones end with "+N". */
 const SHOWN_SEGMENTS = 24;
 
-const extensionsLabel = (n: number) =>
+export const extensionsLabel = (n: number) =>
   `${n} ${plural(n, "papildoma sekcija", "papildomos sekcijos", "papildomų sekcijų")}`;
 
 export default function LightSetBuilder() {
@@ -49,10 +49,6 @@ export default function LightSetBuilder() {
       addItem(item.productId, item.mode, item.quantity);
     openCart();
   };
-  const step = (delta: number) => {
-    const current = Number.isFinite(meters) ? meters : 0;
-    setValue(String(Math.max(SECTION_METERS, money(current + delta))));
-  };
 
   return (
     <div
@@ -70,66 +66,7 @@ export default function LightSetBuilder() {
             tiek papildomų sekcijų, kiek reikia.
           </p>
 
-          <label
-            htmlFor="set-meters"
-            className="mt-7 block text-sm font-bold text-pine-900"
-          >
-            Reikalingas ilgis
-          </label>
-          <div className="mt-2 flex h-16 overflow-hidden rounded-2xl border-[1.5px] border-sand bg-white transition-shadow focus-within:border-pine-700 focus-within:shadow-[0_0_0_4px_rgb(36_80_57/0.12)]">
-            <button
-              type="button"
-              onClick={() => step(-SECTION_METERS)}
-              disabled={!Number.isFinite(meters) || meters <= SECTION_METERS}
-              aria-label="Viena sekcija mažiau"
-              className="flex w-14 shrink-0 items-center justify-center border-r border-sand text-pine-900 transition-colors hover:bg-cream disabled:opacity-35 disabled:hover:bg-transparent"
-            >
-              <Minus className="size-5" aria-hidden="true" />
-            </button>
-            <div className="relative flex min-w-0 flex-1 items-center justify-center">
-              <input
-                id="set-meters"
-                type="number"
-                inputMode="decimal"
-                min="0.1"
-                max={MAX_SET_METERS}
-                step="0.1"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-                className="w-full min-w-0 [appearance:textfield] bg-transparent pr-8 pl-4 text-center font-display text-3xl font-semibold text-pine-900 outline-none focus-visible:outline-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              />
-              <span className="pointer-events-none absolute right-4 text-lg font-semibold text-stone">
-                m
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => step(SECTION_METERS)}
-              disabled={Number.isFinite(meters) && meters + SECTION_METERS > MAX_SET_METERS}
-              aria-label="Viena sekcija daugiau"
-              className="flex w-14 shrink-0 items-center justify-center border-l border-sand text-pine-900 transition-colors hover:bg-cream disabled:opacity-35 disabled:hover:bg-transparent"
-            >
-              <Plus className="size-5" aria-hidden="true" />
-            </button>
-          </div>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {presets.map((m) => (
-              <button
-                key={m}
-                type="button"
-                aria-pressed={meters === m}
-                onClick={() => setValue(String(m))}
-                className={clsx(
-                  "rounded-full border-[1.5px] px-3.5 py-1.5 text-sm font-bold transition-colors",
-                  meters === m
-                    ? "border-pine-900 bg-pine-900 text-snow"
-                    : "border-sand bg-white text-pine-900 hover:border-pine-900",
-                )}
-              >
-                {m} m
-              </button>
-            ))}
-          </div>
+          <MetersInput value={value} onChange={setValue} className="mt-7" />
 
           {sections > 0 && (
             <div className="mt-7 rounded-2xl bg-cream p-5">
@@ -215,7 +152,7 @@ export default function LightSetBuilder() {
   );
 }
 
-const lineLabel = (product: Product) =>
+export const lineLabel = (product: Product) =>
   product.kind === "bundle"
     ? `Komplektas, ${formatMeters(product.meters)}`
     : product.kind === "starter"

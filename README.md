@@ -27,7 +27,7 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 
 ## Puslapiai
 
-- `/` — pradžia
+- `/` — pradžia: pagrindinė skaičiuoklė — pasirinktas metrų skaičius, XP ir LLinks lempučių kaina, montavimas su nuėmimu (`pricing.installPerMeter`) ir galutinė suma
 - `/montavimas` — kalėdinių lempučių montavimas ir nuėmimas
 - `/nuoma` — kalėdinių lempučių nuoma
 - `/kaledines-lemputes` — katalogas: 8 XP ir LLinks lauko LED girliandų prekės
