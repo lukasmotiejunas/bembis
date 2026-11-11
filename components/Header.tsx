@@ -12,8 +12,7 @@ import SocialIcon from "./SocialIcon";
 import { useSiteTheme } from "./SiteTheme";
 
 const nav = [
-  { href: "/montavimas", label: "Montavimas" },
-  { href: "/kiek-kainuoja", label: "Kiek kainuoja" },
+  { href: "/", label: "Pradžia" },
   { href: "/kaledines-lemputes", label: "Parduotuvė" },
   { href: "/kontaktai", label: "Kontaktai" },
 ];

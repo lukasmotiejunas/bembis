@@ -63,7 +63,7 @@ const areaServed = [
     .map((name) => ({ "@type": "Place", name })),
 ];
 
-const INSTALLATION_ID = `${absoluteUrl("/montavimas")}#service`;
+const INSTALLATION_ID = `${absoluteUrl("/")}#installation`;
 const RENTAL_ID = `${absoluteUrl("/nuoma")}#service`;
 
 /** A per-metre price, as the services are priced. */
@@ -237,7 +237,7 @@ export function installationServiceSchema() {
     ],
     description:
       "Atvažiuojame, sumontuojame kalėdines lemputes ir girliandas ant namo stogo, langų, terasų, medžių ir tvorų, o po švenčių viską nuimame. Nuėmimas įskaičiuotas į kainą.",
-    url: absoluteUrl("/montavimas"),
+    url: absoluteUrl("/"),
     provider: { "@id": BUSINESS_ID },
     areaServed,
     offers: [

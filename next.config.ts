@@ -4,7 +4,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     // Old English addresses → Lithuanian ones (permanent, so search engines move rankings over).
     return [
-      { source: "/installation", destination: "/montavimas", permanent: true },
+      { source: "/installation", destination: "/", permanent: true },
+      // Montavimo puslapis pašalintas (2026-11-11): montavimą dabar pristato pradžios puslapis su užklausos forma.
+      { source: "/montavimas", destination: "/", permanent: true },
+      // Kainų puslapis laikinai paslėptas (2026-11-11), kodas paliktas app/kiek-kainuoja. Laikinas nukreipimas,
+      // nes puslapis gali grįžti: tada ištrinkite šią eilutę ir grąžinkite nuorodas meniu, poraštėje ir sitemap.
+      { source: "/kiek-kainuoja", destination: "/", permanent: false },
       { source: "/shop", destination: "/kaledines-lemputes", permanent: true },
       {
         source: "/shop/:slug",

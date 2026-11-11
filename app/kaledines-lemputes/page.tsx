@@ -78,7 +78,7 @@ export default async function ShopPage() {
 
       <section className="container-page pb-20 sm:pb-28">
         <Link
-          href="/montavimas"
+          href="/#forma"
           className="group flex flex-col items-start justify-between gap-6 rounded-[2rem] bg-pine-900 p-8 text-snow sm:flex-row sm:items-center sm:p-10"
         >
           <div>
@@ -91,7 +91,7 @@ export default async function ShopPage() {
             </p>
           </div>
           <span className="btn btn-primary shrink-0">
-            Apie montavimą
+            Užsakyti montavimą
             <ArrowRight
               className="size-4 transition-transform group-hover:translate-x-1"
               aria-hidden="true"

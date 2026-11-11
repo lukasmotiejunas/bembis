@@ -72,8 +72,8 @@ export default async function RentalPage() {
         title={t.title}
         text={t.text}
       >
-        <Link href="/kiek-kainuoja" className="btn btn-primary">
-          Palyginti standartinę sąmatą
+        <Link href="#forma" className="btn btn-primary">
+          Gauti nuomos pasiūlymą
           <ArrowRight className="size-4" aria-hidden="true" />
         </Link>
       </PageHeader>

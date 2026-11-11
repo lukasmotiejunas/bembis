@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { ArrowDown, Check, Phone } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Check, Phone } from "lucide-react";
 import { phoneHref, site } from "@/lib/site";
 import { Bats, Fog, Ghost, Moon, Pumpkin } from "./Decor";
 import SpookyGarland from "./SpookyGarland";
@@ -52,10 +53,10 @@ export default function HalloweenHero() {
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="#kaina" className="btn btn-primary">
-              Apskaičiuoti kainą
-              <ArrowDown className="size-4" aria-hidden="true" />
-            </a>
+            <Link href="/kontaktai#forma" className="btn btn-primary">
+              Užsakyti montavimą
+              <ArrowRight className="size-4" aria-hidden="true" />
+            </Link>
             <a href={phoneHref} className="btn btn-outline">
               <Phone className="size-4" aria-hidden="true" />
               {site.phone}

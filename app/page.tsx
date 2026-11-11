@@ -1,10 +1,9 @@
 import Hero from "@/components/sections/Hero";
-import LightsCalculator from "@/components/sections/LightsCalculator";
 import Showcase from "@/components/sections/Showcase";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
 import JsonLd from "@/components/JsonLd";
-import { businessSchema, pageMetadata, websiteSchema } from "@/lib/seo";
+import { businessSchema, installationServiceSchema, pageMetadata, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
 import { getSiteTheme } from "@/lib/themeStore";
 
@@ -25,15 +24,16 @@ export async function generateMetadata() {
   return pageMetadata({ ...meta[await getSiteTheme()], absoluteTitle: true, path: "/" });
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const theme = await getSiteTheme();
   return (
     <>
-      <JsonLd data={[businessSchema(), websiteSchema()]} />
+      <JsonLd data={[businessSchema(), websiteSchema(), installationServiceSchema()]} />
       <Hero />
-      <LightsCalculator />
       <Showcase />
       <FAQ />
-      <ContactSection />
+      {/* The Christmas hero already holds the inquiry form. */}
+      {theme === "halloween" && <ContactSection />}
     </>
   );
 }

@@ -20,14 +20,14 @@ import { useSiteTheme } from "../SiteTheme";
 import MetersInput from "./MetersInput";
 import Price from "./Price";
 
-export const seriesText: Record<LightSeries, string> = {
+const seriesText: Record<LightSeries, string> = {
   xp: "Aukščiausios kokybės lauko LED",
   llinks: "Komercinės klasės profesionalios LED",
 };
 /** Longest chain drawn segment by segment; longer ones end with "+N". */
 const SHOWN_SEGMENTS = 24;
 
-export const extensionsLabel = (n: number) =>
+const extensionsLabel = (n: number) =>
   `${n} ${plural(n, "papildoma sekcija", "papildomos sekcijos", "papildomų sekcijų")}`;
 
 export default function LightSetBuilder() {
@@ -152,7 +152,7 @@ export default function LightSetBuilder() {
   );
 }
 
-export const lineLabel = (product: Product) =>
+const lineLabel = (product: Product) =>
   product.kind === "bundle"
     ? `Komplektas, ${formatMeters(product.meters)}`
     : product.kind === "starter"

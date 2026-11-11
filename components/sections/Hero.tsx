@@ -1,17 +1,10 @@
 import Image from "next/image";
-import { ArrowDown, Check, Phone } from "lucide-react";
-import { phoneHref, site } from "@/lib/site";
+import { pricing } from "@/lib/data/pricing";
+import { formatPrice } from "@/lib/format";
 import { getSiteTheme } from "@/lib/themeStore";
+import InquiryForm from "../InquiryForm";
 import { Garland } from "../Lights";
 import HalloweenHero from "../halloween/HalloweenHero";
-
-const promises = ["2 metų garantija", "Nemokama apžiūra", "Nuimame po švenčių"];
-
-const season = [
-  { month: "Lapkritis", text: "Sumontuojame", color: "bg-glow" },
-  { month: "Gruodis", text: "Jūsų namai šviečia", color: "bg-berry" },
-  { month: "Sausis", text: "Viską nuimame", color: "bg-pine-700" },
-];
 
 export default async function Hero() {
   if ((await getSiteTheme()) === "halloween") return <HalloweenHero />;
@@ -20,50 +13,30 @@ export default async function Hero() {
       <div className="absolute inset-x-0 top-0 -z-10 h-[70%] bg-gradient-to-b from-cream to-snow" />
       <Garland id="hero-garland" />
 
-      <div className="container-page grid items-center gap-14 pt-4 pb-20 lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:pt-8 lg:pb-28">
-        <div>
-          {/* The keyword line is the page's main heading for search engines; the slogan stays the visual headline. */}
-          <h1 className="eyebrow font-sans">Kalėdinių lempučių montavimas ir nuoma Vilniuje</h1>
-          <p
-            className="mt-5 font-display text-[2.6rem] leading-[1.04] font-semibold tracking-[-0.02em] text-balance text-pine-900 sm:text-6xl lg:text-[4rem]"
+      <div className="container-page grid gap-10 pt-4 pb-20 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:pt-8 lg:pb-28">
+        <div className="flex flex-col">
+          <h1
+            className="font-display text-[2.4rem] leading-[1.05] font-semibold tracking-[-0.02em] text-balance text-pine-900 sm:text-5xl lg:text-[3.4rem]"
             style={{ fontVariationSettings: '"SOFT" 60, "opsz" 72' }}
           >
-            Jūsų namai švies.
-            <br />
-            Mes pasirūpinsime{" "}
+            Kalėdinių lempučių montavimas ir nuoma{" "}
             <span className="text-glow-deep italic" style={{ fontVariationSettings: '"SOFT" 100, "opsz" 144' }}>
-              viskuo.
+              Vilniuje
             </span>
-          </p>
-          <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone sm:text-xl">
+          </h1>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-stone sm:text-xl">
             Parduodame ir nuomojame kalėdines lemputes, jas sumontuojame, o po švenčių viską nuimame.
           </p>
+          <p className="mt-6 inline-flex w-fit items-center gap-3 rounded-full bg-white px-5 py-2.5 text-lg text-stone shadow-[0_12px_24px_-16px_rgb(12_27_20/0.35)] ring-1 ring-sand sm:text-xl">
+            <span className="size-2.5 shrink-0 rounded-full bg-glow shadow-[0_0_10px_rgb(244_176_62/0.9)]" aria-hidden="true" />
+            <span>
+              Montavimo kaina nuo{" "}
+              <strong className="whitespace-nowrap text-pine-900">{formatPrice(pricing.installPerMeter)}/m</strong>
+            </span>
+          </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href="#kaina" className="btn btn-primary">
-              Apskaičiuoti kainą
-              <ArrowDown className="size-4" aria-hidden="true" />
-            </a>
-            <a href={phoneHref} className="btn btn-outline">
-              <Phone className="size-4" aria-hidden="true" />
-              {site.phone}
-            </a>
-          </div>
-
-          <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 text-[0.95rem] font-semibold text-pine-900">
-            {promises.map((p) => (
-              <li key={p} className="flex items-center gap-2">
-                <span className="flex size-5 items-center justify-center rounded-full bg-pine-900 text-snow">
-                  <Check className="size-3" strokeWidth={3} aria-hidden="true" />
-                </span>
-                {p}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="relative">
-          <div className="relative aspect-[5/4] overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgb(12_27_20/0.6)]">
+          {/* On wide screens the photo grows to end level with the form beside it. */}
+          <div className="relative mt-8 aspect-[5/4] overflow-hidden rounded-[2rem] shadow-[0_40px_80px_-40px_rgb(12_27_20/0.6)] sm:aspect-[3/2] lg:aspect-auto lg:min-h-80 lg:flex-1">
             <Image
               src="/work/lithuanian-house-xp-v2.png"
               alt="Namas, kurio stogo kraštus puošia šiltai baltos LED girliandos"
@@ -73,19 +46,10 @@ export default async function Hero() {
               className="object-cover"
             />
           </div>
+        </div>
 
-          <div className="relative -mt-12 ml-4 w-fit rounded-2xl bg-white p-5 shadow-[0_24px_48px_-20px_rgb(12_27_20/0.35)] sm:absolute sm:-bottom-8 sm:-left-8 sm:mt-0 sm:ml-0">
-            <p className="text-xs font-extrabold tracking-widest text-stone uppercase">Jūsų sezonas su mumis</p>
-            <ul className="mt-3 space-y-2.5">
-              {season.map((s) => (
-                <li key={s.month} className="flex items-center gap-3">
-                  <span className={`size-2.5 rounded-full ${s.color}`} />
-                  <span className="w-20 text-sm font-bold text-pine-900">{s.month}</span>
-                  <span className="text-sm text-stone">{s.text}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div id="forma" className="scroll-mt-28 rounded-[2rem] shadow-[0_40px_80px_-40px_rgb(12_27_20/0.45)] ring-1 ring-sand">
+          <InquiryForm />
         </div>
       </div>
     </section>

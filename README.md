@@ -20,16 +20,18 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 | Telefonas, el. paštas, aptarnaujama teritorija, socialiniai tinklai | `lib/site.ts`                |
 | Lemputės (viena pirkimui, viena nuomai), kainos, garantija | `lib/data/products.ts`       |
 | Montavimo ir nuėmimo kaina (€/m), pristatymo kaina        | `lib/data/pricing.ts`        |
-| Žingsniai, DUK, nuotraukų galerija                       | `lib/data/services.ts`       |
-| Kainos pavyzdys Montavimo puslapyje                      | `lib/data/priceExample.ts`   |
+| DUK, nuotraukų galerija, paslaugų aprašymai              | `lib/data/services.ts`       |
+| Kainos pavyzdys ir skaičiuoklės pradinės reikšmės        | `lib/data/priceExample.ts`   |
 | Spalvos ir šriftai                                       | `app/globals.css` (`@theme`) |
 | Helovyno dizaino spalvos ir piešiniai                    | `app/halloween.css`, `components/halloween/` |
 
 ## Puslapiai
 
-- `/` — pradžia: pagrindinė skaičiuoklė — pasirinktas metrų skaičius, XP ir LLinks lempučių kaina, montavimas su nuėmimu (`pricing.installPerMeter`) ir galutinė suma
-- `/montavimas` — kalėdinių lempučių montavimas ir nuėmimas
+- `/` — pradžia: užklausos forma, nuotraukos, DUK
 - `/nuoma` — kalėdinių lempučių nuoma
+- `/kiek-kainuoja` — kainų skaičiuoklė. **Laikinai paslėpta** (2026-11-11): kodas paliktas, adresas laikinai
+  nukreipiamas į pradžią, nuorodų į ją nėra. Grąžinti — ištrinkite nukreipimą `next.config.ts` ir grąžinkite nuorodas
+  meniu (`components/Header.tsx`), poraštėje (`components/Footer.tsx`) ir `app/sitemap.ts`.
 - `/kaledines-lemputes` — katalogas: 8 XP ir LLinks lauko LED girliandų prekės
 - `/kaledines-lemputes/[slug]` — lemputės puslapis
 - `/checkout` — užsakymas: prekės, paslaugos (montavimas ir nuėmimas atskirai), kontaktai, apmokėjimas
@@ -37,7 +39,8 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 - `/kontaktai` — kontaktai ir užklausos forma (užklausa ateina el. paštu ir įrašoma į Google Sheets)
 - `/admin` — administravimas: svetainės dizainas (Kalėdinis arba Helovynas). Paieškos sistemoms nerodomas.
 
-Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus. Helovyno dekoracijos
+Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus. Montavimo puslapis
+`/montavimas` pašalintas (2026-11-11) ir nuolat nukreipiamas į pradžią — montavimą dabar pristato pradžios puslapis. Helovyno dekoracijos
 nebeparduodamos (2026-10-18): `/helovyno-dekoracijos` ir jų puslapiai laikinai nukreipiami į `/kaledines-lemputes`.
 
 ## Administravimas: Kalėdinis arba Helovyno dizainas
