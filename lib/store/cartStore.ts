@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { DeliveryMethod, ParcelMachine } from "../data/delivery";
 import { getProduct } from "../data/products";
-import { codeExpired } from "../data/wheel";
+import { codeExpired, WHEEL_ENABLED } from "../data/wheel";
 import { CustomerDetails, emptyCustomer } from "../orders/checkout";
 import { OrderDiscount, OrderServices } from "../orders/order";
 import { CartItem, Product, PurchaseMode } from "../types";
@@ -134,9 +134,11 @@ export const useCartStore = create<CartStore>()(
       }),
       // Rehydrated on mount by <CartHydration /> so server and client render the same markup.
       skipHydration: true,
-      // A code that ran out since the last visit would otherwise keep showing discounted prices.
+      // A code that ran out since the last visit, or one saved before the wheel was switched off,
+      // would otherwise keep showing discounted prices.
       onRehydrateStorage: () => (state) => {
-        if (state?.discount && codeExpired(state.discount.code)) state.setDiscount(null);
+        if (state?.discount && (!WHEEL_ENABLED || codeExpired(state.discount.code)))
+          state.setDiscount(null);
       },
     },
   ),

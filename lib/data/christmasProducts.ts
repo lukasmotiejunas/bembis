@@ -1,7 +1,7 @@
 import type { Product } from "../types";
 
 // Šaltinis: „prekes“, abu lapai, 2026-10-20. Bazinė „mūsų kaina“;
-// bendras withPriceIncrease pritaiko +10 % vieną kartą visiems pardavimo kanalams.
+// bendras withPriceIncrease pritaiko PRICE_INCREASE_PERCENT vieną kartą visiems pardavimo kanalams.
 export const christmasProducts: Product[] = [
   {
     "id": "bk-6595c93f8dc4",

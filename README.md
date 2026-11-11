@@ -64,7 +64,13 @@ Jei pasirinkimo nepavyksta perskaityti, svetainė rodoma kalėdiniu dizainu.
 
 ## Laimės ratas
 
-Atėjus į svetainę, po sekundės parodomas laimės ratas (išskyrus apmokėjimo ir administravimo puslapius).
+**Šiuo metu išjungtas (2026-11-11), o prekių kainos grąžintos į buvusias.** Kol `WHEEL_ENABLED` faile
+`lib/data/wheel.ts` yra `false`, ratas nerodomas, nauji kodai neišduodami, jau išduoti nepriimami, lankytojų
+krepšeliuose išsaugotos nuolaidos išvalomos, o apmokėjimo puslapyje nėra nuolaidos kodo laukelio. Kartu su ratu
+buvo įvestas 10 % kainų pakėlimas (`PRICE_INCREASE_PERCENT` faile `lib/data/products.ts`, dabar `0`). Norėdami
+ratą įjungti vėl, nustatykite `WHEEL_ENABLED = true` ir, jei reikia, grąžinkite pakėlimą.
+
+Kai ratas įjungtas: atėjus į svetainę, po sekundės parodomas laimės ratas (išskyrus apmokėjimo ir administravimo puslapius).
 Kol lankytojas jo nesuko, ratas rodomas po kiekvieno puslapio perkrovimo. Pasukus sukimo diena ir laimėtas kodas
 įsimenami naršyklės `localStorage` (`laimes-ratas`), o ratas vėl rodomas po savaitės (sukta 18 d. — vėl 25 d.).
 

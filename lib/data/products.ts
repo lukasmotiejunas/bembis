@@ -84,15 +84,15 @@ function light(
 }
 
 /**
- * Visos prekių kainos pakeltos 10 % (2026-10-17). Sąraše žemiau lieka kainos iki pakėlimo;
- * svetainėje, krepšelyje ir apmokant naudojamos pakeltos. Grąžinti senas kainas — nustatykite 0.
+ * Prekių kainų pakėlimas procentais, taikomas sąrašo kainoms žemiau ir christmasProducts.ts.
+ * 2026-10-17 kainos buvo pakeltos 10 % laimės ratui; 2026-11-11 ratas išjungtas, kainos grąžintos į buvusias (0).
  */
-export const PRICE_INCREASE_PERCENT = 10;
+export const PRICE_INCREASE_PERCENT = 0;
 /** Price after the increase, rounded to the cent. */
 export const withPriceIncrease = (price: number) =>
   Math.round((Math.round(price * 100) * (100 + PRICE_INCREASE_PERCENT)) / 100) / 100;
 
-// Tik viešos pardavimo kainos (iki pakėlimo). Vidinių kiekių ir savikainų nėra.
+// Tik viešos pardavimo kainos (be pakėlimo). Vidinių kiekių ir savikainų nėra.
 const catalog: Product[] = [
   light("llinks", "starter", 1, 38.99, "61030", [
     "/products/llinks-motinine-1.png",

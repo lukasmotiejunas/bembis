@@ -1,5 +1,11 @@
 // Laimės ratas. Visi prizai tikri: kiekvieno prizo dalys rate užima tiek vietos, kokia jo tikimybė,
 // o serveris parenka atsitiktinį sustojimo tašką. Tikimybės rodomos lankytojui po ratu.
+/**
+ * Laimės ratas išjungtas (2026-11-11) kartu su 10 % kainų pakėlimu (PRICE_INCREASE_PERCENT, lib/data/products.ts).
+ * Kol false, ratas nerodomas, nauji kodai neišduodami, o jau išduoti nepriimami. Įjungti — true.
+ */
+export const WHEEL_ENABLED = false;
+
 export const wheelPrizes = [
   { percent: 3, chance: 10 },
   { percent: 5, chance: 15 },

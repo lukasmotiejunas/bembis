@@ -23,7 +23,7 @@ import {
   sendOrderInquiry,
   startCheckout,
 } from "@/app/checkout/actions";
-import { INVALID_DISCOUNT } from "@/lib/data/wheel";
+import { INVALID_DISCOUNT, WHEEL_ENABLED } from "@/lib/data/wheel";
 import { DeliveryMethod, deliveryOptions } from "@/lib/data/delivery";
 import { pricing } from "@/lib/data/pricing";
 import { formatMeters, formatPrice } from "@/lib/format";
@@ -606,64 +606,66 @@ export default function CheckoutView({
                   )}
             </span>
           </div>
-          <div className="mt-4 border-t border-snow/15 pt-4 text-sm">
-            {discount ? (
-              <div className="flex items-center justify-between gap-3 rounded-2xl bg-snow/10 px-4 py-3">
-                <span className="min-w-0">
-                  <span className="block text-snow/65">Pritaikytas nuolaidos kodas</span>
-                  <strong className="block truncate tracking-wide">{discount.code}</strong>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setDiscount(null)}
-                  className="shrink-0 font-semibold text-snow/75 underline-offset-4 hover:text-snow hover:underline"
-                >
-                  Pašalinti
-                </button>
-              </div>
-            ) : (
-              <>
-                <label htmlFor="discount-code" className="mb-1.5 block text-snow/75">
-                  Nuolaidos kodas
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    id="discount-code"
-                    value={codeInput}
-                    onChange={(e) => setCodeInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      // Enter applies the code instead of submitting the whole order.
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        applyCode();
-                      }
-                    }}
-                    autoComplete="off"
-                    spellCheck={false}
-                    placeholder="RATAS5-…"
-                    className="field min-h-11 min-w-0 flex-1 uppercase placeholder:normal-case"
-                  />
+          {WHEEL_ENABLED && (
+            <div className="mt-4 border-t border-snow/15 pt-4 text-sm">
+              {discount ? (
+                <div className="flex items-center justify-between gap-3 rounded-2xl bg-snow/10 px-4 py-3">
+                  <span className="min-w-0">
+                    <span className="block text-snow/65">Pritaikytas nuolaidos kodas</span>
+                    <strong className="block truncate tracking-wide">{discount.code}</strong>
+                  </span>
                   <button
                     type="button"
-                    onClick={applyCode}
-                    disabled={!codeInput.trim() || checkingCode}
-                    className="btn btn-outline min-h-11 shrink-0 px-4 disabled:opacity-60"
+                    onClick={() => setDiscount(null)}
+                    className="shrink-0 font-semibold text-snow/75 underline-offset-4 hover:text-snow hover:underline"
                   >
-                    {checkingCode ? (
-                      <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                    ) : (
-                      "Pritaikyti"
-                    )}
+                    Pašalinti
                   </button>
                 </div>
-                {codeError && (
-                  <p role="alert" className="mt-2 font-semibold text-glow">
-                    {codeError}
-                  </p>
-                )}
-              </>
-            )}
-          </div>
+              ) : (
+                <>
+                  <label htmlFor="discount-code" className="mb-1.5 block text-snow/75">
+                    Nuolaidos kodas
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      id="discount-code"
+                      value={codeInput}
+                      onChange={(e) => setCodeInput(e.target.value)}
+                      onKeyDown={(e) => {
+                        // Enter applies the code instead of submitting the whole order.
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          applyCode();
+                        }
+                      }}
+                      autoComplete="off"
+                      spellCheck={false}
+                      placeholder="RATAS5-…"
+                      className="field min-h-11 min-w-0 flex-1 uppercase placeholder:normal-case"
+                    />
+                    <button
+                      type="button"
+                      onClick={applyCode}
+                      disabled={!codeInput.trim() || checkingCode}
+                      className="btn btn-outline min-h-11 shrink-0 px-4 disabled:opacity-60"
+                    >
+                      {checkingCode ? (
+                        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                      ) : (
+                        "Pritaikyti"
+                      )}
+                    </button>
+                  </div>
+                  {codeError && (
+                    <p role="alert" className="mt-2 font-semibold text-glow">
+                      {codeError}
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
           <div className="mt-6 flex flex-wrap items-baseline justify-between gap-4 border-t border-dashed border-snow/20 pt-5">
             <span className="font-semibold">
               {order.requiresQuote ? "Prekių suma" : "Iš viso"}

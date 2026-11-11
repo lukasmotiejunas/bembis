@@ -7,11 +7,13 @@ import {
   DAY_MS as DAY,
   decodeCodeText as decode,
   isWheelPercent,
+  WHEEL_ENABLED,
   wheelSlices,
 } from "./data/wheel";
 
-/** DISCOUNT_CODE_SECRET, or a key derived from the Stripe key so codes work without extra setup. */
+/** DISCOUNT_CODE_SECRET, or a key derived from the Stripe key so codes work without extra setup. None while the wheel is off. */
 function secret() {
+  if (!WHEEL_ENABLED) return null;
   if (process.env.DISCOUNT_CODE_SECRET) return process.env.DISCOUNT_CODE_SECRET;
   const stripe = process.env.STRIPE_SECRET_KEY;
   return stripe ? createHmac("sha256", stripe).update("discount-codes").digest("hex") : null;
