@@ -75,9 +75,7 @@ export function buildOrder(
       kind: "product",
       productId: product.id,
       name: product.name,
-      detail: product.kind === "decoration"
-        ? `Pristatymas per ${product.deliveryBusinessDays} darbo dienas`
-        : `${formatMeters(product.meters)} · ${product.kind === "bundle" ? "visas komplektas" : "viena sekcija"}`,
+      detail: `${formatMeters(product.meters)} · ${product.kind === "bundle" ? "visas komplektas" : "viena sekcija"}`,
       image: product.image,
       mode: item.mode,
       unitPrice: unitCents / 100,

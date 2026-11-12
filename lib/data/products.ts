@@ -1,6 +1,5 @@
 import { LightSeries, Product, ProductKind, PurchaseMode } from "../types";
 import { formatMeters } from "../format";
-import { christmasProducts } from "./christmasProducts";
 
 export const guarantee = { years: 2, label: "2 metų garantija" };
 /** Vartotojo patvirtinta: pirktas prekes galima grąžinti per 14 d., grąžinimo išlaidas apmoka pirkėjas. */
@@ -8,7 +7,6 @@ export const returnPolicy = { days: 14 };
 export const seriesNames: Record<Product["series"], string> = {
   xp: "XP",
   llinks: "LLinks",
-  christmas: "Kalėdinės prekės",
 };
 
 function light(
@@ -84,7 +82,7 @@ function light(
 }
 
 /**
- * Prekių kainų pakėlimas procentais, taikomas sąrašo kainoms žemiau ir christmasProducts.ts.
+ * Prekių kainų pakėlimas procentais, taikomas sąrašo kainoms žemiau.
  * 2026-10-17 kainos buvo pakeltos 10 % laimės ratui; 2026-11-11 ratas išjungtas, kainos grąžintos į buvusias (0).
  */
 export const PRICE_INCREASE_PERCENT = 0;
@@ -123,7 +121,7 @@ const catalog: Product[] = [
     "/products/xp-komplektas-60.png",
   ]),
 ];
-export const products: Product[] = [...catalog, ...christmasProducts].map((p) => ({
+export const products: Product[] = catalog.map((p) => ({
   ...p,
   price: withPriceIncrease(p.price),
 }));

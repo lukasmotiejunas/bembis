@@ -42,6 +42,8 @@ Atidarykite [http://localhost:3000](http://localhost:3000).
 Seni adresai (`/installation`, `/shop`, `/rent`, `/contact`) nuolat nukreipiami į naujus. Montavimo puslapis
 `/montavimas` pašalintas (2026-11-11) ir nuolat nukreipiamas į pradžią — montavimą dabar pristato pradžios puslapis. Helovyno dekoracijos
 nebeparduodamos (2026-10-18): `/helovyno-dekoracijos` ir jų puslapiai laikinai nukreipiami į `/kaledines-lemputes`.
+Kalėdinės dekoracijos (žaisliukai, advento kalendoriai, dovanos) nebeparduodamos (2026-11-12): jų puslapiai
+`/kaledines-lemputes/…-bk-…` ir `…-ch-…` laikinai nukreipiami į `/kaledines-lemputes`.
 
 ## Administravimas: Kalėdinis arba Helovyno dizainas
 

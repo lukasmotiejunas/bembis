@@ -31,6 +31,10 @@ const nextConfig: NextConfig = {
       // Helovyno dekoracijos nebeparduodamos (2026-10-18). Laikinas nukreipimas, nes kitą sezoną jos gali grįžti.
       { source: "/helovyno-dekoracijos", destination: "/kaledines-lemputes", permanent: false },
       { source: "/helovyno-dekoracijos/:slug", destination: "/kaledines-lemputes", permanent: false },
+      // Kalėdinės dekoracijos (žaisliukai, advento kalendoriai, dovanos) nebeparduodamos (2026-11-12) — liko tik XP ir
+      // LLinks girliandos. Jų adresai baigdavosi prekės kodu („-bk-…“ arba „-ch-…“); laikinas nukreipimas, nes gali grįžti.
+      { source: "/kaledines-lemputes/:slug(.*-bk-[0-9a-f]{12})", destination: "/kaledines-lemputes", permanent: false },
+      { source: "/kaledines-lemputes/:slug(.*-ch-\\d+)", destination: "/kaledines-lemputes", permanent: false },
     ];
   },
 };

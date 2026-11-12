@@ -196,7 +196,7 @@ export function productSchema(product: Product) {
       url: absoluteUrl(productHref(product)),
       price: product.price.toFixed(2),
       priceCurrency: "EUR",
-      availability: product.kind === "decoration" ? "https://schema.org/PreOrder" : "https://schema.org/InStock",
+      availability: "https://schema.org/InStock",
       seller: { "@id": BUSINESS_ID },
       hasMerchantReturnPolicy: merchantReturnPolicy,
       shippingDetails,
@@ -208,7 +208,7 @@ export function catalogSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Kalėdinės dekoracijos, žaisliukai ir lauko LED girliandos",
+    name: "XP ir LLinks lauko LED girliandos ir komplektai",
     url: absoluteUrl("/kaledines-lemputes"),
     mainEntity: {
       "@type": "ItemList",

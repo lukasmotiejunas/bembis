@@ -19,7 +19,6 @@ import ProductPurchase from "@/components/shop/ProductPurchase";
 import ProductFeatureCard from "@/components/shop/ProductFeatureCard";
 import ProductGallery from "@/components/shop/ProductGallery";
 import Price, { DiscountNote } from "@/components/shop/Price";
-import DecorationProduct from "@/components/shop/DecorationProduct";
 import JsonLd from "@/components/JsonLd";
 import { breadcrumbSchema, pageMetadata, productSchema } from "@/lib/seo";
 import { inquiryHref, INSTALLATION_SERVICE } from "@/lib/inquiry";
@@ -47,8 +46,7 @@ export default async function ProductPage(
   const { slug } = await props.params;
   const product = getProductBySlug(slug);
   if (!product) notFound();
-  if (product.kind === "decoration") return <><MetaProductView id={product.id} price={product.price} /><DecorationProduct product={product} /></>;
-  const rentalPrice = product.series === "christmas" ? 0 : pricing.rentalPerMeter[product.series];
+  const rentalPrice = pricing.rentalPerMeter[product.series];
   const halloween = (await getSiteTheme()) === "halloween";
   const related = products
     .filter(
