@@ -13,6 +13,8 @@ import { useSiteTheme } from "./SiteTheme";
 
 const nav = [
   { href: "/", label: "Pradžia" },
+  { href: "/montavimas", label: "Montavimas" },
+  { href: "/nuoma", label: "Nuoma" },
   { href: "/kaledines-lemputes", label: "Parduotuvė" },
   { href: "/kontaktai", label: "Kontaktai" },
 ];
@@ -46,13 +48,13 @@ export default function Header() {
         <div className="container-page flex h-[4.5rem] items-center justify-between gap-6">
           <Logo id="logo-header" theme={theme} />
 
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Pagrindinė navigacija">
+          <nav className="hidden items-center gap-1 lg:flex" aria-label="Pagrindinė navigacija">
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={clsx(
-                  "rounded-full px-4 py-2 text-[0.95rem] font-semibold transition-colors",
+                  "rounded-full px-2.5 py-2 text-sm font-semibold transition-colors lg:px-4 lg:text-[0.95rem]",
                   isActive(item.href) ? "bg-cream text-pine-900" : "text-stone hover:text-pine-900"
                 )}
               >
@@ -62,7 +64,7 @@ export default function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <a href={phoneHref} className="btn btn-dark hidden min-h-11 px-5 text-sm lg:inline-flex">
+            <a href={phoneHref} className="btn btn-dark hidden min-h-11 px-5 text-sm xl:inline-flex">
               <Phone className="size-4" aria-hidden="true" />
               {site.phone}
             </a>
@@ -82,7 +84,7 @@ export default function Header() {
             <button
               type="button"
               onClick={() => setMenuOpen((v) => !v)}
-              className="inline-flex size-11 items-center justify-center rounded-full text-pine-900 md:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-full text-pine-900 lg:hidden"
               aria-label={menuOpen ? "Uždaryti meniu" : "Atidaryti meniu"}
               aria-expanded={menuOpen}
               aria-controls="mobile-menu"
@@ -93,7 +95,7 @@ export default function Header() {
         </div>
 
         {menuOpen && (
-          <div id="mobile-menu" className="animate-fade-in border-t border-sand md:hidden">
+          <div id="mobile-menu" className="animate-fade-in border-t border-sand lg:hidden">
             <nav className="container-page flex flex-col py-3" aria-label="Mobili navigacija">
               {nav.map((item) => (
                 <Link

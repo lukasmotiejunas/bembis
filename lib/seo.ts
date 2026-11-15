@@ -237,7 +237,7 @@ export function installationServiceSchema() {
     ],
     description:
       "Atvažiuojame, sumontuojame kalėdines lemputes ir girliandas ant namo stogo, langų, terasų, medžių ir tvorų, o po švenčių viską nuimame. Nuėmimas įskaičiuotas į kainą.",
-    url: absoluteUrl("/"),
+    url: absoluteUrl("/montavimas"),
     provider: { "@id": BUSINESS_ID },
     areaServed,
     offers: [

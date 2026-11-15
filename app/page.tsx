@@ -2,6 +2,7 @@ import Hero from "@/components/sections/Hero";
 import Showcase from "@/components/sections/Showcase";
 import FAQ from "@/components/sections/FAQ";
 import ContactSection from "@/components/sections/ContactSection";
+import ServicesOverview from "@/components/sections/ServicesOverview";
 import JsonLd from "@/components/JsonLd";
 import { businessSchema, installationServiceSchema, pageMetadata, websiteSchema } from "@/lib/seo";
 import { site } from "@/lib/site";
@@ -30,6 +31,7 @@ export default async function HomePage() {
     <>
       <JsonLd data={[businessSchema(), websiteSchema(), installationServiceSchema()]} />
       <Hero />
+      <ServicesOverview />
       <Showcase />
       <FAQ />
       {/* The Christmas hero already holds the inquiry form. */}

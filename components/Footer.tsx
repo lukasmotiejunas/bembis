@@ -11,6 +11,7 @@ import { AnalyticsPreferencesButton } from "./GoogleAnalytics";
 
 const links = [
   { href: "/", label: "Pradžia" },
+  { href: "/montavimas", label: "Kalėdinių lempučių montavimas" },
   { href: "/nuoma", label: "Kalėdinių lempučių nuoma" },
   { href: "/kaledines-lemputes", label: "Kalėdinės lemputės" },
   { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
@@ -18,6 +19,7 @@ const links = [
 ];
 const halloweenLinks = [
   { href: "/", label: "Pradžia" },
+  { href: "/montavimas", label: "Lempučių montavimas" },
   { href: "/nuoma", label: "Lempučių nuoma" },
   { href: "/kaledines-lemputes", label: "Lauko LED girliandos" },
   { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
