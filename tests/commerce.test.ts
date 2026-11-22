@@ -103,7 +103,7 @@ test("Užsakymo perdavimas reikalauja laiško patvirtinimo ir perduoda verslo ga
       sent = JSON.parse(String(options?.body));
       return Response.json(result);
     };
-    const fields = { "Stripe ID": "cs_test", "Užsakymo nr.": "TEST", "Suma, €": 78.96, "El. paštas": "customer@example.invalid" };
+    const fields = { "Stripe ID": "cs_test", "Užsakymo nr.": "TEST", "Suma, €": 53.22, "El. paštas": "customer@example.invalid" };
     await appendOrderToSheet(fields);
     assert.equal(sent.type, "order");
     assert.deepEqual(sent.fields, fields);
@@ -124,12 +124,12 @@ test("Užsakymo perdavimas reikalauja laiško patvirtinimo ir perduoda verslo ga
 const expected = [
   ["61030", 7.5, 38.99],
   ["61040", 7.5, 31.99],
-  ["63100", 7.5, 24.99],
-  ["63110", 7.5, 17.99],
+  ["63100", 7.5, 29.99],
+  ["63110", 7.5, 24.99],
   ["llinks-45", 45, 168.99],
   ["llinks-60", 60, 209.99],
-  ["xp-45", 45, 97.99],
-  ["xp-60", 60, 120.99],
+  ["xp-45", 45, 154.94],
+  ["xp-60", 60, 204.92],
 ] as const;
 const customer = {
   name: "Patikros klientas",
@@ -160,8 +160,9 @@ test("Visos pardavimo kainos ir vienetai sutampa su nepriklausomu šaltinio sąr
   for (const [id, meters, price] of expected) {
     const p = getProduct(id, "buy")!;
     assert.equal(p.meters, meters);
-    // The site sells at the approved list price: the 10 % increase was reverted on 2026-11-11.
+    // Approved selling prices, with XP prices updated on 2026-11-22.
     assert.equal(p.price, price);
+    assert.equal(p.previousPrice, undefined);
     assert.equal(p.sections * 7.5, meters);
     const schema = productSchema(p);
     assert.equal(schema.offers.price, price.toFixed(2));
@@ -189,13 +190,17 @@ test("Stripe sesijoje išsaugomi prekių kodai ir kiekiai", () => {
   const session = buildSessionParams({ ...input, items }, order, "https://www.kaledudekoras.lt", "KD-TEST-IDS");
   assert.equal(session.metadata?.product_ids_0, "61030:2,63110:3");
   assert.equal(session.line_items?.[1].price_data?.product_data?.metadata?.product_id, "63110");
-  assert.equal(session.line_items?.[1].price_data?.unit_amount, 1799);
+  assert.equal(session.line_items?.[1].price_data?.unit_amount, 2499);
 });
-test("Komplektų kainų formulės perskaičiuotos nepriklausomai", () => {
-  assert.equal(Math.round((38.99 + 31.99 * 5) * 0.85) - 0.01, 168.99);
-  assert.equal(Math.round((38.99 + 31.99 * 7) * 0.8) - 0.01, 209.99);
-  assert.equal(Math.round((24.99 + 17.99 * 5) * 0.85) - 0.01, 97.99);
-  assert.equal(Math.round((24.99 + 17.99 * 7) * 0.8) - 0.01, 120.99);
+test("XP komplektų kainos sutampa su motininės ir papildomų sekcijų suma", () => {
+  for (const series of ["xp"] as const) {
+    const starter = getProduct("63100", "buy")!;
+    const extension = getProduct("63110", "buy")!;
+    for (const [meters, extensions] of [[45, 5], [60, 7]]) {
+      const bundle = getProduct(`${series}-${meters}`, "buy")!;
+      assert.equal(Math.round(bundle.price * 100), Math.round(starter.price * 100) + extensions * Math.round(extension.price * 100));
+    }
+  }
 });
 test("12 × 12 yra 48 m perimetras; vienas darbo tarifas jau apima nuėmimą", () => {
   const ll = buildEstimate("llinks")!;
@@ -260,7 +265,7 @@ test("Krepšelis ir serveris vienodai skaičiuoja visus vienetus centais", () =>
     [{ productId: "63110", mode: "buy", quantity: 99 }],
     services,
   );
-  assert.equal(repeated.productsTotal, 1781.01); // 99 × 17,99
+  assert.equal(repeated.productsTotal, 2474.01); // 99 × 24,99
 });
 test("Serveris nepasitiki naršyklės kaina ir atmeta netinkamas prekes, nuomos režimą bei kiekius", () => {
   const forged = {
@@ -483,25 +488,19 @@ test("Omniva sąrašas: tik Lietuvos paštomatai, paieška be lietuviškų raid�
 test("Rinkinys: viena motininė ir reikiamas papildomų sekcijų kiekis, komplektas tik kai pigiau", () => {
   const ids = (set: ReturnType<typeof buildLightSet>) =>
     set!.lines.map((l) => [l.product.id, l.quantity]);
-  // Sąrašo kainos: XP motininė 24,99, papildoma 17,99, 45 m komplektas 97,99.
-  // 7,5 m — tik motininė; 30 m — motininė ir 3 papildomos (24,99 + 3 × 17,99).
   assert.deepEqual(ids(buildLightSet("xp", 7.5)), [["63100", 1]]);
   const thirty = buildLightSet("xp", 30)!;
   assert.deepEqual(ids(thirty), [["63100", 1], ["63110", 3]]);
-  assert.equal(thirty.total, 78.96);
+  assert.equal(thirty.total, 104.96);
   assert.equal(thirty.savings, 0);
-  // 32 m apvalinama iki 5 sekcijų (37,5 m): 24,99 + 4 × 17,99 pigiau nei 45 m komplektas.
   const rounded = buildLightSet("xp", 32)!;
   assert.equal(rounded.meters, 37.5);
-  assert.equal(rounded.total, 96.95);
-  // 45 m: komplektas (97,99) pigesnis nei 24,99 + 5 × 17,99 = 114,94.
+  assert.equal(rounded.total, 129.95);
   const kit = buildLightSet("xp", 45)!;
-  assert.deepEqual(ids(kit), [["xp-45", 1]]);
-  assert.equal(kit.savings, 16.95);
-  // 50 m = 7 sekcijos: 45 m komplektas + 1 papildoma (97,99 + 17,99).
-  assert.deepEqual(ids(buildLightSet("xp", 50)), [["xp-45", 1], ["63110", 1]]);
-  assert.equal(buildLightSet("xp", 50)!.total, 115.98);
-  // LLinks 100 m = 14 sekcijų: 60 m komplektas + 6 papildomos (209,99 + 6 × 31,99).
+  assert.deepEqual(ids(kit), [["63100", 1], ["63110", 5]]);
+  assert.equal(kit.savings, 0);
+  assert.deepEqual(ids(buildLightSet("xp", 50)), [["63100", 1], ["63110", 6]]);
+  assert.equal(buildLightSet("xp", 50)!.total, 179.93);
   const llinks = buildLightSet("llinks", 100)!;
   assert.deepEqual(ids(llinks), [["llinks-60", 1], ["61040", 6]]);
   assert.equal(llinks.total, 401.93);
@@ -646,7 +645,7 @@ test("Nuolaida taikoma tik prekėms nuo dabartinių kainų, o Stripe suma sutamp
   const order = buildOrder(items, services, { method: "courier" }, discount);
   const unitDiscount = (price: number) => Math.round(price * 100) - Math.round((Math.round(price * 100) * 93) / 100);
   assert.equal(order.productsTotal, full.productsTotal);
-  assert.equal(order.discountTotal, (unitDiscount(38.99) * 2 + unitDiscount(17.99) * 3) / 100);
+  assert.equal(order.discountTotal, (unitDiscount(38.99) * 2 + unitDiscount(24.99) * 3) / 100);
   assert.equal(order.total, Math.round((full.total - order.discountTotal) * 100) / 100);
   assert.equal(order.extras[0].paidUnitPrice, pricing.delivery.courier);
   // Prices shown with the discount are the ones charged.

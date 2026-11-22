@@ -72,6 +72,7 @@ export default function ProductFeatureCard({ product }: { product: Product }) {
           <p>
             <Price
               price={product.price}
+              previousPrice={product.previousPrice}
               className="font-display text-4xl font-semibold text-pine-900 xl:text-2xl"
             />
             <span className="ml-1 block text-sm text-stone xl:ml-0 xl:text-xs">

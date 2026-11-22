@@ -43,6 +43,7 @@ function light(
     kind,
     sections,
     price,
+    previousPrice: previousPrices[sku],
     image: photos?.[0] ?? `/products/${series}.svg`,
     photos,
     color: "Šilta balta",
@@ -82,8 +83,8 @@ function light(
 }
 
 /**
- * Prekių kainų pakėlimas procentais, taikomas sąrašo kainoms žemiau.
- * 2026-10-17 kainos buvo pakeltos 10 % laimės ratui; 2026-11-11 ratas išjungtas, kainos grąžintos į buvusias (0).
+ * Papildomas sąrašo kainų keitimas išjungtas: patvirtintos galutinės kainos
+ * jau įrašytos kataloge, todėl papildomas antkainis netaikomas.
  */
 export const PRICE_INCREASE_PERCENT = 0;
 /** Price after the increase, rounded to the cent. */
@@ -91,6 +92,8 @@ export const withPriceIncrease = (price: number) =>
   Math.round((Math.round(price * 100) * (100 + PRICE_INCREASE_PERCENT)) / 100) / 100;
 
 // Tik viešos pardavimo kainos (be pakėlimo). Vidinių kiekių ir savikainų nėra.
+const previousPrices: Record<string, number> = {};
+
 const catalog: Product[] = [
   light("llinks", "starter", 1, 38.99, "61030", [
     "/products/llinks-motinine-1.png",
@@ -100,11 +103,11 @@ const catalog: Product[] = [
     "/products/llinks-papildoma-1.png",
     "/products/llinks-papildoma-2.png",
   ]),
-  light("xp", "starter", 1, 24.99, "63100", [
+  light("xp", "starter", 1, 29.99, "63100", [
     "/products/xp-motinine-1.png",
     "/products/motinine-girlianda.png",
   ]),
-  light("xp", "extension", 1, 17.99, "63110", [
+  light("xp", "extension", 1, 24.99, "63110", [
     "/products/xp-papildoma-1.png",
     "/products/xp-papildoma-2.png",
   ]),
@@ -114,10 +117,10 @@ const catalog: Product[] = [
   light("llinks", "bundle", 8, 209.99, "llinks-60", [
     "/products/llinks-komplektas-60.png",
   ]),
-  light("xp", "bundle", 6, 97.99, "xp-45", [
+  light("xp", "bundle", 6, 154.94, "xp-45", [
     "/products/xp-komplektas-45.png",
   ]),
-  light("xp", "bundle", 8, 120.99, "xp-60", [
+  light("xp", "bundle", 8, 204.92, "xp-60", [
     "/products/xp-komplektas-60.png",
   ]),
 ];

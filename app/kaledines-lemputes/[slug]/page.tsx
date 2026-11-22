@@ -135,7 +135,7 @@ export default async function ProductPage(
             )}
             <div className="mt-7 rounded-[1.75rem] border border-sand bg-white p-6">
               <p className="font-display text-5xl font-semibold text-pine-900">
-                <Price price={product.price} />
+                <Price price={product.price} previousPrice={product.previousPrice} />
               </p>
               <p className="mt-2 text-stone">
                 {product.kind === "bundle"

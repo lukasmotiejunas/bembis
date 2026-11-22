@@ -13,6 +13,8 @@ export interface Product {
   sections: number;
   /** Pirkimo kaina arba nuomos kaina visam sezonui, € */
   price: number;
+  /** Ankstesnė vieša kaina prieš dabartinę akciją, €. */
+  previousPrice?: number;
   image: string;
   /** Tikros prekės nuotraukos; pirmoji yra ir `image`. Be jų rodoma apšvietimo schema. */
   photos?: string[];

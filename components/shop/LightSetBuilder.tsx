@@ -174,7 +174,7 @@ function SetCard({
       </h3>
       <p className="text-sm text-stone sm:min-h-[2lh]">{seriesText[set.series]}</p>
       <p className="mt-5 font-display text-4xl font-semibold text-pine-900">
-        <Price price={set.lines.map((l) => ({ price: l.product.price, quantity: l.quantity }))} />
+        <Price price={set.lines.map((l) => ({ price: l.product.price, previousPrice: l.product.previousPrice, quantity: l.quantity }))} />
       </p>
       <p className="mt-1 text-sm text-stone">
         {formatMeters(set.meters)} · {set.leds} LED
@@ -198,7 +198,7 @@ function SetCard({
               </span>
             </span>
             <span className="shrink-0 font-bold text-pine-900">
-              <Price price={[{ price: line.product.price, quantity: line.quantity }]} />
+              <Price price={[{ price: line.product.price, previousPrice: line.product.previousPrice, quantity: line.quantity }]} />
             </span>
           </li>
         ))}
