@@ -19,7 +19,7 @@ const ROOF_LIGHTS = [
 
 /** House outline with lights along the roof, a star on top and a lit door. */
 export function LogoMark({ id, light = false, className }: { id: string; light?: boolean; className?: string }) {
-  const line = light ? "#fbf8f3" : "#122a1f";
+  const line = light ? "#ffffff" : "#175230";
   return (
     <svg viewBox="2 0 44 44" className={className} aria-hidden="true">
       <defs>

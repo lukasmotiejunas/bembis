@@ -3,24 +3,24 @@
 
 @theme {
   /* Surfaces */
-  --color-snow: #fbf8f3;
-  --color-cream: #f4eee4;
-  --color-sand: #e7dfd1;
+  --color-snow: #ffffff;
+  --color-cream: #f0e8d9;
+  --color-sand: #e5e5e5;
 
-  /* Evergreen */
-  --color-pine-950: #0c1b14;
-  --color-pine-900: #122a1f;
-  --color-pine-800: #1a3b2c;
-  --color-pine-700: #245039;
+  /* Christmas green */
+  --color-pine-950: #175230;
+  --color-pine-900: #175230;
+  --color-pine-800: #224c34;
+  --color-pine-700: #295133;
 
   /* Text */
-  --color-ink: #16231c;
-  --color-stone: #59665f;
+  --color-ink: #333333;
+  --color-stone: #666666;
 
-  /* Light accent */
-  --color-glow: #f4b03e;
-  --color-glow-deep: #d98c1f;
-  --color-glow-soft: #fdf0d5;
+  /* Accents: antique gold (badges, text on green), red (buttons, text on light), pale green (tints) */
+  --color-glow: #cbb47a;
+  --color-glow-deep: #b00f19;
+  --color-glow-soft: #e9f2ed;
   --color-berry: #b3342b;
 
   /* Brand green, the same in both designs */
@@ -190,13 +190,13 @@
   }
 
   .btn-primary {
-    background: var(--color-glow);
-    color: var(--color-pine-950);
-    box-shadow: 0 8px 24px -10px rgb(217 140 31 / 0.7);
+    background: var(--color-glow-deep);
+    color: white;
+    box-shadow: 0 8px 24px -10px rgb(176 15 25 / 0.7);
   }
   .btn-primary:hover {
-    background: #f7bd57;
-    box-shadow: 0 12px 30px -10px rgb(217 140 31 / 0.85);
+    background: #810b12;
+    box-shadow: 0 12px 30px -10px rgb(176 15 25 / 0.85);
   }
 
   .btn-dark {
@@ -266,7 +266,40 @@
   .field:focus {
     outline: none;
     border-color: var(--color-pine-700);
-    box-shadow: 0 0 0 4px rgb(36 80 57 / 0.12);
+    box-shadow: 0 0 0 4px rgb(23 82 48 / 0.12);
+  }
+}
+
+/* Christmas only: colours that the shared tokens alone would make hard to see. */
+@layer base {
+  /* Red focus ring on green */
+  html[data-theme="christmas"] :is([class~="bg-pine-900"], [class~="bg-pine-950"]) :focus-visible {
+    outline-color: var(--color-glow);
+  }
+}
+@layer components {
+  /* Red button on green: gold instead */
+  html[data-theme="christmas"] [class~="bg-pine-900"] .btn-primary {
+    background: var(--color-glow);
+    color: #0c2a19;
+    box-shadow: 0 8px 24px -10px rgb(12 42 25 / 0.7);
+  }
+  html[data-theme="christmas"] [class~="bg-pine-900"] .btn-primary:hover {
+    background: #d9cba7;
+  }
+}
+@layer utilities {
+  /* Faint white text on green */
+  html[data-theme="christmas"] :is([class~="text-snow/50"], [class~="text-snow/55"], [class~="text-snow/60"]) {
+    color: rgb(255 255 255 / 0.72);
+  }
+  /* White cards that turn "snow" on hover */
+  html[data-theme="christmas"] [class~="hover:bg-snow"]:hover {
+    background-color: #f0f2f1;
+  }
+  /* Ticks stay green: a red tick reads as "no" */
+  html[data-theme="christmas"] .lucide-check.text-glow-deep {
+    color: var(--color-pine-900);
   }
 }
 

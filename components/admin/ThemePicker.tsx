@@ -24,8 +24,8 @@ function Preview({ theme }: { theme: SiteTheme }) {
       </div>
     );
   return (
-    <div className="relative h-28 overflow-hidden rounded-2xl bg-[#f4eee4]">
-      <div className="h-3 bg-[#122a1f]" />
+    <div className="relative h-28 overflow-hidden rounded-2xl bg-[#f0e8d9]">
+      <div className="h-3 bg-[#175230]" />
       <div className="mt-3 flex justify-around px-4">
         {WARM.map((color, i) => (
           <span
@@ -36,7 +36,7 @@ function Preview({ theme }: { theme: SiteTheme }) {
         ))}
       </div>
       <p
-        className="absolute bottom-3 left-4 text-2xl font-semibold text-[#122a1f]"
+        className="absolute bottom-3 left-4 text-2xl font-semibold text-[#175230]"
         style={{ fontFamily: "var(--font-fraunces), serif" }}
       >
         Jūsų namai švies.

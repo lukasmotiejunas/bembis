@@ -382,7 +382,7 @@ function Row({
 
 // Roof, lights, number on the roof, side labels.
 const outlineColors = {
-  christmas: { roof: "#122a1f", light: "#f4b03e", text: "#fbf8f3", label: "#122a1f" },
+  christmas: { roof: "#175230", light: "#f4b03e", text: "#ffffff", label: "#175230" },
   halloween: { roof: "#26173a", light: "#ff7a1a", text: "#f6ecdf", label: "#d9c9f0" },
 };
 
