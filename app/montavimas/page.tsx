@@ -14,8 +14,10 @@ import { INSTALLATION_SERVICE } from "@/lib/inquiry";
 import { breadcrumbSchema, installationServiceSchema, pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
-  title: `Kalėdinių lempučių montavimas Vilniuje – nuo ${formatPrice(pricing.installPerMeter)}/m`,
-  description: `Kalėdinių girliandų kabinimas ant namų, fasadų ir medžių Vilniuje bei Vilniaus rajone. Montavimas su mūsų lemputėmis nuo ${formatPrice(pricing.installPerMeter)}/m. Atsiųskite nuotrauką – parengsime pasiūlymą.`,
+  // Both words people search with — "lempučių" and "girliandų" — must be in the title and H1: Google does not
+  // treat them as synonyms, so a page that only says one is not found for the other.
+  title: "Kalėdinių lempučių ir girliandų montavimas Vilniuje",
+  description: `Kalėdinių girliandų montavimas ir kabinimas ant namų, fasadų ir medžių Vilniuje bei rajone – nuo ${formatPrice(pricing.installPerMeter)}/m, nuėmimas įskaičiuotas. Atsiųskite nuotrauką – parengsime pasiūlymą.`,
   path: "/montavimas",
 });
 
@@ -31,17 +33,17 @@ export default function InstallationPage() {
     <>
       <JsonLd data={[
         installationServiceSchema(),
-        breadcrumbSchema([{ name: "Pradžia", path: "/" }, { name: "Lempučių montavimas", path: "/montavimas" }]),
+        breadcrumbSchema([{ name: "Pradžia", path: "/" }, { name: "Lempučių ir girliandų montavimas", path: "/montavimas" }]),
       ]} />
       <PageHeader
         eyebrow="Namo ir verslo erdvių puošimas"
-        title="Kalėdinių lempučių montavimas Vilniuje"
-        text="Kabiname lauko girliandas ant stogo kraštų, prie įėjimų, terasų ir medžių. Puošiame privačius namus, parduotuves ir biurus Vilniuje bei Vilniaus apskrityje. Galite įsigyti mūsų lemputes, išsinuomoti jas sezonui arba patikėti mums savo turimas girliandas."
+        title="Kalėdinių lempučių ir girliandų montavimas Vilniuje"
+        text="Kabiname kalėdines girliandas ant stogo kraštų, prie įėjimų, terasų ir medžių. Puošiame privačius namus, parduotuves ir biurus Vilniuje bei Vilniaus apskrityje. Galite įsigyti mūsų lemputes, išsinuomoti jas sezonui arba patikėti mums savo turimas girliandas."
       >
         <Link href="#forma" className="btn btn-primary">Gauti montavimo pasiūlymą<ArrowRight className="size-4" aria-hidden="true" /></Link>
       </PageHeader>
       <section className="container-page py-16 sm:py-20">
-        <SectionHeading eyebrow="Darbų kaina" title="Kiek kainuoja pakabinti kalėdines girliandas?" text="Darbas ir lemputės skaičiuojami atskirai. Pasiūlymą parengiame pagal kontūro ilgį, aukštį, priėjimą ir pasirinktą tvirtinimą." />
+        <SectionHeading eyebrow="Darbų kaina" title="Kiek kainuoja kalėdinių girliandų montavimas?" text="Darbas ir lemputės skaičiuojami atskirai. Pasiūlymą parengiame pagal kontūro ilgį, aukštį, priėjimą ir pasirinktą tvirtinimą." />
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {[
             { title: "Su mūsų lemputėmis", rate: pricing.installPerMeter, text: "Montavimas ir nuėmimas po sezono. Girliandų pirkimas arba nuoma skaičiuojami papildomai." },
@@ -59,7 +61,7 @@ export default function InstallationPage() {
       <ServiceGuide guide={installationGuide} />
       <section className="bg-cream py-16 sm:py-20">
         <div className="container-page">
-          <SectionHeading eyebrow="Nuo nuotraukos iki šventinės šviesos" title="Kaip vyksta montavimas" />
+          <SectionHeading eyebrow="Nuo nuotraukos iki šventinės šviesos" title="Kaip vyksta kalėdinių lempučių kabinimas" />
           <ol className="mt-10 grid gap-6 md:grid-cols-2">
             {steps.map((step, index) => (
               <li key={step.title} className="rounded-3xl bg-white p-7">

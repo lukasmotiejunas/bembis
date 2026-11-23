@@ -25,7 +25,7 @@ export default async function Hero() {
             </span>
           </h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-stone sm:text-xl">
-            Parduodame ir nuomojame kalėdines lemputes, jas sumontuojame, o po švenčių viską nuimame.
+            Parduodame ir nuomojame kalėdines lemputes bei girliandas, jas sumontuojame, o po švenčių viską nuimame.
           </p>
           <p className="mt-6 inline-flex w-fit items-center gap-3 rounded-full bg-white px-5 py-2.5 text-lg text-stone shadow-[0_12px_24px_-16px_rgb(12_27_20/0.35)] ring-1 ring-sand sm:text-xl">
             <span className="size-2.5 shrink-0 rounded-full bg-glow shadow-[0_0_10px_rgb(244_176_62/0.9)]" aria-hidden="true" />

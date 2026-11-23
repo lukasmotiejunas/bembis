@@ -10,9 +10,11 @@ import { getSiteTheme } from "@/lib/themeStore";
 
 const meta = {
   christmas: {
+    // This exact title already ranks for "kalėdinių lempučių montavimas" — keep it; the "girliandų" wording
+    // lives in the description and the service cards below.
     title: `Kalėdinių lempučių montavimas ir nuoma Vilniuje | ${site.name}`,
     description:
-      "Atvykstame, papuošiame ir sumontuojame kalėdines lemputes, po sezono nuimame. XP ir LLinks lauko LED pardavimas bei nuoma. Vilnius ir Vilniaus apskritis.",
+      "Kalėdinių girliandų ir lempučių montavimas: atvykstame, pakabiname ant namo, po sezono nuimame. XP ir LLinks lauko LED pardavimas bei nuoma Vilniuje ir Vilniaus apskrityje.",
   },
   halloween: {
     title: `Helovyno apšvietimo montavimas ir nuoma Vilniuje | ${site.name}`,

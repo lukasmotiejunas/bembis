@@ -208,7 +208,7 @@ export function catalogSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "XP ir LLinks lauko LED girliandos ir komplektai",
+    name: "Lauko kalėdinės lemputės ir LED girliandos – XP, LLinks",
     url: absoluteUrl("/kaledines-lemputes"),
     mainEntity: {
       "@type": "ItemList",
@@ -228,7 +228,7 @@ export function installationServiceSchema() {
     "@type": "Service",
     "@id": INSTALLATION_ID,
     serviceType: "Kalėdinių lempučių montavimas",
-    name: "Kalėdinių lempučių montavimas Vilniuje",
+    name: "Kalėdinių lempučių ir girliandų montavimas Vilniuje",
     alternateName: [
       "Kalėdinių girliandų montavimas",
       "Kalėdinių lempučių kabinimas",
@@ -253,7 +253,7 @@ export function rentalServiceSchema() {
     "@type": "Service",
     "@id": RENTAL_ID,
     serviceType: "Kalėdinių lempučių nuoma",
-    name: "Kalėdinių lempučių nuoma Vilniuje",
+    name: "Kalėdinių lempučių ir girliandų nuoma Vilniuje",
     alternateName: ["Kalėdinių girliandų nuoma", "Lauko girliandų nuoma", "Kalėdinių lempučių nuoma su montavimu"],
     description: `Šiltai baltų XP ir komercinės klasės LLinks lauko LED nuoma Vilniuje ir Vilniaus apskrityje. Standartiniai tarifai: XP ${pricing.rentalPerMeter.xp} EUR/m, LLinks ${pricing.rentalPerMeter.llinks} EUR/m. Darbų ir nuomos sąlygos suderinamos konkrečiam objektui.`,
     url: absoluteUrl("/nuoma"),

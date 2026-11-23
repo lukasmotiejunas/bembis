@@ -11,8 +11,8 @@ import { AnalyticsPreferencesButton } from "./GoogleAnalytics";
 
 const links = [
   { href: "/", label: "Pradžia" },
-  { href: "/montavimas", label: "Kalėdinių lempučių montavimas" },
-  { href: "/nuoma", label: "Kalėdinių lempučių nuoma" },
+  { href: "/montavimas", label: "Lempučių ir girliandų montavimas" },
+  { href: "/nuoma", label: "Lempučių ir girliandų nuoma" },
   { href: "/kaledines-lemputes", label: "Kalėdinės lemputės" },
   { href: productHref(productFor("buy")), label: "Pirkti lemputes" },
   { href: "/kontaktai", label: "Kontaktai" },

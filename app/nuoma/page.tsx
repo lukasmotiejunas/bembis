@@ -18,7 +18,7 @@ import { getSiteTheme } from "@/lib/themeStore";
 
 const meta = {
   christmas: {
-    title: "Kalėdinių lempučių nuoma Vilniuje su montavimu",
+    title: "Kalėdinių lempučių ir girliandų nuoma Vilniuje",
     description: `Kalėdinių lempučių ir lauko girliandų nuoma visam sezonui Vilniuje ir apskrityje: XP ${formatPrice(pricing.rentalPerMeter.xp)}/m, LLinks ${formatPrice(pricing.rentalPerMeter.llinks)}/m. Sumontuojame, po švenčių nuimame ir pasiimame.`,
   },
   halloween: {
@@ -35,7 +35,7 @@ export async function generateMetadata() {
 const copy = {
   christmas: {
     eyebrow: "Nuoma su montavimu",
-    title: "Kalėdinių lempučių nuoma Vilniuje",
+    title: "Kalėdinių lempučių ir girliandų nuoma Vilniuje",
     text: "Kalėdinių girliandų nuoma visam sezonui — be pirkimo ir sandėliavimo rūpesčių. Pasirinkite XP arba komercinės klasės LLinks lauko LED: atvykstame, sumontuojame, o po sezono apšvietimą nuimame bei pasiimame.",
     seriesText: "Šiltai baltas apšvietimas jūsų pastato ar aplinkos kontūrams.",
     seasonText: "Nuomos laiką ir darbų datas suderiname su jumis.",

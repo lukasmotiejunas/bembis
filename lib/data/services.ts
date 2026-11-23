@@ -149,7 +149,7 @@ export interface ServiceGuide {
 export const installationFaqs = [
   installCostFaq,
   {
-    q: "Ar montuojate mano turimas girliandas?",
+    q: "Ar galite sumontuoti mano turimas kalėdines girliandas?",
     a: `Taip. Standartinis montavimo ir nuėmimo tarifas su jūsų lemputėmis – nuo ${formatPrice(pricing.clientLightsPerMeter)}/m. Atsiųskite girliandų bei objekto nuotraukas, kad galėtume įvertinti tvirtinimą ir tinkamumą naudoti lauke.`,
   },
   {
@@ -171,19 +171,19 @@ export const installationFaqs = [
 export const installationGuide: ServiceGuide = {
   eyebrow: "Lauko kalėdinis apšvietimas",
   title: "Ką galime papuošti girliandomis",
-  text: "Skirtingoms vietoms reikia skirtingo girliandų kiekio ir tvirtinimo. Nuotraukos padeda parinkti sprendimą, o ne spėti kainą vien iš pastato ploto.",
+  text: "Kalėdinių lempučių montavimas, girliandų kabinimas ar kalėdinio apšvietimo įrengimas – vadinkite kaip patogu, darbas tas pats. Skirtingoms vietoms reikia skirtingo girliandų kiekio ir tvirtinimo, todėl nuotraukos padeda parinkti sprendimą, o ne spėti kainą vien iš pastato ploto.",
   topics: [
     {
       title: "Namo puošimas Kalėdoms",
-      text: "Apšviečiame stogo kontūrą, pakalimą, prieangį ar terasą. Plokščiam stogui svarbi krašto konstrukcija, šlaitiniam – kraigo ir frontonų aukštis. Skaičiuojame norimų apšviesti linijų ilgį, o ne namo plotą kvadratiniais metrais.",
+      text: "Kalėdines lemputes ant namo montuojame palei stogo kontūrą, pakalimą, prieangį ar terasą. Plokščiam stogui svarbi krašto konstrukcija, šlaitiniam – kraigo ir frontonų aukštis. Skaičiuojame norimų apšviesti linijų ilgį, o ne namo plotą kvadratiniais metrais.",
     },
     {
       title: "Parduotuvių, biurų ir fasadų puošimas",
-      text: "Galime papuošti įėjimą, stogelį, vitriną ar biuro erdvę. Prieš darbus suderiname dekoravimo vietą, tvirtinimo būdą ir elektros prijungimą. Jei patalpos nuomojamos, pakeitimus reikia suderinti ir su savininku.",
+      text: "Šventinį apšvietimą montuojame prie įėjimo, ant stogelio, vitrinos ar biuro fasado. Prieš darbus suderiname dekoravimo vietą, tvirtinimo būdą ir elektros prijungimą. Jei patalpos nuomojamos, pakeitimus reikia suderinti ir su savininku.",
     },
     {
       title: "Eglių ir kitų medžių apšvietimas",
-      text: "Reikiamas ilgis priklauso nuo medžio aukščio, lajos pločio ir norimo šviesos tankumo. Atsiųskite viso medžio bei jo aplinkos nuotraukas. Aukštai viršūnei ar ribotam priėjimui gali reikėti keltuvo.",
+      text: "Lauko eglę ar kitą medį apvyniojame kalėdinėmis girliandomis. Reikiamas ilgis priklauso nuo medžio aukščio, lajos pločio ir norimo šviesos tankumo. Atsiųskite viso medžio bei jo aplinkos nuotraukas. Aukštai viršūnei ar ribotam priėjimui gali reikėti keltuvo.",
     },
     {
       title: "Lempučių pirkimas ar nuoma sezonui",

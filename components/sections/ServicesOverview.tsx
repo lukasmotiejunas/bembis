@@ -14,9 +14,9 @@ export default function ServicesOverview() {
       />
       <div className="mt-10 grid gap-5 md:grid-cols-3">
         {[
-          { href: "/montavimas", title: "Kalėdinių lempučių montavimas", text: `Atvykstame su girliandomis arba pakabiname jūsų turimas. Darbas su mūsų lemputėmis nuo ${formatPrice(pricing.installPerMeter)}/m; lempučių kaina atskirai. Tvirtinimą ir elektros prijungimą suderiname pagal objektą.`, label: "Montavimo eiga ir kaina" },
-          { href: "/nuoma", title: "Girliandų nuoma sezonui", text: "XP arba komercinės klasės LLinks lauko girliandas išnuomojame sutartam šventiniam laikotarpiui. Nuomą ir darbus įvertiname atskirai, o po sezono lemputes pasiimame.", label: "Lempučių nuomos sąlygos" },
-          { href: "/kaledines-lemputes", title: "Lauko LED girliandų pardavimas", text: "Šiltai baltos XP ir LLinks girliandos 7,5 m sekcijomis bei 45 m ir 60 m komplektais. Tos pačios serijos sekcijos jungiamos tarpusavyje; įsigytoms lemputėms suteikiame 2 metų garantiją.", label: "Rinktis lauko girliandas" },
+          { href: "/montavimas", title: "Kalėdinių girliandų montavimas", text: `Atvykstame su girliandomis arba pakabiname jūsų turimas. Darbas su mūsų lemputėmis nuo ${formatPrice(pricing.installPerMeter)}/m; lempučių kaina atskirai. Tvirtinimą ir elektros prijungimą suderiname pagal objektą.`, label: "Montavimo eiga ir kaina" },
+          { href: "/nuoma", title: "Kalėdinių girliandų nuoma sezonui", text: "XP arba komercinės klasės LLinks lauko girliandas išnuomojame sutartam šventiniam laikotarpiui. Nuomą ir darbus įvertiname atskirai, o po sezono lemputes pasiimame.", label: "Lempučių nuomos sąlygos" },
+          { href: "/kaledines-lemputes", title: "Lauko kalėdinių lempučių pardavimas", text: "Šiltai baltos XP ir LLinks girliandos 7,5 m sekcijomis bei 45 m ir 60 m komplektais. Tos pačios serijos sekcijos jungiamos tarpusavyje; įsigytoms lemputėms suteikiame 2 metų garantiją.", label: "Rinktis lauko girliandas" },
         ].map((item) => (
           <article key={item.href} className="flex flex-col rounded-3xl border border-sand bg-white p-7">
             <h3 className="text-2xl font-semibold text-pine-900">{item.title}</h3>

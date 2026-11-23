@@ -11,9 +11,9 @@ import { getSiteTheme } from "@/lib/themeStore";
 
 const meta = {
   christmas: {
-    title: "XP ir LLinks lauko LED girliandos ir komplektai",
+    title: "Lauko kalėdinės lemputės ir LED girliandos – XP, LLinks",
     description:
-      "Šiltai baltos XP ir LLinks lauko LED girliandos: 7,5 m motininės ir papildomos sekcijos, 45 m ir 60 m komplektai. Sudėtis, pardavimo kainos ir nuomos pasirinkimai.",
+      "Šiltai baltos lauko kalėdinės lemputės ir LED girliandos XP ir LLinks: 7,5 m motininės ir papildomos sekcijos, 45 m ir 60 m komplektai. Kainos, sudėtis ir nuoma.",
   },
   halloween: {
     title: "Lauko LED girliandos Helovynui ir Kalėdoms",
@@ -29,8 +29,8 @@ export async function generateMetadata() {
 const copy = {
   christmas: {
     eyebrow: "Lempučių ir komplektų katalogas",
-    title: "Šiltai baltos lauko LED girliandos",
-    text: "XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Pardavimo kainos nurodytos už vienetą arba visą komplektą.",
+    title: "Lauko kalėdinės lemputės ir LED girliandos",
+    text: "Šiltai baltos XP ir komercinės klasės LLinks: 7,5 m motininės girliandos, papildomos sekcijos bei 45 m ir 60 m komplektai. Pardavimo kainos nurodytos už vienetą arba visą komplektą.",
     catalogTitle: "Arba išsirinkite patys",
     ctaTitle: "Nenorite lipti ant kopėčių?",
   },
